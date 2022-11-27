@@ -22,6 +22,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
             telemetry.addData("Status", "Running");
             telemetry.update();
             rob.showEncoders();
+            rob.straight(0.5);
             rob.showEncoders();
             sleep(2500);
             rob.die();
