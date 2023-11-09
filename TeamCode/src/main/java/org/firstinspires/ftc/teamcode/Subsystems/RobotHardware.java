@@ -31,67 +31,73 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import com.qualcomm.robotcore.hardware.CRServo;
+import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 public class RobotHardware {
 
     /* Declare OpMode members. */
-    private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
-    DcMotor leftFront = null;  //  Used to control the left front drive wheel
-    DcMotor rightFront = null;  //  Used to control the right front drive wheel
-    DcMotor leftBack = null;  //  Used to control the left back drive wheel
-    DcMotor rightBack = null;  //  Used to control the right back drive wheel
+    private LinearOpMode myOpMode = null;
+    DcMotor leftFront = null;
+    DcMotor rightFront = null;
+    DcMotor leftBack = null;
+    DcMotor rightBack = null;
+    DcMotor climb = null;
+    DcMotor liftOne = null;
+    DcMotor liftTwo = null;
+    DcMotor intake =null;
+
+    CRServo intakeHeight = null;
+    Servo launcher = null;
+    CRServo transfer = null;
+    Servo outtakePivot = null;
+    Servo secondaryLock = null;
+    Servo secondaryIntakeLock = null;
+
+    private FirstVisionProcessor visionProcessor;
+    private VisionPortal visionPortal;
     public IMU imu         = null;      // Control/Expansion Hub IMU
 
 
-    // Define a constructor that allows the OpMode to pass a reference to itself.
+
     public RobotHardware(LinearOpMode opmode) {
         myOpMode = opmode;
     }
 
-    /**
-     * Initialize all the robot's hardware.
-     * This method must be called ONCE when the OpMode is initialized.
-     * <p>
-     * All of the hardware devices are accessed via the hardware map, and initialized.
-     */
     public void init()    {
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must match the names assigned during the robot configuration.
-        // step (using the FTC Robot Controller app on the phone).
         leftFront = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
         rightFront = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
         leftBack = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
         rightBack = myOpMode.hardwareMap.get(DcMotor.class, "rightBack");
+
+        climb = myOpMode.hardwareMap.get(DcMotor.class, "climb");
+        liftOne = myOpMode.hardwareMap.get(DcMotor.class, "liftOne");
+        liftTwo = myOpMode.hardwareMap.get(DcMotor.class, "liftTwo");
+        intake = myOpMode.hardwareMap.get(DcMotor.class, "intake");
+
+        intakeHeight = myOpMode.hardwareMap.crservo.get("intakeHeight");
+        launcher = myOpMode.hardwareMap.servo.get("launcher");
+        transfer = myOpMode.hardwareMap.crservo.get("transfer");
+        outtakePivot = myOpMode.hardwareMap.servo.get("outtakePivot");
+        secondaryLock = myOpMode.hardwareMap.servo.get("secondaryLock");
+        secondaryIntakeLock = myOpMode.hardwareMap.servo.get("secondaryIntakeLock");
 
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
-        /* The next two lines define Hub orientation.
-         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-         *
-         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-         */
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
-        // Now initialize the IMU with this mounting orientation
-        // This sample expects the IMU to be in a REV Hub and named "imu".
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
 
-        // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -100,7 +106,6 @@ public class RobotHardware {
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // Set the encoders for closed loop speed control, and reset the heading.
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
