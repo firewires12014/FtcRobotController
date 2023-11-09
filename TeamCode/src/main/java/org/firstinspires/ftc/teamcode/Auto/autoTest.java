@@ -27,18 +27,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Auto;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
 
 
-@TeleOp(name="Drive Code", group="Robot")
-public class DriveProg extends LinearOpMode {
+@Autonomous(name="autoTest", group="Robot")
+public class autoTest extends LinearOpMode {
 
     // Create a RobotHardware object to be used to access robot hardware.
     // Prefix any hardware functions with "robot." to access this class.
-    org.firstinspires.ftc.teamcode.RobotHardware robot       = new RobotHardware(this);
+    RobotHardware robot       = new RobotHardware(this);
 
     @Override
     public void runOpMode() {
@@ -52,7 +54,14 @@ public class DriveProg extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            robot.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+          robot.driveStraight(.5f, 20f, 0f);
+          sleep(1000);
+          robot.turnToHeading(.5f, -90f);
+            robot.driveStraight(.5f, 20f, -90f);
+            robot.holdHeading(.5f, -90f, 1f);
+            robot.turnToHeading(.5f, -135f);
+            robot.driveStraight(-.5f, 20f, -135f);
+            sleep(30000);
         }
     }
 }

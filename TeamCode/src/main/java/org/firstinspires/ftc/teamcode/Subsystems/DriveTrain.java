@@ -1,66 +1,31 @@
-/* Copyright (c) 2022 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+package org.firstinspires.ftc.teamcode.Subsystems;
 
-package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
 
-public class RobotHardware {
-
-    /* Declare OpMode members. */
+public class DriveTrain {
+    RobotHardware robot       = new RobotHardware(this);
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
-    private DcMotor leftFront = null;  //  Used to control the left front drive wheel
-    private DcMotor rightFront = null;  //  Used to control the right front drive wheel
-    private DcMotor leftBack = null;  //  Used to control the left back drive wheel
-    private DcMotor rightBack = null;  //  Used to control the right back drive wheel
-    private IMU imu         = null;      // Control/Expansion Hub IMU
-    private double          headingError  = 0;
+
+    public double          headingError  = 0;
 
     // These variable are declared here (as class members) so they can be updated in various methods,
     // but still be displayed by sendTelemetry()
-    private double  targetHeading = 0;
-    private double  driveSpeed    = 0;
-    private double  turnSpeed     = 0;
-    private double  leftSpeed     = 0;
-    private double  rightSpeed    = 0;
-    private int     leftTarget    = 0;
-    private int     rightTarget   = 0;
+    public double  targetHeading = 0;
+    public double  driveSpeed    = 0;
+    public double  turnSpeed     = 0;
+    public double  leftSpeed     = 0;
+    public double  rightSpeed    = 0;
+    public int     leftTarget    = 0;
+    public int     rightTarget   = 0;
 
     // Calculate the COUNTS_PER_INCH for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
@@ -89,61 +54,6 @@ public class RobotHardware {
 
 
 
-    // Define a constructor that allows the OpMode to pass a reference to itself.
-    public RobotHardware(LinearOpMode opmode) {
-        myOpMode = opmode;
-    }
-
-    /**
-     * Initialize all the robot's hardware.
-     * This method must be called ONCE when the OpMode is initialized.
-     * <p>
-     * All of the hardware devices are accessed via the hardware map, and initialized.
-     */
-    public void init()    {
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must match the names assigned during the robot configuration.
-        // step (using the FTC Robot Controller app on the phone).
-        leftFront = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
-        rightFront = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
-        leftBack = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
-        rightBack = myOpMode.hardwareMap.get(DcMotor.class, "rightBack");
-
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        leftBack.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.FORWARD);
-
-        /* The next two lines define Hub orientation.
-         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-         *
-         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-         */
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-
-        // Now initialize the IMU with this mounting orientation
-        // This sample expects the IMU to be in a REV Hub and named "imu".
-        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
-
-        // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
-        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // Set the encoders for closed loop speed control, and reset the heading.
-        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        imu.resetYaw();
-    }
 
     public void teleopDrive(float left_stick_y, float left_stick_x, float right_stick_x) {
         double max;
@@ -184,17 +94,17 @@ public class RobotHardware {
         // Once the correct motors move in the correct direction re-comment this code.
 
 
-           // leftFrontPower  = myOpMode.gamepad1.x ? 1.0 : 0.0;  // X gamepad
-          //  leftBackPower   = myOpMode.gamepad1.a ? 1.0 : 0.0;  // A gamepad
-          //  rightFrontPower = myOpMode.gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-           // rightBackPower  = myOpMode.gamepad1.b ? 1.0 : 0.0;  // B gamepad
+        // leftFrontPower  = myOpMode.gamepad1.x ? 1.0 : 0.0;  // X gamepad
+        //  leftBackPower   = myOpMode.gamepad1.a ? 1.0 : 0.0;  // A gamepad
+        //  rightFrontPower = myOpMode.gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+        // rightBackPower  = myOpMode.gamepad1.b ? 1.0 : 0.0;  // B gamepad
 
 
         // Send calculated power to wheels
-        leftFront.setPower(leftFrontPower);
-        rightFront.setPower(rightFrontPower);
-        leftBack.setPower(leftBackPower);
-        rightBack.setPower(rightBackPower);
+        robot.leftFront.setPower(leftFrontPower);
+        robot.rightFront.setPower(rightFrontPower);
+        robot.leftBack.setPower(leftBackPower);
+        robot.rightBack.setPower(rightBackPower);
 
     }
     public void driveStraight(double maxDriveSpeed,
@@ -207,15 +117,15 @@ public class RobotHardware {
 
             // Determine new target position, and pass to motor controller
             int moveCounts = (int)(distance * COUNTS_PER_INCH);
-            leftTarget = leftFront.getCurrentPosition() + moveCounts;
-            rightTarget = rightFront.getCurrentPosition() + moveCounts;
+            leftTarget = robot.leftFront.getCurrentPosition() + moveCounts;
+            rightTarget = robot.rightFront.getCurrentPosition() + moveCounts;
 
             // Set Target FIRST, then turn on RUN_TO_POSITION
-            leftFront.setTargetPosition(leftTarget);
-            rightFront.setTargetPosition(rightTarget);
+            robot.leftFront.setTargetPosition(leftTarget);
+            robot.rightFront.setTargetPosition(rightTarget);
 
-            leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // Set the required driving speed  (must be positive for RUN_TO_POSITION)
             // Start driving straight, and then enter the control loop
@@ -224,7 +134,7 @@ public class RobotHardware {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (myOpMode.opModeIsActive() &&
-                    (leftFront.isBusy() && rightFront.isBusy())) {
+                    (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
 
                 // Determine required steering to keep on heading
                 turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
@@ -242,35 +152,35 @@ public class RobotHardware {
 
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
-            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot. rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-   public void strafeLeft (float speed, float time){
-         ElapsedTime  runTime = new ElapsedTime();
-    while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
-        leftFront.setPower(-speed);
-        rightFront.setPower(speed);
-        leftBack.setPower(speed);
-        rightBack.setPower(-speed);
+    public void strafeLeft (float speed, float time){
+        ElapsedTime runTime = new ElapsedTime();
+        while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
+            robot.leftFront.setPower(-speed);
+            robot.rightFront.setPower(speed);
+            robot.leftBack.setPower(speed);
+            robot.rightBack.setPower(-speed);
         }
-    die();
+        die();
     }
     public void die (){
-        leftFront.setPower(0);
-        rightFront.setPower(0);
-        leftBack.setPower(0);
-        rightBack.setPower(0);
+        robot.leftFront.setPower(0);
+        robot.rightFront.setPower(0);
+        robot.leftBack.setPower(0);
+        robot.rightBack.setPower(0);
     }
     public void strafeRight (float speed, float time){
         ElapsedTime  runTime = new ElapsedTime();
         while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
-            leftFront.setPower(speed);
-            rightFront.setPower(-speed);
-            leftBack.setPower(-speed);
-            rightBack.setPower(speed);
+            robot.leftFront.setPower(speed);
+            robot.rightFront.setPower(-speed);
+            robot.leftBack.setPower(-speed);
+            robot.rightBack.setPower(speed);
         }
         die();
     }
@@ -394,10 +304,10 @@ public class RobotHardware {
         }
 
 
-        leftFront.setPower(leftSpeed);
-        rightFront.setPower(rightSpeed);
-        leftBack.setPower(leftSpeed);
-        rightBack.setPower(rightSpeed);
+        robot.leftFront.setPower(leftSpeed);
+        robot.rightFront.setPower(rightSpeed);
+        robot.leftBack.setPower(leftSpeed);
+        robot.rightBack.setPower(rightSpeed);
     }
 
 
@@ -405,9 +315,9 @@ public class RobotHardware {
      * read the Robot heading directly from the IMU (in degrees)
      */
     public double getHeading() {
-        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        YawPitchRollAngles orientation = robot.imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
     }
+
+    HardwareMap hardwareMap;
 }
-
-
