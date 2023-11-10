@@ -32,15 +32,17 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
 
 
-@Autonomous(name="autoTest", group="Robot")
+@Autonomous(name = "autoTest", group = "Robot")
 public class autoTest extends LinearOpMode {
 
     // Create a RobotHardware object to be used to access robot hardware.
     // Prefix any hardware functions with "robot." to access this class.
-    RobotHardware robot       = new RobotHardware(this);
+    RobotHardware robot = new RobotHardware(this);
+    DriveTrain dt = new DriveTrain(this);
 
     @Override
     public void runOpMode() {
@@ -54,13 +56,13 @@ public class autoTest extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-          robot.driveStraight(.5f, 20f, 0f);
-          sleep(1000);
-          robot.turnToHeading(.5f, -90f);
-            robot.driveStraight(.5f, 20f, -90f);
-            robot.holdHeading(.5f, -90f, 1f);
-            robot.turnToHeading(.5f, -135f);
-            robot.driveStraight(-.5f, 20f, -135f);
+            dt.driveStraight(.5f, 20f, 0f);
+            sleep(1000);
+            dt.turnToHeading(.5f, -90f);
+            dt.driveStraight(.5f, 20f, -90f);
+            dt.holdHeading(.5f, -90f, 1f);
+            dt.turnToHeading(.5f, -135f);
+            dt.driveStraight(-.5f, 20f, -135f);
             sleep(30000);
         }
     }

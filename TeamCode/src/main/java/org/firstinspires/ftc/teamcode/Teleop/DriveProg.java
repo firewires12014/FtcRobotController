@@ -42,7 +42,7 @@ public class DriveProg extends LinearOpMode {
     // Create a RobotHardware object to be used to access robot hardware.
     // Prefix any hardware functions with "robot." to access this class.
     RobotHardware robot             = new RobotHardware(this);
-    DriveTrain dt                  = new DriveTrain();
+    DriveTrain dt = new DriveTrain(this);
 
     @Override
     public void runOpMode() {

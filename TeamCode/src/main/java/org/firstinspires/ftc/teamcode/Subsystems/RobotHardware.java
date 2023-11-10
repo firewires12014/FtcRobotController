@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -49,7 +50,7 @@ public class RobotHardware {
     DcMotor climb = null;
     DcMotor liftOne = null;
     DcMotor liftTwo = null;
-    DcMotor intake =null;
+    DcMotor intake = null;
 
     CRServo intakeHeight = null;
     Servo launcher = null;
@@ -60,15 +61,14 @@ public class RobotHardware {
 
     private FirstVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
-    public IMU imu         = null;      // Control/Expansion Hub IMU
-
+    public IMU imu = null;      // Control/Expansion Hub IMU
 
 
     public RobotHardware(LinearOpMode opmode) {
         myOpMode = opmode;
     }
 
-    public void init()    {
+    public void init() {
         leftFront = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
         rightFront = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
         leftBack = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
@@ -92,7 +92,7 @@ public class RobotHardware {
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");

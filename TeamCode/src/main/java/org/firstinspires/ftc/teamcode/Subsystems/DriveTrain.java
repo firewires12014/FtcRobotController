@@ -12,46 +12,49 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
 
 public class DriveTrain {
-    RobotHardware robot       = new RobotHardware(this);
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
 
-    public double          headingError  = 0;
+    RobotHardware robot = new RobotHardware(myOpMode);
 
-    public double  targetHeading = 0;
-    public double  driveSpeed    = 0;
-    public double  turnSpeed     = 0;
-    public double  leftSpeed     = 0;
-    public double  rightSpeed    = 0;
-    public int     leftTarget    = 0;
-    public int     rightTarget   = 0;
+    public double headingError = 0;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 537.7 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    public double targetHeading = 0;
+    public double driveSpeed = 0;
+    public double turnSpeed = 0;
+    public double leftSpeed = 0;
+    public double rightSpeed = 0;
+    public int leftTarget = 0;
+    public int rightTarget = 0;
+
+    static final double COUNTS_PER_MOTOR_REV = 537.7;
+    static final double DRIVE_GEAR_REDUCTION = 1.0;
+    static final double WHEEL_DIAMETER_INCHES = 4.0;
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
-    static final double     DRIVE_SPEED             = 0.4;
-    static final double     TURN_SPEED              = 0.2;
-    static final double     HEADING_THRESHOLD       = 1.0 ;
-    static final double     P_TURN_GAIN            = 0.02;
-    static final double     P_DRIVE_GAIN           = 0.03;
+    static final double DRIVE_SPEED = 0.4;
+    static final double TURN_SPEED = 0.2;
+    static final double HEADING_THRESHOLD = 1.0;
+    static final double P_TURN_GAIN = 0.02;
+    static final double P_DRIVE_GAIN = 0.03;
 
-
+    public DriveTrain(LinearOpMode opmode) {
+        myOpMode = opmode;
+    }
 
 
     public void teleopDrive(float left_stick_y, float left_stick_x, float right_stick_x) {
         double max;
 
-        double axial   = -left_stick_y;
-        double lateral =  left_stick_x;
-        double yaw     =  right_stick_x;
+        double axial = -left_stick_y;
+        double lateral = left_stick_x;
+        double yaw = right_stick_x;
 
 
-        double leftFrontPower  = axial + lateral + yaw;
+        double leftFrontPower = axial + lateral + yaw;
         double rightFrontPower = axial - lateral - yaw;
-        double leftBackPower   = axial - lateral + yaw;
-        double rightBackPower  = axial + lateral - yaw;
+        double leftBackPower = axial - lateral + yaw;
+        double rightBackPower = axial + lateral - yaw;
 
 
         max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
@@ -59,10 +62,10 @@ public class DriveTrain {
         max = Math.max(max, Math.abs(rightBackPower));
 
         if (max > 1.0) {
-            leftFrontPower  /= max;
+            leftFrontPower /= max;
             rightFrontPower /= max;
-            leftBackPower   /= max;
-            rightBackPower  /= max;
+            leftBackPower /= max;
+            rightBackPower /= max;
         }
 
 
@@ -72,6 +75,7 @@ public class DriveTrain {
         robot.rightBack.setPower(rightBackPower);
 
     }
+
     public void driveStraight(double maxDriveSpeed,
                               double distance,
                               double heading) {
@@ -79,7 +83,7 @@ public class DriveTrain {
 
         if (myOpMode.opModeIsActive()) {
 
-            int moveCounts = (int)(distance * COUNTS_PER_INCH);
+            int moveCounts = (int) (distance * COUNTS_PER_INCH);
             leftTarget = robot.leftFront.getCurrentPosition() + moveCounts;
             rightTarget = robot.rightFront.getCurrentPosition() + moveCounts;
 
@@ -109,10 +113,11 @@ public class DriveTrain {
             robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot. rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void strafeLeft (float speed, float time){
+
+    public void strafeLeft(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();
         while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
             robot.leftFront.setPower(-speed);
@@ -122,14 +127,16 @@ public class DriveTrain {
         }
         die();
     }
-    public void die (){
+
+    public void die() {
         robot.leftFront.setPower(0);
         robot.rightFront.setPower(0);
         robot.leftBack.setPower(0);
         robot.rightBack.setPower(0);
     }
-    public void strafeRight (float speed, float time){
-        ElapsedTime  runTime = new ElapsedTime();
+
+    public void strafeRight(float speed, float time) {
+        ElapsedTime runTime = new ElapsedTime();
         while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
             robot.leftFront.setPower(speed);
             robot.rightFront.setPower(-speed);
@@ -191,7 +198,7 @@ public class DriveTrain {
         headingError = targetHeading - getHeading();
 
         // Normalize the error to be within +/- 180 degrees
-        while (headingError > 180)  headingError -= 360;
+        while (headingError > 180) headingError -= 360;
         while (headingError <= -180) headingError += 360;
 
         // Multiply the error by the gain to determine the required steering correction/  Limit the result to +/- 1.0
@@ -200,14 +207,13 @@ public class DriveTrain {
 
     public void moveRobot(double drive, double turn) {
         driveSpeed = drive;
-        turnSpeed  = turn;
+        turnSpeed = turn;
 
-        leftSpeed  = drive - turn;
+        leftSpeed = drive - turn;
         rightSpeed = drive + turn;
 
         double max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-        if (max > 1.0)
-        {
+        if (max > 1.0) {
             leftSpeed /= max;
             rightSpeed /= max;
         }
