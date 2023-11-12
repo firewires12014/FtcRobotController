@@ -7,13 +7,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Transfer {
-    private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
+public class Transfer {   // gain access to methods in the calling OpMode.
     private Telemetry telemetry;
     CRServo transfer = null;
 
     public Transfer(HardwareMap hardwareMap) {
-        transfer = myOpMode.hardwareMap.get(CRServo.class, "transfer");
+        transfer = hardwareMap.get(CRServo.class, "transfer");
         telemetry.addData(">", "Transfer initialized");
         telemetry.update();
     }
