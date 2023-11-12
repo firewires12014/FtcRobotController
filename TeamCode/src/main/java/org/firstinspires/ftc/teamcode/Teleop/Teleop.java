@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Climb;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
@@ -39,16 +40,12 @@ import org.firstinspires.ftc.teamcode.Subsystems.Transfer;
 
 @TeleOp(name = "Teleop", group = "Robot")
 public class Teleop extends LinearOpMode {
-    DriveTrain driveTrain = new DriveTrain(this, telemetry);
-    Climb climb = new Climb(this, telemetry);
-    Transfer transfer = new Transfer(this, telemetry);
+    DriveTrain driveTrain = new DriveTrain(hardwareMap);
+    Climb climb = new Climb(hardwareMap);
+    Transfer transfer = new Transfer(hardwareMap);
 
     @Override
     public void runOpMode() {
-        driveTrain.init();
-        climb.init();
-        transfer.init();
-
         waitForStart();
 
         while (opModeIsActive()) {

@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
 
 public class DriveTrain {
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -42,15 +41,11 @@ public class DriveTrain {
 
     public IMU imu = null;      // Control/Expansion Hub IMU
 
-    public DriveTrain(LinearOpMode opmode, Telemetry telemetry) {
-        myOpMode = opmode;
-    }
-
-    public void init() {
-        leftFront = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
-        rightFront = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
-        leftBack = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
-        rightBack = myOpMode.hardwareMap.get(DcMotor.class, "rightBack");
+    public DriveTrain(HardwareMap hardwareMap) {
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftBack = hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
 
         leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftBack.setDirection(DcMotor.Direction.FORWARD);
@@ -74,12 +69,12 @@ public class DriveTrain {
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
-        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
+        telemetry.addData(">", "DriveTrain initialized");
+        telemetry.update();
         imu.initialize(new IMU.Parameters(orientationOnRobot));
         imu.resetYaw();
 
-        telemetry.addData(">", "DriveTrain initialized");
-        telemetry.update();
+        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
     }
 
     public void teleopDrive(float left_stick_y, float left_stick_x, float right_stick_x) {

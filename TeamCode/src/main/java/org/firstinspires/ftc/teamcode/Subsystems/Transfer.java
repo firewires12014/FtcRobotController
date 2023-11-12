@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -11,11 +12,7 @@ public class Transfer {
     private Telemetry telemetry;
     CRServo transfer = null;
 
-    public Transfer(LinearOpMode opmode, Telemetry telemetry) {
-        myOpMode = opmode;
-    }
-
-    public void init() {
+    public Transfer(HardwareMap hardwareMap) {
         transfer = myOpMode.hardwareMap.get(CRServo.class, "transfer");
         telemetry.addData(">", "Transfer initialized");
         telemetry.update();

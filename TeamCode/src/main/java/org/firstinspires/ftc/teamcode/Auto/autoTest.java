@@ -37,14 +37,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 @Autonomous(name = "autoTest", group = "Robot")
 public class autoTest extends LinearOpMode {
-    DriveTrain driveTrain = new DriveTrain(this, telemetry);
+    DriveTrain driveTrain = new DriveTrain(hardwareMap);
 
     @Override
     public void runOpMode() {
-
-        // initialize all the hardware, using the hardware class. See how clean and simple this is?
-        driveTrain.init();
-
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         waitForStart();

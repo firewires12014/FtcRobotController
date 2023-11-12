@@ -9,11 +9,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 @Autonomous(name="Lucy", group = "Robot")
 public class Lucy extends LinearOpMode {
 
-    DriveTrain driveTrain = new DriveTrain(this, telemetry);
+    DriveTrain driveTrain = new DriveTrain(hardwareMap);
 
     @Override
     public void runOpMode() {
-        driveTrain.init();
         waitForStart();
 
         // run until the end of the match (driver presses STOP)
