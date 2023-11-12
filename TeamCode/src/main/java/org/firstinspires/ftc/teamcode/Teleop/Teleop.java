@@ -32,31 +32,27 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Climb;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
+import org.firstinspires.ftc.teamcode.Subsystems.Transfer;
 
 
-@TeleOp(name="Drive Code", group="Robot")
-public class DriveProg extends LinearOpMode {
-
-    // Create a RobotHardware object to be used to access robot hardware.
-    // Prefix any hardware functions with "robot." to access this class.
-    RobotHardware robot             = new RobotHardware(this);
-    DriveTrain dt = new DriveTrain(this);
+@TeleOp(name = "Teleop", group = "Robot")
+public class Teleop extends LinearOpMode {
+    DriveTrain driveTrain = new DriveTrain(this, telemetry);
+    Climb climb = new Climb(this, telemetry);
+    Transfer transfer = new Transfer(this, telemetry);
 
     @Override
     public void runOpMode() {
+        driveTrain.init();
+        climb.init();
+        transfer.init();
 
-        // initialize all the hardware, using the hardware class. See how clean and simple this is?
-        robot.init();
-
-        // Send telemetry message to signify robot waiting;
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            dt.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
     }
 }

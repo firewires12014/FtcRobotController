@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,17 +8,19 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Subsystems.RobotHardware;
 
 public class DriveTrain {
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
-
-    RobotHardware robot = new RobotHardware(myOpMode);
-
+    private Telemetry telemetry;
+    DcMotor leftFront = null;
+    DcMotor rightFront = null;
+    DcMotor leftBack = null;
+    DcMotor rightBack = null;
     public double headingError = 0;
-
     public double targetHeading = 0;
     public double driveSpeed = 0;
     public double turnSpeed = 0;
@@ -29,8 +32,7 @@ public class DriveTrain {
     static final double COUNTS_PER_MOTOR_REV = 537.7;
     static final double DRIVE_GEAR_REDUCTION = 1.0;
     static final double WHEEL_DIAMETER_INCHES = 4.0;
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
     static final double DRIVE_SPEED = 0.4;
     static final double TURN_SPEED = 0.2;
@@ -38,10 +40,47 @@ public class DriveTrain {
     static final double P_TURN_GAIN = 0.02;
     static final double P_DRIVE_GAIN = 0.03;
 
-    public DriveTrain(LinearOpMode opmode) {
+    public IMU imu = null;      // Control/Expansion Hub IMU
+
+    public DriveTrain(LinearOpMode opmode, Telemetry telemetry) {
         myOpMode = opmode;
     }
 
+    public void init() {
+        leftFront = myOpMode.hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = myOpMode.hardwareMap.get(DcMotor.class, "rightFront");
+        leftBack = myOpMode.hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = myOpMode.hardwareMap.get(DcMotor.class, "rightBack");
+
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        leftBack.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu.resetYaw();
+
+        telemetry.addData(">", "DriveTrain initialized");
+        telemetry.update();
+    }
 
     public void teleopDrive(float left_stick_y, float left_stick_x, float right_stick_x) {
         double max;
@@ -69,40 +108,36 @@ public class DriveTrain {
         }
 
 
-        robot.leftFront.setPower(leftFrontPower);
-        robot.rightFront.setPower(rightFrontPower);
-        robot.leftBack.setPower(leftBackPower);
-        robot.rightBack.setPower(rightBackPower);
+        leftFront.setPower(leftFrontPower);
+        rightFront.setPower(rightFrontPower);
+        leftBack.setPower(leftBackPower);
+        rightBack.setPower(rightBackPower);
 
     }
 
-    public void driveStraight(double maxDriveSpeed,
-                              double distance,
-                              double heading) {
+    public void driveStraight(double maxDriveSpeed, double distance, double heading) {
         distance = distance * 0.624;
 
         if (myOpMode.opModeIsActive()) {
 
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
-            leftTarget = robot.leftFront.getCurrentPosition() + moveCounts;
-            rightTarget = robot.rightFront.getCurrentPosition() + moveCounts;
+            leftTarget = leftFront.getCurrentPosition() + moveCounts;
+            rightTarget = rightFront.getCurrentPosition() + moveCounts;
 
-            robot.leftFront.setTargetPosition(leftTarget);
-            robot.rightFront.setTargetPosition(rightTarget);
+            leftFront.setTargetPosition(leftTarget);
+            rightFront.setTargetPosition(rightTarget);
 
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             maxDriveSpeed = Math.abs(maxDriveSpeed);
             moveRobot(maxDriveSpeed, 0);
 
-            while (myOpMode.opModeIsActive() &&
-                    (robot.leftFront.isBusy() && robot.rightFront.isBusy())) {
+            while (myOpMode.opModeIsActive() && (leftFront.isBusy() && rightFront.isBusy())) {
 
                 turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
 
-                if (distance < 0)
-                    turnSpeed *= -1.0;
+                if (distance < 0) turnSpeed *= -1.0;
 
                 moveRobot(driveSpeed, turnSpeed);
 
@@ -110,38 +145,38 @@ public class DriveTrain {
             }
 
             moveRobot(0, 0);
-            robot.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
     public void strafeLeft(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();
         while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
-            robot.leftFront.setPower(-speed);
-            robot.rightFront.setPower(speed);
-            robot.leftBack.setPower(speed);
-            robot.rightBack.setPower(-speed);
+            leftFront.setPower(-speed);
+            rightFront.setPower(speed);
+            leftBack.setPower(speed);
+            rightBack.setPower(-speed);
         }
         die();
     }
 
     public void die() {
-        robot.leftFront.setPower(0);
-        robot.rightFront.setPower(0);
-        robot.leftBack.setPower(0);
-        robot.rightBack.setPower(0);
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftBack.setPower(0);
+        rightBack.setPower(0);
     }
 
     public void strafeRight(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();
         while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
-            robot.leftFront.setPower(speed);
-            robot.rightFront.setPower(-speed);
-            robot.leftBack.setPower(-speed);
-            robot.rightBack.setPower(speed);
+            leftFront.setPower(speed);
+            rightFront.setPower(-speed);
+            leftBack.setPower(-speed);
+            rightBack.setPower(speed);
         }
         die();
     }
@@ -171,7 +206,6 @@ public class DriveTrain {
         moveRobot(0, 0);
     }
 
-
     public void holdHeading(double maxTurnSpeed, double heading, double holdTime) {
 
         ElapsedTime holdTimer = new ElapsedTime();
@@ -189,7 +223,6 @@ public class DriveTrain {
 
         moveRobot(0, 0);
     }
-
 
     public double getSteeringCorrection(double desiredHeading, double proportionalGain) {
         targetHeading = desiredHeading;  // Save for telemetry
@@ -219,17 +252,14 @@ public class DriveTrain {
         }
 
 
-        robot.leftFront.setPower(leftSpeed);
-        robot.rightFront.setPower(rightSpeed);
-        robot.leftBack.setPower(leftSpeed);
-        robot.rightBack.setPower(rightSpeed);
+        leftFront.setPower(leftSpeed);
+        rightFront.setPower(rightSpeed);
+        leftBack.setPower(leftSpeed);
+        rightBack.setPower(rightSpeed);
     }
-
 
     public double getHeading() {
-        YawPitchRollAngles orientation = robot.imu.getRobotYawPitchRollAngles();
+        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
     }
-
-    HardwareMap hardwareMap;
 }
