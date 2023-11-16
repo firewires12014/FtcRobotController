@@ -31,25 +31,53 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Climb;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Transfer;
-
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
 @TeleOp(name = "Teleop", group = "Robot")
 public class Teleop extends LinearOpMode {
-    DriveTrain driveTrain = new DriveTrain(hardwareMap);
-    Climb climb = new Climb(hardwareMap);
-    Transfer transfer = new Transfer(hardwareMap);
+    //    DriveTrain driveTrain = new DriveTrain(hardwareMap);
+//    Lift lift = new Lift(hardwareMap);
+    DcMotor leftLift = null;
+    DcMotor rightLift = null;
+    public CRServo secondaryIntakeRoller;
+    public DcMotor intake;
+    public Servo intakeHeight;
+    public Servo outtakePivot;
 
     @Override
     public void runOpMode() {
+        leftLift = hardwareMap.get(DcMotor.class, "leftLift");
+        rightLift = hardwareMap.get(DcMotor.class, "rightLift");
+        secondaryIntakeRoller = hardwareMap.get(CRServo.class, "secondaryIntakeRoller");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        intakeHeight = hardwareMap.get(Servo.class, "intakeHeight");
+        outtakePivot = hardwareMap.get(Servo.class, "outtakePivot");
+
+        intakeHeight.setPosition(.4);
+        //outtakePivot.setPosition(1);
+
         waitForStart();
 
         while (opModeIsActive()) {
-            driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+//            driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            rightLift.setPower(gamepad2.left_stick_y);
+            leftLift.setPower(-gamepad2.left_stick_y);
+            if (gamepad1.right_bumper) {
+                secondaryIntakeRoller.setPower(-1);
+                intake.setPower(1);
+            } else if (gamepad1.left_bumper) {
+                secondaryIntakeRoller.setPower(1);
+                intake.setPower(-1);
+            } else {
+                intake.setPower(0);
+                secondaryIntakeRoller.setPower(0);
+            }
+            outtakePivot.setPosition(gamepad1.left_stick_y);
         }
     }
 }
+
