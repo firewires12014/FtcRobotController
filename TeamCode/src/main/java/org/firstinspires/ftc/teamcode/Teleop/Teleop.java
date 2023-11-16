@@ -40,7 +40,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 @TeleOp(name = "Teleop", group = "Robot")
 public class Teleop extends LinearOpMode {
     //    DriveTrain driveTrain = new DriveTrain(hardwareMap);
-//    Lift lift = new Lift(hardwareMap);
     DcMotor leftLift = null;
     DcMotor rightLift = null;
     public CRServo secondaryIntakeRoller;
@@ -50,8 +49,8 @@ public class Teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        leftLift = hardwareMap.get(DcMotor.class, "leftLift");
-        rightLift = hardwareMap.get(DcMotor.class, "rightLift");
+        Lift lift = new Lift(hardwareMap);
+
         secondaryIntakeRoller = hardwareMap.get(CRServo.class, "secondaryIntakeRoller");
         intake = hardwareMap.get(DcMotor.class, "intake");
         intakeHeight = hardwareMap.get(Servo.class, "intakeHeight");
@@ -64,8 +63,8 @@ public class Teleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 //            driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-            rightLift.setPower(gamepad2.left_stick_y);
-            leftLift.setPower(-gamepad2.left_stick_y);
+            lift.moveLift(gamepad2.left_stick_y);
+
             if (gamepad1.right_bumper) {
                 secondaryIntakeRoller.setPower(-1);
                 intake.setPower(1);
