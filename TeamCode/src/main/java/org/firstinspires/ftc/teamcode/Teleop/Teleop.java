@@ -33,49 +33,47 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
+import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 
 @TeleOp(name = "Teleop", group = "Robot")
 public class Teleop extends LinearOpMode {
     //    DriveTrain driveTrain = new DriveTrain(hardwareMap);
-    DcMotor leftLift = null;
-    DcMotor rightLift = null;
-    public CRServo secondaryIntakeRoller;
-    public DcMotor intake;
-    public Servo intakeHeight;
-    public Servo outtakePivot;
 
+    private DriveTrain driveTrain;
+    private Lift lift;
+    private Intake intake;
+   private Outtake outtake;
     @Override
     public void runOpMode() {
-        Lift lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap);
+        driveTrain = new DriveTrain(hardwareMap);
+        intake = new Intake(hardwareMap);
+        outtake = new Outtake(hardwareMap);
 
-        secondaryIntakeRoller = hardwareMap.get(CRServo.class, "secondaryIntakeRoller");
-        intake = hardwareMap.get(DcMotor.class, "intake");
-        intakeHeight = hardwareMap.get(Servo.class, "intakeHeight");
-        outtakePivot = hardwareMap.get(Servo.class, "outtakePivot");
-
-        intakeHeight.setPosition(.4);
-        //outtakePivot.setPosition(1);
+        intake.setHeight();
 
         waitForStart();
 
         while (opModeIsActive()) {
-//            driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             lift.moveLift(gamepad2.left_stick_y);
 
             if (gamepad1.right_bumper) {
-                secondaryIntakeRoller.setPower(-1);
-                intake.setPower(1);
+                intake.in();
             } else if (gamepad1.left_bumper) {
-                secondaryIntakeRoller.setPower(1);
-                intake.setPower(-1);
+                intake.out();
             } else {
-                intake.setPower(0);
-                secondaryIntakeRoller.setPower(0);
+                intake.die();
             }
-            outtakePivot.setPosition(gamepad1.left_stick_y);
+
+            if(gamepad1.dpad_up){outtake.pivotEnding();}//score
+            
+            driveTrain.teleopDrive(driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0f, .25f, .9f), gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
     }
 }
