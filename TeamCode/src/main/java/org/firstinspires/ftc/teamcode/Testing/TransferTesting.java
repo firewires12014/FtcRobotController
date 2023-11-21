@@ -21,7 +21,20 @@ public class TransferTesting extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            transfer.setPosition(gamepad1.right_stick_y);//basket
+            //transfer.setPosition(gamepad1.right_stick_y);//basket
+
+            double up = 0.87;
+            double down = 0.15;
+
+            if(gamepad1.y) {
+                transfer.setPosition(up);
+            }
+            if(gamepad1.a) {
+                transfer.setPosition(down);
+            }
+
+            telemetry.addData("Position", transfer.getPosition());
+            telemetry.update();
         }
 
     }

@@ -72,8 +72,9 @@ public class Teleop extends LinearOpMode {
             }
 
             if(gamepad1.dpad_up){outtake.pivotEnding();}//score
+
             
-            driveTrain.teleopDrive(driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0f, .25f, .9f), gamepad1.left_stick_x, gamepad1.right_stick_x);
+            driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
         }
     }
 }

@@ -14,12 +14,12 @@ public class Intake {
     public Intake(HardwareMap hardwareMap){
         primaryRoller = hardwareMap.get(DcMotor.class, "primaryRoller");
         secondaryRoller = hardwareMap.get(CRServo.class, "secondaryRoller");
-        intakeheight = hardwareMap.get(Servo.class, "intakeheight");
+        intakeheight = hardwareMap.get(Servo.class, "intakeHeight");
     }
     public void setHeight(){
         intakeheight.setPosition(0.4);
     }
-    public void in(){
+    public void in(){git
         secondaryRoller.setPower(-1);
         primaryRoller.setPower(1);
 
