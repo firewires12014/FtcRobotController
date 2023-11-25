@@ -40,15 +40,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
+import org.firstinspires.ftc.teamcode.Testing.TransferTesting;
 
 @TeleOp(name = "Teleop", group = "Robot")
 public class Teleop extends LinearOpMode {
-    //    DriveTrain driveTrain = new DriveTrain(hardwareMap);
-
     private DriveTrain driveTrain;
     private Lift lift;
     private Intake intake;
    private Outtake outtake;
+
     @Override
     public void runOpMode() {
         lift = new Lift(hardwareMap);
@@ -71,11 +71,31 @@ public class Teleop extends LinearOpMode {
                 intake.die();
             }
 
-            if(gamepad1.dpad_up){outtake.pivotEnding();}//score
+            if (gamepad1.dpad_up) {
+                outtake.pivotEnding();
+            }//score
+            if (gamepad1.dpad_down) {
+                outtake.pivotStart();
+            }//score
 
-            
             driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+            if (gamepad2.dpad_up) {
+                outtake.transferPixels();
+            } else {
+                outtake.resetBucket();
+            }
+
+            if (gamepad1.a) {
+                outtake.releaseTop(); //I love You
+                outtake.releaseBottom();
+            }
+            if (gamepad1.b) {
+                outtake.lockPixels();
+            }
+
         }
     }
+
 }
+
 

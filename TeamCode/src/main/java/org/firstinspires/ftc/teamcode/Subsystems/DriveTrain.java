@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 public class DriveTrain {
-    private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
+    private LinearOpMode myOpMode;   // gain access to methods in the calling OpMode.
     DcMotor leftFront = null;
     DcMotor rightFront = null;
     DcMotor leftBack = null;
@@ -36,7 +37,7 @@ public class DriveTrain {
     static final double DRIVE_SPEED = 0.4;
     static final double TURN_SPEED = 0.2;
     static final double HEADING_THRESHOLD = 1.0;
-    static final double P_TURN_GAIN = 0.02;
+    static final double P_TURN_GAIN = 0.01;
     static final double P_DRIVE_GAIN = 0.03;
 
     public IMU imu = null;      // Control/Expansion Hub IMU
@@ -67,13 +68,13 @@ public class DriveTrain {
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
         imu.initialize(new IMU.Parameters(orientationOnRobot));
         imu.resetYaw();
-
+        myOpMode = this.myOpMode;
 
     }
 
@@ -113,8 +114,6 @@ public class DriveTrain {
     public void driveStraight(double maxDriveSpeed, double distance, double heading) {
         distance = distance * 0.624;
 
-        if (myOpMode.opModeIsActive()) {
-
             int moveCounts = (int) (distance * COUNTS_PER_INCH);
             leftTarget = leftFront.getCurrentPosition() + moveCounts;
             rightTarget = rightFront.getCurrentPosition() + moveCounts;
@@ -128,7 +127,7 @@ public class DriveTrain {
             maxDriveSpeed = Math.abs(maxDriveSpeed);
             moveRobot(maxDriveSpeed, 0);
 
-            while (myOpMode.opModeIsActive() && (leftFront.isBusy() && rightFront.isBusy())) {
+            while (leftFront.isBusy() && rightFront.isBusy()) {
 
                 turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
 
@@ -144,12 +143,12 @@ public class DriveTrain {
             rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
+
     }
 
     public void strafeLeft(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();
-        while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
+        while (runTime.seconds() < time) {
             leftFront.setPower(-speed);
             rightFront.setPower(speed);
             leftBack.setPower(speed);
@@ -167,7 +166,7 @@ public class DriveTrain {
 
     public void strafeRight(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();
-        while (myOpMode.opModeIsActive() && (runTime.seconds() < time)) {
+        while  (runTime.seconds() < time) {
             leftFront.setPower(speed);
             rightFront.setPower(-speed);
             leftBack.setPower(-speed);
@@ -182,7 +181,7 @@ public class DriveTrain {
         getSteeringCorrection(heading, P_DRIVE_GAIN);
 
         // keep looping while we are still active, and not on heading.
-        while (myOpMode.opModeIsActive() && (Math.abs(headingError) > HEADING_THRESHOLD)) {
+        while  (Math.abs(headingError) > 50) {
 
             // Determine required steering to keep on heading
             turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
@@ -206,7 +205,7 @@ public class DriveTrain {
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
 
-        while (myOpMode.opModeIsActive() && (holdTimer.time() < holdTime)) {
+        while  (holdTimer.time() < holdTime) {
             turnSpeed = getSteeringCorrection(heading, P_TURN_GAIN);
 
             turnSpeed = Range.clip(turnSpeed, -maxTurnSpeed, maxTurnSpeed);

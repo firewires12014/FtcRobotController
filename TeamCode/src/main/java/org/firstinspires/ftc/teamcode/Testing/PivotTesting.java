@@ -21,26 +21,28 @@ public class PivotTesting extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         pivot = hardwareMap.get(Servo.class, "outtakePivot");
-        pivotImpl = hardwareMap.get(ServoImplEx.class, "outakePivot");
+        pivotImpl = hardwareMap.get(ServoImplEx.class, "outtakePivot");
 
         waitForStart();
 
-        double inner = 1;
-         double outer = 0.00398;
+        double inner = 0;
+         double outer = 1;
         pivot.setPosition(outer);//basket
 
-        sleep(3000);
+        sleep(2500);
         pivot.setPosition(inner);//score
         sleep(3000);
-        pivot.setPosition(.6); //interim
+        //pivot.setPosition(.5); //interim
         sleep(1000);
 
         pivot.setPosition(outer);//basket
 
-        sleep(3000);
+
+
+        sleep(2500);
         pivot.setPosition(inner);//score
         sleep(3000);
-        pivot.setPosition(.6); //interim
+       // pivot.setPosition(.5); //interim
         sleep(1000);
 
 

@@ -7,14 +7,15 @@ public class Outtake {
 
     private Servo pivot, transfer, primaryLock, secondaryLock;
 
-    static final double TRANSFER_POS = 0.0;
+    static final double DEFAULT_POS = 0.15;
+    static final double TRANSFER_POS = 0.87;
     static final double LOCK_TOP = 0.0;
     static final double LOCK_BOTTOM = 0.0;
-    static final double UNLOCK_TOP = 0.0;
-    static final double UNLOCK_BOTTOM = 0.0;
+    static final double UNLOCK_TOP = 1.0;
+    static final double UNLOCK_BOTTOM = 1.0;
 
     static final double PIVOT_START = 0.0;
-    static final double PIVOT_ENDING = 0.995;
+    static final double PIVOT_ENDING = 1;
     static final double PIVOT_INTERIM = 0.6;
 
     public Outtake(HardwareMap hardwareMap){
@@ -28,6 +29,10 @@ public class Outtake {
     public void transferPixels(){
         transfer.setPosition(TRANSFER_POS);
 
+    }
+
+    public void resetBucket(){
+        transfer.setPosition(DEFAULT_POS);
     }
     public void lockPixels(){
         primaryLock.setPosition(LOCK_TOP);
@@ -52,5 +57,7 @@ public class Outtake {
     public void pivotInterim(){
         pivot.setPosition(PIVOT_INTERIM);
     }
+
+
 
 }

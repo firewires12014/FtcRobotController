@@ -37,24 +37,25 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 @Autonomous(name = "autoTest", group = "Robot")
 public class autoTest extends LinearOpMode {
-    DriveTrain driveTrain = new DriveTrain(hardwareMap);
-
+    DriveTrain driveTrain;
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException{
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        driveTrain = new DriveTrain(hardwareMap);
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        waitForStart();
+        while(opModeIsActive()) {
             driveTrain.driveStraight(.5f, 20f, 0f);
             sleep(1000);
-            driveTrain.turnToHeading(.5f, -90f);
-            driveTrain.driveStraight(.5f, 20f, -90f);
-            driveTrain.holdHeading(.5f, -90f, 1f);
-            driveTrain.turnToHeading(.5f, -135f);
-            driveTrain.driveStraight(-.5f, 20f, -135f);
-            sleep(30000);
+            //driveTrain.turnToHeading(.2f, -90f);
+           //
+            //driveTrain.holdHeading(.1f, -90f, .25f);
+           // driveTrain.driveStraight(.5f, 20f, -90f);
+            //driveTrain.holdHeading(.1f, -90f, .25f);
+            //driveTrain.turnToHeading(.1f, -135f);
+            //driveTrain.driveStraight(.5f, -20f, -135f);
+            //sleep(300000);
         }
     }
 }
