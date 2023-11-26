@@ -13,9 +13,8 @@ public class Outtake {
     static final double LOCK_BOTTOM = 0.0;
     static final double UNLOCK_TOP = 1.0;
     static final double UNLOCK_BOTTOM = 1.0;
-
     static final double PIVOT_START = 0.0;
-    static final double PIVOT_ENDING = 1;
+    static final double PIVOT_ENDING = 0.945;
     static final double PIVOT_INTERIM = 0.6;
 
     public Outtake(HardwareMap hardwareMap){

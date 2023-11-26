@@ -40,6 +40,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
+import org.firstinspires.ftc.teamcode.Subsystems.Plane;
 import org.firstinspires.ftc.teamcode.Testing.TransferTesting;
 
 @TeleOp(name = "Teleop", group = "Robot")
@@ -48,6 +49,7 @@ public class Teleop extends LinearOpMode {
     private Lift lift;
     private Intake intake;
    private Outtake outtake;
+   private Plane plane;
 
     @Override
     public void runOpMode() {
@@ -55,6 +57,7 @@ public class Teleop extends LinearOpMode {
         driveTrain = new DriveTrain(hardwareMap);
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
+        plane = new Plane(hardwareMap);
 
 
         waitForStart();
@@ -71,11 +74,14 @@ public class Teleop extends LinearOpMode {
             } else {
                 intake.die();
             }
+            if (gamepad2.touchpad) plane.launch();
 
-            if (gamepad1.dpad_up) {
+            if (gamepad2.left_stick_button) plane.reset();
+
+            if (gamepad2.left_bumper) {
                 outtake.pivotEnding();
             }//score
-            if (gamepad1.dpad_down) {
+            if (gamepad2.right_bumper) {
                 outtake.pivotStart();
             }//score
 
