@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Vision.bluePipeLine;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-
+/*
 public class Vision implements{
     public OpenCvCamera camera;
     private redPipeLine red = new redPipeLine();
@@ -19,13 +19,26 @@ public class Vision implements{
     }
 
     public void enable() {
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()) {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+
+            }
+
+            @Override
+            public void onError(int errorCode) {
+
+            }
+        }); {
             @Override
                     public void onOpened() {
                 camera.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
-                switch ()
+                switch (){}
             }
 
     }
     }
 }
+
+
+ */

@@ -14,6 +14,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DriveTrain {
     private LinearOpMode myOpMode;   // gain access to methods in the calling OpMode.
     DcMotor leftFront = null;
@@ -63,10 +66,10 @@ public class DriveTrain {
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
@@ -266,5 +269,115 @@ public class DriveTrain {
             output *= sign ? 1 : -1;
         }
         return output;
+    }
+    public void setPower(double speed){
+        leftBack.setPower(speed);
+        leftFront.setPower(speed);
+        rightBack.setPower(speed);
+        rightFront.setPower(speed);
+    }
+
+    public void usingEncoder(){
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void runToPos(){
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void setTurnPower(double speed){
+        leftBack.setPower(-speed);
+        leftFront.setPower(-speed);
+        rightBack.setPower(speed);
+        rightFront.setPower(speed);
+    }
+    public void encoderDrive(double counts, double speed) {
+
+        //LinearOpMode linearOpMode = (LinearOpMode) myOpMode;
+        leftBack.setPower(speed);
+        leftFront.setPower(speed);
+        rightBack.setPower(speed);
+        rightFront.setPower(speed);
+
+        //while (linearOpMode.opModeIsActive()) {
+            for (int position : getWheelPosition()) {
+                if (Math.abs(position) > counts) {
+                    die();
+                    return;
+                }
+            }
+       // }
+        die();
+    }
+
+    public void turn(double angle, double speed) {
+        //LinearOpMode linearOpMode = (LinearOpMode) myOpMode;
+        leftBack.setPower(-speed);
+        leftFront.setPower(-speed);
+        rightBack.setPower(speed);
+        rightFront.setPower(speed);
+
+        //while (linearOpMode.opModeIsActive()) {
+                if (getHeading() > angle) {
+                    die();
+                    return;
+                }
+            //}
+        die();
+        double threshhold = 1;
+        double error = getHeading()-angle;
+                if (error <= threshhold){
+
+                }
+                else {
+                    if (error > 0) {
+                        leftBack.setPower(-.3);
+                        leftFront.setPower(-.3);
+                        rightBack.setPower(.3);
+                        rightFront.setPower(.3);
+                    }
+                    else {
+                        leftBack.setPower(.3);
+                        leftFront.setPower(.3);
+                        rightBack.setPower(-.3);
+                        rightFront.setPower(-.3);
+                    }
+                    //while (linearOpMode.opModeIsActive()) {
+                        if (getHeading()-angle < threshhold ) {
+                            die();
+                            return;
+                        }
+                    //}
+                    die();
+                }
+        }
+
+    public List<Integer> getWheelPosition() {
+        List<Integer> positions = new ArrayList<>();
+        positions.add(leftBack.getCurrentPosition());
+        positions.add(leftFront.getCurrentPosition());
+        positions.add(rightBack.getCurrentPosition());
+        positions.add(rightFront.getCurrentPosition());
+        return positions;
+    }
+
+    public void resetEncoder(){
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
     }
 }

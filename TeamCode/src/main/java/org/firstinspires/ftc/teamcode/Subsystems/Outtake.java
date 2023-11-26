@@ -8,7 +8,7 @@ public class Outtake {
     private Servo pivot, transfer, primaryLock, secondaryLock;
 
     static final double DEFAULT_POS = 0.15;
-    static final double TRANSFER_POS = 0.87;
+    static final double TRANSFER_POS = 0.9;
     static final double LOCK_TOP = 0.0;
     static final double LOCK_BOTTOM = 0.0;
     static final double UNLOCK_TOP = 1.0;

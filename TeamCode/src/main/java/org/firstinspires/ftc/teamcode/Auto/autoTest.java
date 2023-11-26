@@ -38,24 +38,78 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 @Autonomous(name = "autoTest", group = "Robot")
 public class autoTest extends LinearOpMode {
     DriveTrain driveTrain;
+
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         driveTrain = new DriveTrain(hardwareMap);
 
         waitForStart();
-        while(opModeIsActive()) {
-            driveTrain.driveStraight(.5f, 20f, 0f);
+        while (opModeIsActive()) {
+            encoderDrive(900, .5);
             sleep(1000);
+            turn(350, .5);
+            //driveTrain.driveStraight(.5f, 20f, 0f);
+            //sleep(1000);
             //driveTrain.turnToHeading(.2f, -90f);
-           //
+            //
             //driveTrain.holdHeading(.1f, -90f, .25f);
-           // driveTrain.driveStraight(.5f, 20f, -90f);
+            // driveTrain.driveStraight(.5f, 20f, -90f);
             //driveTrain.holdHeading(.1f, -90f, .25f);
             //driveTrain.turnToHeading(.1f, -135f);
             //driveTrain.driveStraight(.5f, -20f, -135f);
-            //sleep(300000);
+            sleep(300000);
+        }
+        driveTrain.die();
+    }
+
+    public void encoderDrive(double counts, double speed) {
+
+        driveTrain.setPower(speed);
+
+        while (opModeIsActive()) {
+            for (int position : driveTrain.getWheelPosition()) {
+                if (Math.abs(position) > counts) {
+                    driveTrain.die();
+                    return;
+                }
+            }
+        }
+        driveTrain.die();
+    }
+
+
+    public void turn(double angle, double speed) {
+
+        driveTrain.setTurnPower(speed);
+
+
+        while (opModeIsActive()) {
+            if (driveTrain.getHeading() > angle) {
+                driveTrain.die();
+                return;
+            }
+        }
+        driveTrain.die();
+        double threshhold = 1;
+        double error = driveTrain.getHeading() - angle;
+        if (error <= threshhold) {
+
+        } else {
+            if (error > 0) {
+                driveTrain.setTurnPower(.3);
+            } else {
+                driveTrain.setTurnPower(-.3);
+            }
+            while (opModeIsActive()) {
+                if (driveTrain.getHeading() - angle < threshhold) {
+                    driveTrain.die();
+                    return;
+                }
+            }
+            driveTrain.die();
         }
     }
+
 }

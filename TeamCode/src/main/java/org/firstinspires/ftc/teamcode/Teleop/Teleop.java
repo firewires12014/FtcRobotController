@@ -56,11 +56,12 @@ public class Teleop extends LinearOpMode {
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
 
-        intake.setHeight();
 
         waitForStart();
 
         while (opModeIsActive()) {
+            intake.initIntake();
+
             lift.moveLift(gamepad2.left_stick_y);
 
             if (gamepad1.right_bumper) {
@@ -81,18 +82,22 @@ public class Teleop extends LinearOpMode {
             driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             if (gamepad2.dpad_up) {
                 outtake.transferPixels();
-            } else {
+            }
+            if (gamepad2.dpad_down) {
                 outtake.resetBucket();
             }
 
-            if (gamepad1.a) {
-                outtake.releaseTop(); //I love You
+            if (gamepad2.a) {
+                outtake.releaseTop();
                 outtake.releaseBottom();
             }
-            if (gamepad1.b) {
+            if (gamepad2.b) {
                 outtake.lockPixels();
             }
 
+
+            telemetry.addData("Heading: ", driveTrain.getHeading());
+            telemetry.update();
         }
     }
 

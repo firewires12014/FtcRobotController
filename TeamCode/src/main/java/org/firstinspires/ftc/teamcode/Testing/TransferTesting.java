@@ -13,24 +13,28 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class TransferTesting extends LinearOpMode {
 
     private Servo transfer;
+    private Servo intakeheight;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         transfer = hardwareMap.get(Servo.class, "transfer");
+        intakeheight = hardwareMap.get(Servo.class, "intakeHeight");
 
         waitForStart();
         while (opModeIsActive()) {
             //transfer.setPosition(gamepad1.right_stick_y);//basket
 
-            double up = 0.87;
+            double up = 0.9;
             double down = 0.15;
 
             if(gamepad1.y) {
-                transfer.setPosition(up);
+                //transfer.setPosition(up);
+                intakeheight.setPosition(0);
             }
             if(gamepad1.a) {
-                transfer.setPosition(down);
+                //transfer.setPosition(down);
+                intakeheight.setPosition(1);
             }
 
             telemetry.addData("Position", transfer.getPosition());
