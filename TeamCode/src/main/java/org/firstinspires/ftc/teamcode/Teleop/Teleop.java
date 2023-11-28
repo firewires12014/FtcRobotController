@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
@@ -58,6 +59,7 @@ public class Teleop extends LinearOpMode {
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
         plane = new Plane(hardwareMap);
+        ElapsedTime lockTimer = new ElapsedTime();
 
 
         waitForStart();
@@ -92,11 +94,21 @@ public class Teleop extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 outtake.resetBucket();
             }
-
-            if (gamepad2.a) {
-                outtake.releaseTop();
-                outtake.releaseBottom();
+            int count = 0;
+            if (gamepad2.a && lockTimer.seconds() > 0.15) {
+                count++;
+                lockTimer.reset();
             }
+            if (gamepad2.a) {
+                if (count == 1) {
+                    outtake.releaseTop();
+                }
+                if (count == 2) {
+                    outtake.releaseBottom();
+                    count = 0;
+                }
+            }
+
             if (gamepad2.b) {
                 outtake.lockPixels();
             }

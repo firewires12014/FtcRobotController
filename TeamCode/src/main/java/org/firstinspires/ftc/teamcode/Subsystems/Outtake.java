@@ -14,7 +14,7 @@ public class Outtake {
     static final double UNLOCK_TOP = 1.0;
     static final double UNLOCK_BOTTOM = 1.0;
     static final double PIVOT_START = 0.0;
-    static final double PIVOT_ENDING = 0.945;
+    static final double PIVOT_ENDING = 1;
     static final double PIVOT_INTERIM = 0.6;
 
     public Outtake(HardwareMap hardwareMap){
@@ -24,6 +24,7 @@ public class Outtake {
         secondaryLock = hardwareMap.get(Servo.class, "secondaryLock");
 
     }
+
 
     public void transferPixels(){
         transfer.setPosition(TRANSFER_POS);
