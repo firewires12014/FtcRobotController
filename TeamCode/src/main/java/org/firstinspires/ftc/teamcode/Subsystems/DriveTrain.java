@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
@@ -31,10 +28,12 @@ public class DriveTrain {
     public double rightSpeed = 0;
     public int leftTarget = 0;
     public int rightTarget = 0;
+    private YawPitchRollAngles lastHeading;
+    private double currentHeading = 0;
 
     static final double COUNTS_PER_MOTOR_REV = 537.7;
     static final double DRIVE_GEAR_REDUCTION = 1.0;
-    static final double WHEEL_DIAMETER_INCHES = 4.0;
+    static final double WHEEL_DIAMETER_INCHES = 3.78;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
     static final double DRIVE_SPEED = 0.4;
@@ -77,6 +76,7 @@ public class DriveTrain {
 
         imu.initialize(new IMU.Parameters(orientationOnRobot));
         imu.resetYaw();
+        lastHeading = imu.getRobotYawPitchRollAngles();
         myOpMode = this.myOpMode;
 
     }
@@ -221,6 +221,24 @@ public class DriveTrain {
         moveRobot(0, 0);
     }
 
+    //reset angle
+    public void resetHeading(){
+        imu.resetYaw();
+        currentHeading = 0;
+    }
+
+    //get heading
+    public double getHeading() {
+        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        double deltaAngle = orientation.getYaw(AngleUnit.DEGREES)-lastHeading.getYaw(AngleUnit.DEGREES);
+       // double angle = orientation.getYaw(AngleUnit.DEGREES);
+        if (deltaAngle > 180) deltaAngle -= 360;
+        else if (deltaAngle <= -180) deltaAngle += 360;
+        currentHeading += deltaAngle;
+        lastHeading = orientation;
+        return currentHeading;
+    }
+
     public double getSteeringCorrection(double desiredHeading, double proportionalGain) {
         targetHeading = desiredHeading;  // Save for telemetry
 
@@ -255,10 +273,6 @@ public class DriveTrain {
         rightBack.setPower(rightSpeed);
     }
 
-    public double getHeading() {
-        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-        return orientation.getYaw(AngleUnit.DEGREES);
-    }
     public float joystick_conditioning(float x, float db, double off, double gain) {
         float output = 0;
         boolean sign = (x > 0);
@@ -277,86 +291,19 @@ public class DriveTrain {
         rightFront.setPower(speed);
     }
 
-    public void usingEncoder(){
-        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void runToPos(){
-        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
     public void setTurnPower(double speed){
         leftBack.setPower(-speed);
         leftFront.setPower(-speed);
         rightBack.setPower(speed);
         rightFront.setPower(speed);
     }
-    public void encoderDrive(double counts, double speed) {
 
-        //LinearOpMode linearOpMode = (LinearOpMode) myOpMode;
-        leftBack.setPower(speed);
+    public void setStrafePower(double speed){
+        leftBack.setPower(-speed);
         leftFront.setPower(speed);
         rightBack.setPower(speed);
-        rightFront.setPower(speed);
-
-        //while (linearOpMode.opModeIsActive()) {
-            for (int position : getWheelPosition()) {
-                if (Math.abs(position) > counts) {
-                    die();
-                    return;
-                }
-            }
-       // }
-        die();
+        rightFront.setPower(-speed);
     }
-
-    public void turn(double angle, double speed) {
-        //LinearOpMode linearOpMode = (LinearOpMode) myOpMode;
-        leftBack.setPower(-speed);
-        leftFront.setPower(-speed);
-        rightBack.setPower(speed);
-        rightFront.setPower(speed);
-
-        //while (linearOpMode.opModeIsActive()) {
-                if (getHeading() > angle) {
-                    die();
-                    return;
-                }
-            //}
-        die();
-        double threshhold = 1;
-        double error = getHeading()-angle;
-                if (error <= threshhold){
-
-                }
-                else {
-                    if (error > 0) {
-                        leftBack.setPower(-.3);
-                        leftFront.setPower(-.3);
-                        rightBack.setPower(.3);
-                        rightFront.setPower(.3);
-                    }
-                    else {
-                        leftBack.setPower(.3);
-                        leftFront.setPower(.3);
-                        rightBack.setPower(-.3);
-                        rightFront.setPower(-.3);
-                    }
-                    //while (linearOpMode.opModeIsActive()) {
-                        if (getHeading()-angle < threshhold ) {
-                            die();
-                            return;
-                        }
-                    //}
-                    die();
-                }
-        }
 
     public List<Integer> getWheelPosition() {
         List<Integer> positions = new ArrayList<>();
@@ -380,4 +327,64 @@ public class DriveTrain {
 
 
     }
+//    public void encoderDrive(double counts, double speed) {
+//
+//        //LinearOpMode linearOpMode = (LinearOpMode) myOpMode;
+//        leftBack.setPower(speed);
+//        leftFront.setPower(speed);
+//        rightBack.setPower(speed);
+//        rightFront.setPower(speed);
+//
+//        //while (linearOpMode.opModeIsActive()) {
+//            for (int position : getWheelPosition()) {
+//                if (Math.abs(position) > counts) {
+//                    die();
+//                    return;
+//                }
+//            }
+//       // }
+//        die();
+//    }
+//
+//    public void turn(double angle, double speed) {
+//        //LinearOpMode linearOpMode = (LinearOpMode) myOpMode;
+//        leftBack.setPower(-speed);
+//        leftFront.setPower(-speed);
+//        rightBack.setPower(speed);
+//        rightFront.setPower(speed);
+//
+//        //while (linearOpMode.opModeIsActive()) {
+//                if (getHeading() > angle) {
+//                    die();
+//                    return;
+//                }
+//            //}
+//        die();
+//        double threshhold = 1;
+//        double error = getHeading()-angle;
+//                if (error <= threshhold){
+//
+//                }
+//                else {
+//                    if (error > 0) {
+//                        leftBack.setPower(-.3);
+//                        leftFront.setPower(-.3);
+//                        rightBack.setPower(.3);
+//                        rightFront.setPower(.3);
+//                    }
+//                    else {
+//                        leftBack.setPower(.3);
+//                        leftFront.setPower(.3);
+//                        rightBack.setPower(-.3);
+//                        rightFront.setPower(-.3);
+//                    }
+//                    //while (linearOpMode.opModeIsActive()) {
+//                        if (getHeading()-angle < threshhold ) {
+//                            die();
+//                            return;
+//                        }
+//                    //}
+//                    die();
+//                }
+//        }
 }

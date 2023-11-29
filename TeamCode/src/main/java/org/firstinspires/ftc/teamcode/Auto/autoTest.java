@@ -1,73 +1,53 @@
-/* Copyright (c) 2022 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 
 
 @Autonomous(name = "autoTest", group = "Robot")
 public class autoTest extends LinearOpMode {
     DriveTrain driveTrain;
+    Intake intake;
+    Outtake outtake;
+
+    static final double COUNTS_PER_MOTOR_REV = 537.7; // <----- this is probably wrong. check it.
+    static final double DRIVE_GEAR_REDUCTION = 1.0; // <----- fiddle with this. test until the robot goes 12 inches with encDrive
+    static final double WHEEL_DIAMETER_INCHES = 3.78; // <----- this is right
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
 
     @Override
     public void runOpMode() throws InterruptedException {
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         driveTrain = new DriveTrain(hardwareMap);
+        intake = new Intake(hardwareMap);
+        outtake = new Outtake(hardwareMap);
+
+        intake.resetIntake();
+        outtake.lockPixels();
 
         waitForStart();
         while (opModeIsActive()) {
-            encoderDrive(900, .5);
+            encoderDrive(25, -.4);
             sleep(1000);
-            turn(350, .5);
-            //driveTrain.driveStraight(.5f, 20f, 0f);
-            //sleep(1000);
-            //driveTrain.turnToHeading(.2f, -90f);
-            //
-            //driveTrain.holdHeading(.1f, -90f, .25f);
-            // driveTrain.driveStraight(.5f, 20f, -90f);
-            //driveTrain.holdHeading(.1f, -90f, .25f);
-            //driveTrain.turnToHeading(.1f, -135f);
-            //driveTrain.driveStraight(.5f, -20f, -135f);
-            sleep(300000);
+            turn(-87, .3);
+
+            sleep(5000);
+
+            sleep(30000);
+
         }
         driveTrain.die();
     }
 
-    public void encoderDrive(double counts, double speed) {
+    public void encoderDrive(double inches, double speed) {
 
         driveTrain.setPower(speed);
-
+        int counts = (int) (inches * COUNTS_PER_INCH);
         while (opModeIsActive()) {
             for (int position : driveTrain.getWheelPosition()) {
                 if (Math.abs(position) > counts) {
@@ -77,39 +57,44 @@ public class autoTest extends LinearOpMode {
             }
         }
         driveTrain.die();
+        driveTrain.resetEncoder();
+    }
+
+    public void strafeDrive(double inches, double speed) {
+
+        driveTrain.setStrafePower(speed);
+        int counts = (int) (inches * COUNTS_PER_INCH);
+        while (opModeIsActive()) {
+            for (int position : driveTrain.getWheelPosition()) {
+                if (Math.abs(position) > counts) {
+                    driveTrain.die();
+                    return;
+                }
+            }
+        }
+        driveTrain.die();
+        driveTrain.resetEncoder();
     }
 
 
     public void turn(double angle, double speed) {
 
-        driveTrain.setTurnPower(speed);
-
-
-        while (opModeIsActive()) {
-            if (driveTrain.getHeading() > angle) {
-                driveTrain.die();
-                return;
-            }
+        driveTrain.resetHeading();
+        double error = angle;
+        while (opModeIsActive() && Math.abs(error)>2){
+            double power = (error < 0? speed: -speed);
+            driveTrain.setTurnPower(power);
+            error = angle-driveTrain.getHeading();
+            telemetry.addData("Error: ", error);
+            telemetry.update();
         }
         driveTrain.die();
-        double threshhold = 1;
-        double error = driveTrain.getHeading() - angle;
-        if (error <= threshhold) {
-
-        } else {
-            if (error > 0) {
-                driveTrain.setTurnPower(.3);
-            } else {
-                driveTrain.setTurnPower(-.3);
-            }
-            while (opModeIsActive()) {
-                if (driveTrain.getHeading() - angle < threshhold) {
-                    driveTrain.die();
-                    return;
-                }
-            }
-            driveTrain.die();
-        }
+    }
+    // outtake purple pixel
+    public void outtakePixel() {
+        intake.dropOff();
+        sleep(2000);
+        intake.die();
+    }
     }
 
-}
