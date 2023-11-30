@@ -95,15 +95,15 @@ public class Teleop extends LinearOpMode {
                 outtake.resetBucket();
             }
             int count = 0;
-            if (gamepad2.a && lockTimer.seconds() > 0.15) {
+            if (gamepad2.a && lockTimer.seconds() > 4) {
                 count++;
                 lockTimer.reset();
             }
             if (gamepad2.a) {
-                if (count == 1) {
+                if (count == 0) {
                     outtake.releaseTop();
                 }
-                if (count == 2) {
+                if (count == 1) {
                     outtake.releaseBottom();
                     count = 0;
                 }
