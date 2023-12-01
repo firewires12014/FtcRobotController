@@ -16,6 +16,7 @@ public class VisionTest2 extends OpMode {
     public OpenCvCamera camera;
     private CenterstageDetectorRed CenterstageDetectorRed = new CenterstageDetectorRed(telemetry);
 
+
     @Override
     public void init() {
 
@@ -34,6 +35,7 @@ public class VisionTest2 extends OpMode {
             @Override
             public void onError(int errorCode) {}
         });
+
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
     }
@@ -41,15 +43,20 @@ public class VisionTest2 extends OpMode {
     @Override
     public void init_loop() {
 
+        telemetry.update();
     }
 
     @Override
     public void start() {
-
     }
 
     @Override
     public void loop() {
+        CenterstageDetectorRed.Location location = CenterstageDetectorRed.getLocation();
+        telemetry.addData("Location: ", location);
+        telemetry.update();
+
+        
     }
 
 }
