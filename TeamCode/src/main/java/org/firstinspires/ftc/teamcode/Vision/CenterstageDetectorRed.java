@@ -21,20 +21,20 @@ public class CenterstageDetectorRed extends OpenCvPipeline {
         //middle
         RIGHT,
         //left
-        NOT_FOUND
+        MIDDLE
         //left
     }
 
 
 
 
-    private Location location = Location.LEFT;
-    static final Rect LEFT_ROI = new Rect(
-            new Point(65, 80),
-            new Point(135, 160));
+    private Location location = Location.MIDDLE;
+    static final Rect MIDDLE_ROI = new Rect(
+            new Point(80, 120),
+            new Point(160, 200));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(200, 85),
-            new Point(290, 150));
+            new Point(230, 120),
+            new Point(320, 200));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public CenterstageDetectorRed(Telemetry t) { telemetry = t; }
@@ -48,10 +48,10 @@ public class CenterstageDetectorRed extends OpenCvPipeline {
         
         Core.inRange(mat, lowHSV, highHSV, mat);
 
-        Mat left = mat.submat(LEFT_ROI);
+        Mat left = mat.submat(MIDDLE_ROI);
         Mat right = mat.submat(RIGHT_ROI);
 
-        double leftValue = Core.sumElems(left).val[0] / LEFT_ROI.area() / 255;
+        double leftValue = Core.sumElems(left).val[0] / MIDDLE_ROI.area() / 255;
         double rightValue = Core.sumElems(right).val[0] / RIGHT_ROI.area() / 255;
 
         left.release();
@@ -66,7 +66,7 @@ public class CenterstageDetectorRed extends OpenCvPipeline {
         boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
 
         if (stoneLeft) {
-            location = Location.LEFT;
+            location = Location.MIDDLE;
             telemetry.addData("Cube Location", "middle");
         }
         else if (stoneRight) {
@@ -74,7 +74,7 @@ public class CenterstageDetectorRed extends OpenCvPipeline {
             telemetry.addData("Cube Location", "right");
         }
         else {
-            location = Location.NOT_FOUND;
+            location = Location.LEFT;
             telemetry.addData("Cube Location", "left");
         }
         telemetry.update();
@@ -84,7 +84,7 @@ public class CenterstageDetectorRed extends OpenCvPipeline {
         Scalar red = new Scalar(255, 0, 0);
         Scalar green = new Scalar(0, 255, 0);
 
-        Imgproc.rectangle(mat, LEFT_ROI, location == Location.LEFT? green:red);//middle
+        Imgproc.rectangle(mat, MIDDLE_ROI, location == Location.LEFT? green:red);//middle
         Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? green:red);//right
 
         return mat;
