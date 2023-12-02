@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -37,11 +38,20 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+
+import java.util.concurrent.TimeUnit;
+
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.Subsystems.Plane;
+import org.firstinspires.ftc.teamcode.Testing.SampleRevBlinkinLedDriver;
 import org.firstinspires.ftc.teamcode.Testing.TransferTesting;
 
 @TeleOp(name = "Teleop", group = "Robot")
@@ -49,8 +59,40 @@ public class Teleop extends LinearOpMode {
     private DriveTrain driveTrain;
     private Lift lift;
     private Intake intake;
-   private Outtake outtake;
-   private Plane plane;
+    private Outtake outtake;
+    private Plane plane;
+
+    private void doAutoDisplay() {
+    }
+
+    private void handleGamepad() {
+    }
+
+
+    /*
+     * Change the pattern every 10 seconds in AUTO mode.
+     */
+    private final static int LED_PERIOD = 10;
+
+    /*
+     * Rate limit gamepad button presses to every 500ms.
+     */
+    private final static int GAMEPAD_LOCKOUT = 500;
+
+    RevBlinkinLedDriver blinkinLedDriver;
+    RevBlinkinLedDriver.BlinkinPattern pattern;
+
+    Telemetry.Item patternName;
+    Telemetry.Item display;
+    SampleRevBlinkinLedDriver.DisplayKind displayKind;
+    Deadline ledCycleDeadline;
+    Deadline gamepadRateLimit;
+
+    protected enum DisplayKind {
+        MANUAL,
+        AUTO
+    }
+
 
     @Override
     public void runOpMode() {
@@ -82,6 +124,7 @@ public class Teleop extends LinearOpMode {
 
             if (gamepad2.left_bumper) {
                 outtake.pivotEnding();
+                outtake.resetBucket();
             }//score
             if (gamepad2.right_bumper) {
                 outtake.pivotStart();
@@ -90,35 +133,50 @@ public class Teleop extends LinearOpMode {
             driveTrain.teleopDrive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
             if (gamepad2.dpad_up) {
                 outtake.transferPixels();
+                sleep(1000);
+                outtake.lockPixels();
             }
             if (gamepad2.dpad_down) {
                 outtake.resetBucket();
             }
-            int count = 0;
-            if (gamepad2.a && lockTimer.seconds() > 4) {
-                count++;
-                lockTimer.reset();
+//            int count = 0;
+//            if (gamepad2.a && lockTimer.seconds() > 4) {
+//                count++;
+//                lockTimer.reset();
             }
-            if (gamepad2.a) {
-                if (count == 0) {
-                    outtake.releaseTop();
+            if (gamepad2.left_trigger == (1)) {
+                outtake.releaseTop();
                 }
-                if (count == 1) {
-                    outtake.releaseBottom();
-                    count = 0;
-                }
+            if (gamepad2.right_trigger == (1)){
+                outtake.releaseBottom();
             }
-
             if (gamepad2.b) {
                 outtake.lockPixels();
             }
 
+            displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
 
-            telemetry.addData("Heading: ", driveTrain.getHeading());
-            telemetry.update();
+            blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+            pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
+            blinkinLedDriver.setPattern(pattern);
+
+            display = telemetry.addData("Display Kind: ", displayKind.toString());
+            patternName = telemetry.addData("Pattern: ", pattern.toString());
+
+            ledCycleDeadline = new Deadline(LED_PERIOD, TimeUnit.SECONDS);
+            gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
+
+            handleGamepad();
+
+            if (displayKind == SampleRevBlinkinLedDriver.DisplayKind.AUTO) {
+                doAutoDisplay();
+            } else {
+
+
+                telemetry.addData("Heading: ", driveTrain.getHeading());
+                telemetry.update();
+            }
         }
     }
-
-}
 
 
