@@ -29,20 +29,11 @@
 
 package org.firstinspires.ftc.teamcode.Teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-
-import java.util.concurrent.TimeUnit;
-
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
@@ -52,10 +43,11 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.Subsystems.Plane;
 import org.firstinspires.ftc.teamcode.Testing.SampleRevBlinkinLedDriver;
-import org.firstinspires.ftc.teamcode.Testing.TransferTesting;
 
-@TeleOp(name = "Teleop", group = "Robot")
-public class Teleop extends LinearOpMode {
+import java.util.concurrent.TimeUnit;
+
+@TeleOp(name = "TeleopNew", group = "Robot")
+public class TeleopNew extends OpMode {
     private DriveTrain driveTrain;
     private Lift lift;
     private Intake intake;
@@ -88,26 +80,21 @@ public class Teleop extends LinearOpMode {
     Deadline ledCycleDeadline;
     Deadline gamepadRateLimit;
 
-    protected enum DisplayKind {
-        MANUAL,
-        AUTO
-    }
-
-
     @Override
-    public void runOpMode() {
+    public void init() {
         lift = new Lift(hardwareMap);
         driveTrain = new DriveTrain(hardwareMap);
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
         plane = new Plane(hardwareMap);
+        intake.initIntake();
+    }
+
+    @Override
+    public void loop() {
+
+
         ElapsedTime lockTimer = new ElapsedTime();
-
-
-        waitForStart();
-
-        while (opModeIsActive()) {
-            intake.initIntake();
 
             lift.moveLift(gamepad2.left_stick_y);
 
@@ -132,12 +119,18 @@ public class Teleop extends LinearOpMode {
                 outtake.releaseSecondary();
             }//score
 
-            driveTrain.teleopDrive( driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0, .1, .8),
-                    driveTrain.joystick_conditioning(gamepad1.left_stick_x, 0, .1, .8),
-                    driveTrain.joystick_conditioning(gamepad1.right_stick_x, 0, .1, .8));
+        driveTrain.teleopDrive( gamepad1.left_stick_y,
+                                gamepad1.left_stick_x,
+                                gamepad1.right_stick_x);
+
+
+//            driveTrain.teleopDrive( driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0, .1, .8),
+//                    driveTrain.joystick_conditioning(gamepad1.left_stick_x, 0, .1, .8),
+//                    driveTrain.joystick_conditioning(gamepad1.right_stick_x, 0, .1, .8));
             if (gamepad2.dpad_up) {
                 outtake.transferPixels();
-                sleep(1000);
+            }
+            if (gamepad2.a) {
                 outtake.lockPixels();
             }
             if (gamepad2.dpad_down) {
@@ -153,15 +146,10 @@ public class Teleop extends LinearOpMode {
             }
             if (gamepad2.right_trigger == (1)) {
                 outtake.releaseMain();
-                sleep(500);
                 outtake.releaseSecondary();
             }
 
-            if (gamepad2.b) {
-                outtake.lockPixels();
-            }
-
-            if (gamepad2.x) {
+            if (gamepad2.y) {
                 intake.stackIntake();
             }
             else {
@@ -185,8 +173,16 @@ public class Teleop extends LinearOpMode {
                 telemetry.addData("Heading: ", driveTrain.getHeading());
                 telemetry.update();
             }
-        }
+
+
     }
+
+    protected enum DisplayKind {
+        MANUAL,
+        AUTO
+    }
+
+
 }
 
 

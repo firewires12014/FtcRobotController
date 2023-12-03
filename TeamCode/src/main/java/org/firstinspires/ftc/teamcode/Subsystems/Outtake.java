@@ -9,10 +9,10 @@ public class Outtake {
 
     static final double DEFAULT_POS = 0.15;
     static final double TRANSFER_POS = 0.9;
-    static final double LOCK_TOP = 0.0;
-    static final double LOCK_BOTTOM = 0.0;
-    static final double UNLOCK_TOP = 1.0;
-    static final double UNLOCK_BOTTOM = 1.0;
+    static final double LOCK_TOP = 1.0;
+    static final double LOCK_BOTTOM = 1.00;
+    static final double UNLOCK_MAIN = 0.0;
+    static final double UNLOCK_SECONDARY = 0.0;
     static final double PIVOT_START = 1.0;
     static final double PIVOT_ENDING = 0.0;
     static final double PIVOT_INTERIM = 0.6;
@@ -35,15 +35,13 @@ public class Outtake {
         transfer.setPosition(DEFAULT_POS);
     }
     public void lockPixels(){
-        primaryLock.setPosition(LOCK_TOP);
-        secondaryLock.setPosition(LOCK_BOTTOM);
+        primaryLock.setPosition(LOCK_BOTTOM);
+        secondaryLock.setPosition(LOCK_TOP);
     }
 
-    public void releaseTop(){
-        secondaryLock.setPosition(UNLOCK_BOTTOM);
-    }
-    public void releaseBottom() {
-        primaryLock.setPosition(UNLOCK_TOP);
+    public void releaseMain(){ primaryLock.setPosition(UNLOCK_MAIN);}
+    public void releaseSecondary() {
+        secondaryLock.setPosition(UNLOCK_SECONDARY);
     }
 
     public void pivotStart(){

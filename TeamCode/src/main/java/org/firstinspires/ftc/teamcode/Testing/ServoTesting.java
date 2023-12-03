@@ -24,8 +24,8 @@ public class ServoTesting extends LinearOpMode {
 
             waitForStart();
             if (gamepad1.a) {
-                outtake.releaseTop(); //I love You
-                outtake.releaseBottom();
+                outtake.releaseMain(); //I love You
+                outtake.releaseSecondary();
             }
             if (gamepad1.b) {
                 outtake.lockPixels();

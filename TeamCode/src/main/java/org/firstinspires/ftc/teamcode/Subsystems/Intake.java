@@ -19,7 +19,7 @@ public class Intake {
     public void initIntake(){
         intakeheight.setPosition(0.025);
     }
-
+    public void stackIntake() {intakeheight.setPosition(.4);}
     public void resetIntake(){
         intakeheight.setPosition(1);
     }

@@ -17,6 +17,8 @@ public class Lift {
         rightLift = hardwareMap.get(DcMotor.class, "rightLift");
 //        telemetry.addData(">", "lift up");
 //        telemetry.update();
+        rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void moveLift(float left_stick_y) {

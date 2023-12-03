@@ -52,7 +52,7 @@ public class autoTest extends LinearOpMode {
             sleep(1000);
             outtake.pivotStart();
             sleep(1000);
-            outtake.releaseTop();
+            outtake.releaseMain();
 
 
             sleep(5000);

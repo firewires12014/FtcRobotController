@@ -84,7 +84,7 @@ public class redBack extends LinearOpMode {
                     sleep(1000);
                     outtake.pivotStart();
                     sleep(1000);
-                    outtake.releaseTop();
+                    outtake.releaseMain();
                     break;
                 case LEFT:
                     break;
