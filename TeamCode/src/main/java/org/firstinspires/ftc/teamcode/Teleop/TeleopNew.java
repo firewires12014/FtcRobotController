@@ -53,6 +53,11 @@ public class TeleopNew extends OpMode {
     private Intake intake;
     private Outtake outtake;
     private Plane plane;
+    int transfer = 0;
+    double upTime = 1; //seconds
+    double lockTime = 1; //seconds
+    ElapsedTime upTimer = new ElapsedTime();
+    ElapsedTime secureTimer = new ElapsedTime();
 
     private void doAutoDisplay() {
     }
@@ -60,7 +65,7 @@ public class TeleopNew extends OpMode {
     private void handleGamepad() {
     }
 
-
+    double Kg = 0.1;
     /*
      * Change the pattern every 10 seconds in AUTO mode.
      */
@@ -88,15 +93,41 @@ public class TeleopNew extends OpMode {
         outtake = new Outtake(hardwareMap);
         plane = new Plane(hardwareMap);
         intake.initIntake();
+
     }
 
     @Override
     public void loop() {
 
+        switch (transfer) {
+            case 0:
+                if (gamepad2.dpad_up) {
+                    upTimer.reset();
+                    transfer = 1;
+                }
+                break;
+            case 1:
+                outtake.transferPixels();
+                if (upTimer.seconds() > upTime) {
+                    secureTimer.reset();
+                    transfer = 2;
+                }
+                break;
+            case 2:
+                outtake.lockPixels();
+                if (secureTimer.seconds() > lockTime) {
+                    transfer = 3;
+                }
+                break;
+            case 3:
+                outtake.resetBucket();
+                transfer = 0;
+                break;
+        }
 
         ElapsedTime lockTimer = new ElapsedTime();
 
-            lift.moveLift(gamepad2.left_stick_y);
+            lift.moveLift(gamepad2.left_stick_y - Kg);
 
             if (gamepad1.right_bumper) {
                 intake.in();
@@ -105,6 +136,7 @@ public class TeleopNew extends OpMode {
             } else {
                 intake.die();
             }
+
             if (gamepad2.touchpad) plane.launch();
 
             if (gamepad2.left_stick_button) plane.reset();
@@ -122,7 +154,18 @@ public class TeleopNew extends OpMode {
         driveTrain.teleopDrive( gamepad1.left_stick_y,
                                 gamepad1.left_stick_x,
                                 gamepad1.right_stick_x);
-
+        if(gamepad1.dpad_up){
+            driveTrain.TeleOpDriveF(0.5);
+        }
+        if (gamepad1.dpad_down){
+            driveTrain.TeleOpDriveB(0.5);
+        }
+        if (gamepad1.dpad_right){
+            driveTrain.TeleOpStrafeR(0.8);
+        }
+        if(gamepad1.dpad_left){
+            driveTrain.TeleOpStrafeL(0.8);
+        }
 
 //            driveTrain.teleopDrive( driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0, .1, .8),
 //                    driveTrain.joystick_conditioning(gamepad1.left_stick_x, 0, .1, .8),

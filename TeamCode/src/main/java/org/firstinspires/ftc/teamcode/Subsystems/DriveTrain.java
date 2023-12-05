@@ -148,7 +148,30 @@ public class DriveTrain {
             rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-
+    public void TeleOpStrafeL(double speed) {
+        leftFront.setPower(-speed);
+        rightFront.setPower(speed);
+        leftBack.setPower(speed);
+        rightBack.setPower(-speed);
+    }
+    public void TeleOpStrafeR(double speed) {
+        leftFront.setPower(speed);
+        rightFront.setPower(-speed);
+        leftBack.setPower(-speed);
+        rightBack.setPower(speed);
+    }
+    public void TeleOpDriveF(double speed) {
+        leftFront.setPower(speed);
+        rightFront.setPower(speed);
+        leftBack.setPower(speed);
+        rightBack.setPower(speed);
+    }
+    public void TeleOpDriveB(double speed) {
+        leftFront.setPower(-speed);
+        rightFront.setPower(-speed);
+        leftBack.setPower(-speed);
+        rightBack.setPower(-speed);
+    }
     public void strafeLeft(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();
         while (runTime.seconds() < time) {

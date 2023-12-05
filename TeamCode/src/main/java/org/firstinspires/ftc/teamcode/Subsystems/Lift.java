@@ -21,7 +21,7 @@ public class Lift {
         leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void moveLift(float left_stick_y) {
+    public void moveLift(double left_stick_y) {
         rightLift.setPower(left_stick_y);
         leftLift.setPower(-left_stick_y);
     }
