@@ -39,6 +39,10 @@ public class Outtake {
         secondaryLock.setPosition(LOCK_TOP);
     }
 
+    public void lockSecondary() {
+        secondaryLock.setPosition(LOCK_TOP);
+    }
+
     public void releaseMain(){ primaryLock.setPosition(UNLOCK_MAIN);}
     public void releaseSecondary() {
         secondaryLock.setPosition(UNLOCK_SECONDARY);

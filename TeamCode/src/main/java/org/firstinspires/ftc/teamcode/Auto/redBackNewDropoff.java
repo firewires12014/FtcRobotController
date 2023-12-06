@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -13,8 +14,9 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "redBack", group = "Robot")
-public class redBack extends LinearOpMode {
+@Autonomous(name = "redBackNewDropoff", group = "Robot")
+@Disabled
+public class redBackNewDropoff extends LinearOpMode {
     public OpenCvCamera camera;
     private CenterstageDetectorRed CenterstageDetectorRed = new CenterstageDetectorRed(telemetry); // camera stuff
     DriveTrain driveTrain;
@@ -61,7 +63,7 @@ public class redBack extends LinearOpMode {
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
-        outtake.lockSecondary();
+        outtake.lockPixels();
         waitForStart();
 
         while (opModeIsActive()) {
@@ -91,16 +93,14 @@ public class redBack extends LinearOpMode {
                     outtake.releaseSecondary();
                     break;
                 case MIDDLE:
-                    encoderDrive(25, -.4);
+                    encoderDrive(27, -.4);
                     sleep(1000);
-                    turn(177, .3);
+                    encoderDrive(5, .4);
                     sleep(1000);
-                    outtakePixel();
-                    sleep(1000);
-                    turn(-93, .3);
+                    turn(-90, .3);
                     sleep(1000);
                     encoderDrive(32, -.4);
-                    strafeDrive(6, .6);
+                    strafeDrive(9, -.6);
                     sleep(1000);
                     lift.moveLift(-.75f);
                     sleep(200);
@@ -108,20 +108,11 @@ public class redBack extends LinearOpMode {
                     sleep(1000);
                     outtake.pivotEnding();
                     sleep(1000);
+                    outtake.releaseMain();
                     outtake.releaseSecondary();
-                    sleep(1000);
-                    outtake.pivotStart();
-                    sleep(300);
-                    encoderDrive(3, .4);
-                    sleep(1000);
-                    strafeDrive(24, .6);
 
                     break;
                 case RIGHT:
-                    encoderDrive(2, -.4);
-                    strafeDrive(38, .6);
-                    sleep(1000);
-                    encoderDrive(25, -.4);
                     break;
             }
 
