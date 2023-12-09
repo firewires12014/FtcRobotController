@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+import org.firstinspires.ftc.teamcode.Subsystems.Climb;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
@@ -53,6 +54,7 @@ public class TeleopNew extends OpMode {
     private Intake intake;
     private Outtake outtake;
     private Plane plane;
+    private Climb climb;
     int transfer = 0;
     double upTime = 1; //seconds
     double lockTime = 1; //seconds
@@ -92,6 +94,7 @@ public class TeleopNew extends OpMode {
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
         plane = new Plane(hardwareMap);
+        climb = new Climb(hardwareMap);
         intake.initIntake();
 
     }
@@ -99,6 +102,22 @@ public class TeleopNew extends OpMode {
     @Override
     public void loop() {
 
+        //Intake
+        if (gamepad1.right_bumper) {
+            intake.in();
+        } else if (gamepad1.left_bumper) {
+            intake.out();
+        } else {
+            intake.die();
+        }
+        if (gamepad2.y) {
+            intake.stackIntake();
+        }
+        else {
+            intake.initIntake();
+        }
+
+        //Transfer FSMs
         switch (transfer) {
             case 0:
                 if (gamepad2.dpad_up) {
@@ -127,30 +146,27 @@ public class TeleopNew extends OpMode {
 
         ElapsedTime lockTimer = new ElapsedTime();
 
-            lift.moveLift(gamepad2.left_stick_y - Kg);
+        //Lift
+        lift.moveLift(gamepad2.left_stick_y - Kg);
 
-            if (gamepad1.right_bumper) {
-                intake.in();
-            } else if (gamepad1.left_bumper) {
-                intake.out();
-            } else {
-                intake.die();
-            }
+            //Pivot
+        if (gamepad2.right_bumper) {
+            outtake.pivotEnding();
+            outtake.resetBucket();
+        }//score
+        if (gamepad2.left_bumper) {
+            outtake.pivotStart();
+            outtake.releaseMain();
+            outtake.releaseSecondary();
+        }
 
-            if (gamepad2.touchpad) plane.launch();
+        //Plane
+        if (gamepad2.touchpad) plane.launch();
+        if (gamepad2.left_stick_button) plane.reset();
 
-            if (gamepad2.left_stick_button) plane.reset();
+        climb.moveClimb(gamepad2.right_stick_y);
 
-            if (gamepad2.right_bumper) {
-                outtake.pivotEnding();
-                outtake.resetBucket();
-            }//score
-            if (gamepad2.left_bumper) {
-                outtake.pivotStart();
-                outtake.releaseMain();
-                outtake.releaseSecondary();
-            }//score
-
+       //Drive
         driveTrain.teleopDrive( gamepad1.left_stick_y,
                                 gamepad1.left_stick_x,
                                 gamepad1.right_stick_x);
@@ -192,12 +208,9 @@ public class TeleopNew extends OpMode {
                 outtake.releaseSecondary();
             }
 
-            if (gamepad2.y) {
-                intake.stackIntake();
-            }
-            else {
-                intake.initIntake();
-            }
+
+            //Blinkin
+
             displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
 
             blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
