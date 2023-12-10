@@ -53,13 +53,15 @@ public class TeleopNew extends OpMode {
     private Lift lift;
     private Intake intake;
     private Outtake outtake;
-    private Plane plane;
     private Climb climb;
+    private Plane plane;
     int transfer = 0;
     double upTime = 1; //seconds
     double lockTime = 1; //seconds
+    double climbTime = 110; //seconds
     ElapsedTime upTimer = new ElapsedTime();
     ElapsedTime secureTimer = new ElapsedTime();
+    ElapsedTime climbTimer = new ElapsedTime();
 
     private void doAutoDisplay() {
     }
@@ -79,8 +81,8 @@ public class TeleopNew extends OpMode {
     private final static int GAMEPAD_LOCKOUT = 500;
 
     RevBlinkinLedDriver blinkinLedDriver;
-    RevBlinkinLedDriver.BlinkinPattern pattern;
-
+    RevBlinkinLedDriver.BlinkinPattern glow;
+    RevBlinkinLedDriver.BlinkinPattern blink;
     Telemetry.Item patternName;
     Telemetry.Item display;
     SampleRevBlinkinLedDriver.DisplayKind displayKind;
@@ -89,8 +91,8 @@ public class TeleopNew extends OpMode {
 
     @Override
     public void init() {
-        lift = new Lift(hardwareMap);
         driveTrain = new DriveTrain(hardwareMap);
+        lift = new Lift(hardwareMap);
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
         plane = new Plane(hardwareMap);
@@ -101,6 +103,23 @@ public class TeleopNew extends OpMode {
 
     @Override
     public void loop() {
+        //Drive
+        driveTrain.teleopDrive( gamepad1.left_stick_y,
+                gamepad1.left_stick_x,
+                gamepad1.right_stick_x);
+        //Slow Drive/Strafe
+        if(gamepad1.dpad_up){
+            driveTrain.TeleOpDriveF(0.5);
+        }
+        if (gamepad1.dpad_down){
+            driveTrain.TeleOpDriveB(0.5);
+        }
+        if (gamepad1.dpad_right){
+            driveTrain.TeleOpStrafeR(0.8);
+        }
+        if(gamepad1.dpad_left){
+            driveTrain.TeleOpStrafeL(0.8);
+        }
 
         //Intake
         if (gamepad1.right_bumper) {
@@ -110,6 +129,7 @@ public class TeleopNew extends OpMode {
         } else {
             intake.die();
         }
+        //Intake Stack Height
         if (gamepad2.y) {
             intake.stackIntake();
         }
@@ -117,6 +137,13 @@ public class TeleopNew extends OpMode {
             intake.initIntake();
         }
 
+        //Transfer Basic
+        if (gamepad2.dpad_up) {
+            outtake.transferPixels();
+        }
+        if (gamepad2.dpad_down) {
+            outtake.resetBucket();
+        }
         //Transfer FSMs
         switch (transfer) {
             case 0:
@@ -143,19 +170,30 @@ public class TeleopNew extends OpMode {
                 transfer = 0;
                 break;
         }
-
         ElapsedTime lockTimer = new ElapsedTime();
 
         //Lift
         lift.moveLift(gamepad2.left_stick_y - Kg);
 
-            //Pivot
-        if (gamepad2.right_bumper) {
+        //Pivot
+        if (gamepad2.right_bumper) { //Scoring Pos.
             outtake.pivotEnding();
             outtake.resetBucket();
-        }//score
-        if (gamepad2.left_bumper) {
+        }
+        //Pivot
+        if (gamepad2.left_bumper) { //Transfer Pos.
             outtake.pivotStart();
+            outtake.releaseMain();
+            outtake.releaseSecondary();
+        }
+        //Locks
+        if (gamepad2.a) { //Lock
+            outtake.lockPixels();
+        }
+        if (gamepad2.left_trigger == (1)) { //Unlock Top
+            outtake.releaseMain();
+        }
+        if (gamepad2.right_trigger == (1)) { //Unlock All
             outtake.releaseMain();
             outtake.releaseSecondary();
         }
@@ -164,61 +202,31 @@ public class TeleopNew extends OpMode {
         if (gamepad2.touchpad) plane.launch();
         if (gamepad2.left_stick_button) plane.reset();
 
-        climb.moveClimb(gamepad2.right_stick_y);
+        //Climb
+        climb.moveClimb(-gamepad2.right_stick_y);
+        intake.stackIntake();
 
-       //Drive
-        driveTrain.teleopDrive( gamepad1.left_stick_y,
-                                gamepad1.left_stick_x,
-                                gamepad1.right_stick_x);
-        if(gamepad1.dpad_up){
-            driveTrain.TeleOpDriveF(0.5);
-        }
-        if (gamepad1.dpad_down){
-            driveTrain.TeleOpDriveB(0.5);
-        }
-        if (gamepad1.dpad_right){
-            driveTrain.TeleOpStrafeR(0.8);
-        }
-        if(gamepad1.dpad_left){
-            driveTrain.TeleOpStrafeL(0.8);
-        }
 
-//            driveTrain.teleopDrive( driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0, .1, .8),
+            //Joystick Conditioning
+        //            driveTrain.teleopDrive( driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0, .1, .8),
 //                    driveTrain.joystick_conditioning(gamepad1.left_stick_x, 0, .1, .8),
 //                    driveTrain.joystick_conditioning(gamepad1.right_stick_x, 0, .1, .8));
-            if (gamepad2.dpad_up) {
-                outtake.transferPixels();
-            }
-            if (gamepad2.a) {
-                outtake.lockPixels();
-            }
-            if (gamepad2.dpad_down) {
-                outtake.resetBucket();
-            }
-//            int count = 0;
-//            if (gamepad2.a && lockTimer.seconds() > 4) {
-//                count++;
-//                lockTimer.reset();
-//            }
-            if (gamepad2.left_trigger == (1)) {
-                outtake.releaseMain();
-            }
-            if (gamepad2.right_trigger == (1)) {
-                outtake.releaseMain();
-                outtake.releaseSecondary();
-            }
-
 
             //Blinkin
 
             displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
 
             blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-            pattern = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
-            blinkinLedDriver.setPattern(pattern);
+            glow = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
+            blink = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
+
+            if (climbTimer.seconds() < climbTime) {
+                blinkinLedDriver.setPattern(glow);
+            }
+            else blinkinLedDriver.setPattern(blink);
 
             display = telemetry.addData("Display Kind: ", displayKind.toString());
-            patternName = telemetry.addData("Pattern: ", pattern.toString());
+            patternName = telemetry.addData("Pattern: ", glow.toString());
 
             ledCycleDeadline = new Deadline(LED_PERIOD, TimeUnit.SECONDS);
             gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
