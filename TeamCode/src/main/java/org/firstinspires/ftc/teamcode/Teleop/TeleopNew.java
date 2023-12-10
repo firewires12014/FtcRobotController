@@ -186,6 +186,7 @@ public class TeleopNew extends OpMode {
             outtake.releaseMain();
             outtake.releaseSecondary();
         }
+
         //Locks
         if (gamepad2.a) { //Lock
             outtake.lockPixels();
@@ -199,12 +200,13 @@ public class TeleopNew extends OpMode {
         }
 
         //Plane
-        if (gamepad2.touchpad) plane.launch();
-        if (gamepad2.left_stick_button) plane.reset();
+        if (gamepad1.touchpad) plane.launch();
+        if (gamepad1.left_stick_button) plane.reset();
 
         //Climb
         climb.moveClimb(-gamepad2.right_stick_y);
-        intake.stackIntake();
+
+        if (gamepad2.right_stick_y > (0.1)) intake.stackIntake();
 
 
             //Joystick Conditioning

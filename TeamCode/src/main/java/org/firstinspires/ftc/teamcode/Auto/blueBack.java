@@ -71,7 +71,7 @@ public class blueBack extends LinearOpMode {
                 case NOT_FOUND:
                     encoderDrive(25, -.4);
                     sleep(1000);
-                    turn(87, .3);
+                    turn(83, .3);
                     sleep(1000);
                     encoderDrive(9, .3);
                     sleep(500);
@@ -80,6 +80,8 @@ public class blueBack extends LinearOpMode {
                     outtakePixel();
                     sleep(1000);
                     encoderDrive(38.75, -.4);
+                    sleep(1000);
+                    turn(-30, .3);
                     sleep(1000);
                     lift.moveLift(-.75f);
                     sleep(200);
@@ -97,67 +99,64 @@ public class blueBack extends LinearOpMode {
                     outtake.pivotStart();
                     strafeDrive(36,-0.5);
                     sleep(500);
-                    encoderDrive(4,-0.3);
+                    encoderDrive(5,-0.7);
                     break;
-              //  case LEFT:
-                //    encoderDrive(25, -.4);
-                 //   sleep(1000);
-                  //  turn(-177, .3);
-                 //   sleep(1000);
-                  //  outtakePixel();
-                 //   sleep(1000);
-                 //   turn(93, .3);
-                 //   sleep(1000);
-                 //   encoderDrive(32, -.4);
-                //    strafeDrive(6, -.6);
-                 //   sleep(1000);
-                 //   lift.moveLift(-.75f);
-                 //   sleep(200);
-                  //  lift.moveLift(0f);
-                  //  sleep(1000);
-                  //  outtake.pivotEnding();
-                  //  sleep(1000);
-                   // outtake.releaseSecondary();
-                  //  sleep(1000);
-                  //  outtake.pivotStart();
-                  //  sleep(300);
-                  //  encoderDrive(3, .4);
-                  //  sleep(1000);
-                  //  strafeDrive(24, -.6);
+                case MIDDLE:
+                    encoderDrive(33, -.4);
+                    sleep(1000);
+                    turn(85, .3);
+                    sleep(1000);
+                    encoderDrive(4, -.4);
+                    sleep(1000);
+                    outtakePixel();
+                    sleep(1000);
+                    encoderDrive(30, -.5);
+                    sleep(1000);
+                    strafeDrive(8, -.4);
+                    sleep(1000);
+                    lift.moveLift(-.75f);
+                    sleep(200);
+                    lift.moveLift(0f);
+                    sleep(1000);
+                    outtake.pivotEnding();
+                    sleep(2000);
+                    outtake.releaseSecondary();
+                    sleep(1000);
+                    outtake.pivotStart();
+                   sleep(300);
+                    encoderDrive(3, .4);
+                    sleep(1000);
+                  strafeDrive(28, -.6);
+                  encoderDrive(10, -.4);
 
-                  //  break;
-             //   case MIDDLE:
-               //     encoderDrive(2, -.4);
-                 //   strafeDrive(32, -.6);
-                  //  sleep(1000);
-                 //   encoderDrive(20, -.4);
-                  //  turn(87, .3);
-                  //  encoderDrive(9, .4);
-                 //   sleep(1000);
-                 //   encoderDrive(2.5, -.4);
-                 //   outtakePixel();
-                  //  encoderDrive(1.5, .4);
-                 //   sleep(1000);
-                //    encoderDrive(1.5, -.4);
-                //    sleep(1000);
-                //    encoderDrive(15, -.4);
-                 //   sleep(300);
-                //    strafeDrive(17, -.6);
-                //    sleep(1000);
-                //   lift.moveLift(-.75f);
-                //    sleep(200);
-                //    lift.moveLift(0f);
-               //     sleep(1000);
-                //    outtake.pivotEnding();
-                 //   sleep(1000);
-                 //   outtake.releaseSecondary();
-                 //   sleep(1000);
-                //    outtake.pivotStart();
-                 //   sleep(1000);
-                  //  encoderDrive(3, .4);
-                 //   strafeDrive(20, -.6);
+                    break;
+                case LEFT:
+                    strafeDrive(6, .4);
+                    sleep(1000);
+                    encoderDrive(42, -.4);
+                    sleep(1000);
+                    strafeDrive(14, -.4);
+                    sleep(1000);
+                    encoderDrive(14, .4);
+                    sleep(1000);
+                    encoderDrive(14, -.4);
+                  sleep(1000);
+                  outtakePixel();
+                  sleep(1000);
+                  strafeDrive(25, -.4);
+                  sleep(1000);
+                    turn(85, .3);
+                    sleep(1000);
+                    strafeDrive(26, -.4);
+                    sleep(1000);
+                    encoderDrive(12, -.3);
+                    encoderTurn(5, .4);
 
-                 //   break;
+
+
+
+
+                   break;
             }
 
             sleep(5000);
@@ -171,6 +170,22 @@ public class blueBack extends LinearOpMode {
     public void encoderDrive(double inches, double speed) {
         driveTrain.resetEncoder();
         driveTrain.setPower(speed);
+        int counts = (int) (inches * COUNTS_PER_INCH);
+        while (opModeIsActive()) {
+            for (int position : driveTrain.getWheelPosition()) {
+                if (Math.abs(position) > counts) {
+                    driveTrain.die();
+                    return;
+                }
+            }
+        }
+        driveTrain.die();
+        driveTrain.resetEncoder();
+    }
+
+    public void encoderTurn(double inches, double speed) {
+        driveTrain.resetEncoder();
+        driveTrain.setTurnPower(speed);
         int counts = (int) (inches * COUNTS_PER_INCH);
         while (opModeIsActive()) {
             for (int position : driveTrain.getWheelPosition()) {
