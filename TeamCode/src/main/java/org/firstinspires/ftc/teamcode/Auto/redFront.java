@@ -8,15 +8,15 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
-import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorBlue;
+import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorRed;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "blueBack", group = "Robot")
-public class blueBack extends LinearOpMode {
+@Autonomous(name = "redFront", group = "Robot")
+public class redFront extends LinearOpMode {
     public OpenCvCamera camera;
-    private CenterstageDetectorBlue CenterstageDetectorBlue = new CenterstageDetectorBlue(telemetry); // camera stuff
+    private CenterstageDetectorRed CenterstageDetectorRed = new CenterstageDetectorRed(telemetry); // camera stuff
     DriveTrain driveTrain;
     Intake intake;
     Outtake outtake;
@@ -32,7 +32,7 @@ public class blueBack extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        camera.setPipeline(CenterstageDetectorBlue); // this is what gets the camera going.
+        camera.setPipeline(CenterstageDetectorRed); // this is what gets the camera going.
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         driveTrain = new DriveTrain(hardwareMap);
@@ -44,20 +44,20 @@ public class blueBack extends LinearOpMode {
         outtake.lockPixels();
 
 
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
+            camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
             {
-                camera.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
-            }
+                @Override
+                public void onOpened()
+                {
+                    camera.startStreaming(320,240, OpenCvCameraRotation.UPSIDE_DOWN);
+                }
 
-            @Override
-            public void onError(int errorCode) {}
-        });
+                @Override
+                public void onError(int errorCode) {}
+            });
         while (!opModeIsActive()) {
 
-            CenterstageDetectorBlue.Location location = CenterstageDetectorBlue.getLocation();
+            CenterstageDetectorRed.Location location = CenterstageDetectorRed.getLocation();
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
@@ -66,121 +66,72 @@ public class blueBack extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            CenterstageDetectorBlue.Location location = CenterstageDetectorBlue.getLocation();
+            CenterstageDetectorRed.Location location = CenterstageDetectorRed.getLocation();
             switch (location) {
-                case NOT_FOUND:
-                    encoderDrive(23, -.4);
+                case LEFT:
+                    encoderDrive(27, -.4);
                     sleep(1000);
-                    turn(85, .3);
+                    turn(-87, .3);
                     sleep(1000);
-                    encoderDrive(10, .4);
+                    encoderDrive(6, .3);
                     sleep(500);
-                    encoderDrive(8, -.4);
+                    encoderDrive(3, -.4);
+                    sleep(1000);
+                    outtakePixel();
+                    sleep(1000);
+                    strafeDrive(25,-0.75);
+                    sleep(500);
+                    break;
+                case MIDDLE:
+                   strafeDrive(5,-0.4);
+                    encoderDrive(47,-0.5);
                     sleep(750);
                     outtakePixel();
                     sleep(500);
-                    encoderDrive(1.5,0.4);
+                    encoderDrive(3.75,-0.5);
                     sleep(500);
-                    strafeDrive(6,0.4);
-                    encoderDrive(37.5, -.4);
-                    sleep(1000);
+                    turn(-87,0.4);
+                    sleep(500);
+                    encoderDrive(70,-0.5);
+                    sleep(500);
+                    strafeDrive(49,0.4);
+                    sleep(500);
+                    encoderDrive(11,-0.4);
+                    sleep(500);
+                    encoderTurn(0.5,0.4);
+                    sleep(500);
                     lift.moveLift(-.75f);
                     sleep(200);
                     lift.moveLift(0f);
-                    outtake.pivotEnding();
-                    sleep(1500);
-                    outtake.releaseSecondary();
-                    sleep(1000);
-                    encoderDrive(2,0.2);
-                    lift.moveLift(.7f);
-                    sleep(200);
-                    lift.moveLift(0f);
-                    outtake.pivotStart();
-                    strafeDrive(36,-0.5);
-                    sleep(500);
-                    encoderDrive(5,-0.7);
-                    break;
-                case MIDDLE:
-                    encoderDrive(33, -.4);
-                    sleep(1000);
-                    turn(85, .3);
-                    sleep(1000);
-                    encoderDrive(4, -.4);
-                    sleep(1000);
-                    outtakePixel();
-                    sleep(1000);
-                    encoderDrive(27, -.5);
-                    sleep(1000);
-                    strafeDrive(10, -.4);
-                    sleep(1000);
-                    lift.moveLift(-.75f);
-                    sleep(200);
-                    lift.moveLift(0f);
+                    encoderDrive(1,1);
                     sleep(1000);
                     outtake.pivotEnding();
                     sleep(2000);
-                    outtake.releaseMain();
-                    outtake.releaseSecondary();
-                    sleep(500);
-                    encoderDrive(3, .4);
-                    sleep(500);
-                    outtake.pivotStart();
-                   sleep(300);
-                    sleep(1000);
-                  strafeDrive(28, -.6);
-                  encoderDrive(10, -.4);
-
-                    break;
-                case LEFT:
-                    strafeDrive(6, .4);
-                    sleep(1000);
-                    encoderDrive(42, -.4);
-                    sleep(1000);
-                    strafeDrive(15, -.4);
-                    sleep(1000);
-                    encoderDrive(14, .4);
-                    sleep(1000);
-                    encoderDrive(14, -.4);
-                     sleep(1000);
-                     outtakePixel();
-                     sleep(1000);
-                      strafeDrive(25, -.4);
-                     sleep(750);
-                    turn(82, .3);
-                    sleep(1000);
-                    encoderDrive(11.75, -.5);
-                    sleep(1000);
-                    strafeDrive(24, -.4);
-                    sleep(1000);
-                    encoderTurn(2, .4);
-                    sleep(1000);
-                    strafeDrive(5, -.4);
-                    sleep(1000);
-                    encoderDrive(2, -.4);
-                    sleep(1000);
-                    lift.moveLift(-.75f);
-                    sleep(170);
-                    lift.moveLift(0f);
-                    sleep(1000);
-                    outtake.pivotEnding();
-                    sleep(1700);
                     outtake.releaseSecondary();
                     sleep(1000);
-                    encoderDrive(2,0.5);
-                    sleep(500);
                     outtake.pivotStart();
-                    strafeDrive(15,-1);
                     lift.moveLift(.75f);
                     sleep(200);
                     lift.moveLift(0f);
-                    outtake.pivotStart();
+                    strafeDrive(20,-0.75);
+                    sleep(500);
+                    break;
+                case RIGHT:
+                    encoderDrive(2, -.4);
+                    strafeDrive(39, .6);
+                    sleep(1000);
+                    encoderDrive(20, -.4);
+                    turn(-87, .3);
+                    encoderDrive(9, .4);
+                    sleep(1000);
+                    encoderDrive(2.5, -.4);
+                    outtakePixel();
+                    encoderDrive(1.5, .4);
+                    sleep(1000);
+                    strafeDrive(15,-0.75);
+                    sleep(500);
 
-
-
-
-
-
-                   break;
+                    break;
             }
 
             sleep(5000);
@@ -194,22 +145,6 @@ public class blueBack extends LinearOpMode {
     public void encoderDrive(double inches, double speed) {
         driveTrain.resetEncoder();
         driveTrain.setPower(speed);
-        int counts = (int) (inches * COUNTS_PER_INCH);
-        while (opModeIsActive()) {
-            for (int position : driveTrain.getWheelPosition()) {
-                if (Math.abs(position) > counts) {
-                    driveTrain.die();
-                    return;
-                }
-            }
-        }
-        driveTrain.die();
-        driveTrain.resetEncoder();
-    }
-
-    public void encoderTurn(double inches, double speed) {
-        driveTrain.resetEncoder();
-        driveTrain.setTurnPower(speed);
         int counts = (int) (inches * COUNTS_PER_INCH);
         while (opModeIsActive()) {
             for (int position : driveTrain.getWheelPosition()) {
@@ -260,5 +195,20 @@ public class blueBack extends LinearOpMode {
         sleep(1000);
         intake.die();
     }
-}
+    public void encoderTurn(double inches, double speed) {
+        driveTrain.resetEncoder();
+        driveTrain.setTurnPower(speed);
+        int counts = (int) (inches * COUNTS_PER_INCH);
+        while (opModeIsActive()) {
+            for (int position : driveTrain.getWheelPosition()) {
+                if (Math.abs(position) > counts) {
+                    driveTrain.die();
+                    return;
+                }
+            }
+        }
+        driveTrain.die();
+        driveTrain.resetEncoder();
+    }
+    }
 

@@ -21,7 +21,7 @@ public class bluePipeLine extends OpenCvPipeline {
             new Point(215,140));
     static final Rect Right_ROI = new Rect(
             new Point(260,110),
-            new Point(310,150));
+            new Point(400,200));
     static double PERCENT_COLOR_THRESHOLD = 0.3; //number of pixels in the box to sense something maybe change to be higher for better
 @Override
     public Mat processFrame(Mat input) {

@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 
 @Autonomous(name="Lucy", group = "Robot")
+@Disabled
 public class Lucy extends LinearOpMode {
 
     DriveTrain driveTrain = new DriveTrain(hardwareMap);

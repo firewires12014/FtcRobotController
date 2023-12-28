@@ -5,32 +5,37 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Outtake {
 
-    private Servo pivot, transfer, primaryLock, secondaryLock;
+    private Servo pivot, transfer,fix, primaryLock, secondaryLock;
 
     static final double DEFAULT_POS = 0.15;
-    static final double TRANSFER_POS = 0.9;
+    static final double TRANSFER_POS = 0.95;
     static final double LOCK_TOP = 1.0;
     static final double LOCK_BOTTOM = 1.00;
     static final double UNLOCK_MAIN = 0.0;
     static final double UNLOCK_SECONDARY = 0.0;
-    static final double PIVOT_START = 1.0;
+    static final double PIVOT_START = 0.98;
     static final double PIVOT_ENDING = 0.0;
     static final double PIVOT_INTERIM = 0.6;
+    static final double FIX_IN = 1;
+    static final double FIX_OUT = 0;
 
     public Outtake(HardwareMap hardwareMap){
         pivot = hardwareMap.get(Servo.class, "outtakePivot");
         transfer = hardwareMap.get(Servo.class, "transfer");
+        fix = hardwareMap.get(Servo.class, "fix");
         primaryLock = hardwareMap.get(Servo.class, "primaryLock");
         secondaryLock = hardwareMap.get(Servo.class, "secondaryLock");
-
     }
-
 
     public void transferPixels(){
         transfer.setPosition(TRANSFER_POS);
-
     }
-
+    public void fixIn(){
+        fix.setPosition(FIX_IN);
+    }
+    public void fixOut(){
+        fix.setPosition(FIX_OUT);
+    }
     public void resetBucket(){
         transfer.setPosition(DEFAULT_POS);
     }

@@ -56,11 +56,16 @@ public class TeleopNew extends OpMode {
     private Climb climb;
     private Plane plane;
     int transfer = 0;
-    double upTime = 1; //seconds
-    double lockTime = 1; //seconds
+    int fix = 0;
+    double upTime = 0.75; //seconds
+    double inTime = 1; //seconds
+    double outTime = 0.5; //seconds
+    double lockTime = 0.5; //seconds
     double climbTime = 110; //seconds
     ElapsedTime upTimer = new ElapsedTime();
     ElapsedTime secureTimer = new ElapsedTime();
+    ElapsedTime inTimer = new ElapsedTime();
+    ElapsedTime outTimer = new ElapsedTime();
     ElapsedTime climbTimer = new ElapsedTime();
 
     private void doAutoDisplay() {
@@ -144,6 +149,22 @@ public class TeleopNew extends OpMode {
         if (gamepad2.dpad_down) {
             outtake.resetBucket();
         }
+        //Fix FSMs
+        switch (fix) {
+            case 0:
+                if (gamepad2.dpad_left) {
+                    outTimer.reset();
+                    fix = 1;
+                }
+                break;
+            case 1:
+                outtake.fixOut();
+                if (outTimer.seconds() > outTime) {
+                    outtake.fixIn();
+                    fix = 0;
+                    break;
+                }
+        }
         //Transfer FSMs
         switch (transfer) {
             case 0:
@@ -170,7 +191,6 @@ public class TeleopNew extends OpMode {
                 transfer = 0;
                 break;
         }
-        ElapsedTime lockTimer = new ElapsedTime();
 
         //Lift
         lift.moveLift(gamepad2.left_stick_y - Kg);
@@ -206,7 +226,7 @@ public class TeleopNew extends OpMode {
         //Climb
         climb.moveClimb(-gamepad2.right_stick_y);
 
-        if (gamepad2.right_stick_y > (0.1)) intake.stackIntake();
+//        if (gamepad2.right_stick_y > (0.1)) intake.stackIntake();
 
 
             //Joystick Conditioning
@@ -216,7 +236,7 @@ public class TeleopNew extends OpMode {
 
             //Blinkin
 
-            displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
+        displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
 
             blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
             glow = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
