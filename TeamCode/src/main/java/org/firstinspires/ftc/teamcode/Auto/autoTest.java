@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 
 
 @Autonomous(name = "autoTest", group = "Robot")
+@Disabled
 public class autoTest extends LinearOpMode {
     DriveTrain driveTrain;
     Intake intake;

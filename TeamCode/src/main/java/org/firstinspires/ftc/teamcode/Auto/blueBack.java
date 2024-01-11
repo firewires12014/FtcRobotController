@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -8,15 +9,16 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
-import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorBlue;
+import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "blueBack", group = "Robot")
+@Disabled
 public class blueBack extends LinearOpMode {
     public OpenCvCamera camera;
-    private CenterstageDetectorBlue CenterstageDetectorBlue = new CenterstageDetectorBlue(telemetry); // camera stuff
+    private VisionBlueClose VisionBlueClose = new VisionBlueClose(telemetry); // camera stuff
     DriveTrain driveTrain;
     Intake intake;
     Outtake outtake;
@@ -32,7 +34,7 @@ public class blueBack extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        camera.setPipeline(CenterstageDetectorBlue); // this is what gets the camera going.
+        camera.setPipeline(VisionBlueClose); // this is what gets the camera going.
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         driveTrain = new DriveTrain(hardwareMap);
@@ -57,7 +59,7 @@ public class blueBack extends LinearOpMode {
         });
         while (!opModeIsActive()) {
 
-            CenterstageDetectorBlue.Location location = CenterstageDetectorBlue.getLocation();
+            VisionBlueClose.Location location = VisionBlueClose.getLocation();
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
@@ -66,7 +68,7 @@ public class blueBack extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            CenterstageDetectorBlue.Location location = CenterstageDetectorBlue.getLocation();
+            VisionBlueClose.Location location = VisionBlueClose.getLocation();
             switch (location) {
                 case NOT_FOUND:
                     encoderDrive(23, -.4);

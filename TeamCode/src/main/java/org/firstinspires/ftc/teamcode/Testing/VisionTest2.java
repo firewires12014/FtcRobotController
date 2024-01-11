@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorBlue;
+import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
 import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorRed;
 
 import org.openftc.easyopencv.OpenCvCamera;

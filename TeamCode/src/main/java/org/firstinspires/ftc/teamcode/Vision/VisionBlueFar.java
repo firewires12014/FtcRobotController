@@ -12,11 +12,11 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 //blue
 @Disabled
-public class CenterstageDetectorBlue extends OpenCvPipeline {
+public class VisionBlueFar extends OpenCvPipeline {
     Telemetry telemetry;
     Mat mat = new Mat();
     public enum Location {
-        LEFT,
+        RIGHT,
         //middle
         MIDDLE,
         //left
@@ -28,15 +28,15 @@ public class CenterstageDetectorBlue extends OpenCvPipeline {
 
 
     private Location location = Location.MIDDLE;
-    static final Rect LEFT_ROI = new Rect(
-            new Point(10, 75),
-            new Point(110, 200));
+    static final Rect RIGHT_ROI = new Rect(
+            new Point(220, 80),
+            new Point(320, 225));
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(150, 80),
-            new Point(260, 180));
+            new Point(50, 80),
+            new Point(180, 180));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
-    public CenterstageDetectorBlue(Telemetry t) { telemetry = t; }
+    public VisionBlueFar(Telemetry t) { telemetry = t; }
 
     @Override
     public Mat processFrame(Mat input) {
@@ -51,10 +51,10 @@ public class CenterstageDetectorBlue extends OpenCvPipeline {
 
         Core.inRange(mat, lowHSV, highHSV, mat);
 
-        Mat left = mat.submat(LEFT_ROI);
+        Mat left = mat.submat(RIGHT_ROI);
         Mat right = mat.submat(MIDDLE_ROI);
 
-        double leftValue = Core.sumElems(left).val[0] / LEFT_ROI.area() / 255;
+        double leftValue = Core.sumElems(left).val[0] / RIGHT_ROI.area() / 255;
         double rightValue = Core.sumElems(right).val[0] / MIDDLE_ROI.area() / 255;
 
         left.release();
@@ -65,11 +65,11 @@ public class CenterstageDetectorBlue extends OpenCvPipeline {
         telemetry.addData("Right percentage", Math.round(leftValue * 100) + "%");
         telemetry.addData("Middle percentage", Math.round(rightValue * 100) + "%");
 
-        boolean stoneLeft = leftValue > PERCENT_COLOR_THRESHOLD;
+        boolean stoneRight = leftValue > PERCENT_COLOR_THRESHOLD;
         boolean stoneMiddle = rightValue > PERCENT_COLOR_THRESHOLD;
 
-        if (stoneLeft) {
-            location = Location.LEFT;
+        if (stoneRight) {
+            location = Location.RIGHT;
             telemetry.addData("Cube Location", "LEFT");
         }
         else if (stoneMiddle) {
@@ -87,7 +87,7 @@ public class CenterstageDetectorBlue extends OpenCvPipeline {
         Scalar red = new Scalar(255, 0, 0);
         Scalar green = new Scalar(0, 255, 0);
 
-        Imgproc.rectangle(mat, LEFT_ROI, location == Location.LEFT? green:red);//middle
+        Imgproc.rectangle(mat, RIGHT_ROI, location == Location.RIGHT? green:red);//middle
         Imgproc.rectangle(mat, MIDDLE_ROI, location == Location.MIDDLE? green:red);//right
 
         return mat;
