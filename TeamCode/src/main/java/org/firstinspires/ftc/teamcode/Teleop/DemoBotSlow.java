@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp(name="Demo Bot - Slow", group="Iterative OpMode")
-@Disabled
+//@Disabled
 public class DemoBotSlow extends OpMode
 {
     // Declare OpMode members.
@@ -93,9 +93,14 @@ public class DemoBotSlow extends OpMode
     @Override
     public void loop() {
         frontLeft.setPower(-gamepad1.left_stick_y * 0.5f);
-        frontRight.setPower(-gamepad1.right_stick_y * 0.5f);
+        frontRight.setPower(-gamepad1.left_stick_y * 0.5f);
         backLeft.setPower(gamepad1.left_stick_y * 0.5f);
-        backRight.setPower(-gamepad1.right_stick_y * 0.5f);
+        backRight.setPower(-gamepad1.left_stick_y * 0.5f);
+
+        frontLeft.setPower(gamepad1.right_stick_x * 0.5f);
+        frontRight.setPower(-gamepad1.right_stick_x * 0.5f);
+        backLeft.setPower(-gamepad1.right_stick_x * 0.5f);
+        backRight.setPower(-gamepad1.right_stick_x * 0.5f);
 
         if (gamepad1.right_trigger > 0) {
             leftShooter.setPower(-gamepad1.right_trigger * 0.75f);

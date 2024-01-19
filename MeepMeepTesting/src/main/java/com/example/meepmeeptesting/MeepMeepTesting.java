@@ -10,7 +10,7 @@ public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-        Pose2d startingPose = new Pose2d(-39.5,-63.6, Math.toRadians(90));
+        Pose2d startingPose = new Pose2d(-39.5,63.6, Math.toRadians(90));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -20,14 +20,12 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startingPose)
                                 .setReversed(true)
-                                .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(-34,-43, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(-32,-35, Math.toRadians(90)))
-                                //put purple drop here
-                                .lineToLinearHeading(new Pose2d(-35,-25, Math.toRadians(90)))
-                                .splineTo(new Vector2d(32,-10),Math.toRadians(0))
-                                .splineTo(new Vector2d(45,-43),Math.toRadians(0))
-                                .lineToLinearHeading(new Pose2d(48,-43, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(-40,30, Math.toRadians(90)))
+                                //put pixel drop here
+                                .lineToLinearHeading(new Pose2d(-35,13, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-10,10, Math.toRadians(170)))
+                                .lineToLinearHeading(new Pose2d(5,10, Math.toRadians(170)))
+                                .splineTo(new Vector2d(47,43), Math.toRadians(0))
                                 .build()
                 );
         // ,

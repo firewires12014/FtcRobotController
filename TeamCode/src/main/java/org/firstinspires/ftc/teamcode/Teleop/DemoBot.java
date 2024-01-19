@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name="Demo Bot - Fast", group="Iterative OpMode")
-@Disabled
+//@Disabled
 public class DemoBot extends OpMode
 {
     // Declare OpMode members.
@@ -93,10 +93,17 @@ public class DemoBot extends OpMode
      */
     @Override
     public void loop() {
+        // left stick
         frontLeft.setPower(-gamepad1.left_stick_y);
-        frontRight.setPower(-gamepad1.right_stick_y);
+        frontRight.setPower(-gamepad1.left_stick_y);
         backLeft.setPower(gamepad1.left_stick_y);
-        backRight.setPower(-gamepad1.right_stick_y);
+        backRight.setPower(-gamepad1.left_stick_y);
+
+        // left stick
+        frontLeft.setPower(gamepad1.right_stick_x);
+        frontRight.setPower(-gamepad1.right_stick_x);
+        backLeft.setPower(-gamepad1.right_stick_x);
+        backRight.setPower(-gamepad1.right_stick_x);
 
         if (gamepad1.right_trigger > 0) {
             leftShooter.setPower(-gamepad1.right_trigger);
