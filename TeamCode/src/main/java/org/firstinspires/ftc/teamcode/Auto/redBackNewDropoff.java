@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
-import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorRed;
+import org.firstinspires.ftc.teamcode.Vision.VisionRedFar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Disabled
 public class redBackNewDropoff extends LinearOpMode {
     public OpenCvCamera camera;
-    private CenterstageDetectorRed CenterstageDetectorRed = new CenterstageDetectorRed(telemetry); // camera stuff
+    private VisionRedFar VisionRedFar = new VisionRedFar(telemetry); // camera stuff
     DriveTrain driveTrain;
     Intake intake;
     Outtake outtake;
@@ -34,7 +34,7 @@ public class redBackNewDropoff extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        camera.setPipeline(CenterstageDetectorRed); // this is what gets the camera going.
+        camera.setPipeline(VisionRedFar); // this is what gets the camera going.
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         driveTrain = new DriveTrain(hardwareMap);
@@ -59,7 +59,7 @@ public class redBackNewDropoff extends LinearOpMode {
             });
         while (!opModeIsActive()) {
 
-            CenterstageDetectorRed.Location location = CenterstageDetectorRed.getLocation();
+            VisionRedFar.Location location = VisionRedFar.getLocation();
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
@@ -67,7 +67,7 @@ public class redBackNewDropoff extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            CenterstageDetectorRed.Location location = CenterstageDetectorRed.getLocation();
+            VisionRedFar.Location location = VisionRedFar.getLocation();
             switch (location) {
                 case LEFT:
                     encoderDrive(27, -.4);

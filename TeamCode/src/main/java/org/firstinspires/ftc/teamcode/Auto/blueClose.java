@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
+import org.firstinspires.ftc.teamcode.Subsystems.dropper;
 import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
 import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
 import org.firstinspires.ftc.teamcode.Vision.VisionBlueFar;
@@ -27,7 +28,8 @@ public class blueClose extends LinearOpMode {
     private VisionBlueClose VisionBlueClose = new VisionBlueClose(telemetry); // camera stuff
     SampleMecanumDrive drive;
     Outtake outtake;
-
+    dropper dropper;
+    Lift lift;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -37,11 +39,16 @@ public class blueClose extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         outtake = new Outtake(hardwareMap);
+        dropper = new dropper(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
-
+        lift = new Lift(hardwareMap);
         //intake.resetIntake();
         outtake.lockPixels();
+        dropper.Hold();
         Pose2d startingPose = new Pose2d(16,63.6, Math.toRadians(90));
+        Pose2d secondLeft = new Pose2d(23,35, Math.toRadians(90));
+        Pose2d secondRight = new Pose2d(10,35, Math.toRadians(0));
+        Pose2d secondMiddle = new Pose2d(25,32, Math.toRadians(90));
         drive.setPoseEstimate(startingPose);
 
         // Trajectory Declaration
@@ -49,13 +56,42 @@ public class blueClose extends LinearOpMode {
         // LEFT
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .setReversed(true)
-                .lineTo(new Vector2d(30.2,41),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)
-                )
+                .lineToLinearHeading(new Pose2d(23,35, Math.toRadians(90)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
+        TrajectorySequence leftMovementTwo =  drive.trajectorySequenceBuilder(secondLeft)
+                .lineToLinearHeading(new Pose2d(23,45, Math.toRadians(90)))
+                .turn(Math.toRadians(90))
+                .lineToLinearHeading(new Pose2d(55,43, Math.toRadians(180)),
+                SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        //MIDDLE
+        TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
+                        .setReversed(true)
+                     .lineToLinearHeading(new Pose2d(16,32, Math.toRadians(90)),
+                             SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                             SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                                .build();
+            //        TrajectorySequence middleMovementTwo = drive.trajectorySequenceBuilder(secondMiddle)
 
-
+                          //  .build();
+        //Right
+        TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
+                        .setReversed(true)
+                .splineTo(new Vector2d(7,35), Math.toRadians(180),
+                               SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                               SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        TrajectorySequence rightMovementTwo = drive.trajectorySequenceBuilder(secondRight)
+                .lineToLinearHeading(new Pose2d(30,35, Math.toRadians(180)),
+                SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(56.75, 27, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .build();
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
@@ -73,30 +109,43 @@ public class blueClose extends LinearOpMode {
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
-        outtake.lockSecondary();
-        outtake.releaseMain();
+
         waitForStart();
 
         while (opModeIsActive()) {
 
-
             VisionBlueClose.Location location = VisionBlueClose.getLocation();
-
-            drive.followTrajectorySequence(leftMovementOne);
-
-            switch (location) {
+telemetry.addData("Location:", location);
+            telemetry.update();
+switch (location) {
                 case NOT_FOUND:
-
+                    drive.followTrajectorySequence(rightMovementOne);
+                    dropper.Drop();
+                    sleep(500);
+                    drive.followTrajectorySequence(rightMovementTwo);
                     break;
                 case MIDDLE:
-
+                    telemetry.addData("Middle:", "Activated");
+                    telemetry.update();
+                     drive.followTrajectorySequence(middleMovementOne);
+                     dropper.Drop();
+                    sleep(1000);
+                    // drive.followTrajectorySequence(middleMovementTwo);
                     break;
                 case LEFT:
-
+                    drive.followTrajectorySequence(leftMovementOne);
+                    dropper.Drop();
+                    sleep(500);
+                    drive.followTrajectorySequence(leftMovementTwo);
+                 //   lift.moveLift(-.75f);
+                 //   sleep(200);
+                  //  lift.moveLift(0f);
+                 //   sleep(1000);
+                  //  outtake.pivotEnding();
+                  //  sleep(1000);
+                  //  outtake.releaseSecondary();
                     break;
             }
-
-
             sleep(30000);
         }
 

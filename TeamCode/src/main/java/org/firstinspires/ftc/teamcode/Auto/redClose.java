@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
+import org.firstinspires.ftc.teamcode.Vision.VisionRedClose;
 import org.firstinspires.ftc.teamcode.Vision.VisionRedFar;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -16,10 +17,10 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "redFar", group = "Robot")
-public class redFar extends LinearOpMode {
+@Autonomous(name = "redClose", group = "Robot")
+public class redClose extends LinearOpMode {
     public OpenCvCamera camera;
-    private VisionRedFar VisionRedFar = new VisionRedFar(telemetry); // camera stuff
+    private VisionRedClose VisionRedClose = new VisionRedClose(telemetry); // camera stuff
     SampleMecanumDrive drive;
     Outtake outtake;
     Lift lift;
@@ -28,7 +29,7 @@ public class redFar extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        camera.setPipeline(VisionRedFar); // this is what gets the camera going.
+        camera.setPipeline(VisionRedClose); // this is what gets the camera going.
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         outtake = new Outtake(hardwareMap);
@@ -36,7 +37,7 @@ public class redFar extends LinearOpMode {
         lift = new Lift(hardwareMap);
         //intake.resetIntake();
         outtake.lockPixels();
-        Pose2d startingPose = new Pose2d(-39.5,-63.6, Math.toRadians(270));
+        Pose2d startingPose = new Pose2d(16,-63.6, Math.toRadians(90));
         drive.setPoseEstimate(startingPose);
 
         // Trajectory Declaration
@@ -44,58 +45,48 @@ public class redFar extends LinearOpMode {
         // LEFT
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-38,-32), Math.toRadians(180),
+                .splineTo(new Vector2d(10,-31), Math.toRadians(180),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //put purple drop here
-                .lineToLinearHeading(new Pose2d(-23, -32, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(12, -33, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-30, -32, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(14, -33, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(-36, -10), Math.toRadians(0),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(23, -10, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(50, -29), Math.toRadians(0),
+                .splineTo(new Vector2d(50, -42), Math.toRadians(0),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
-        .setReversed(true)
-                .splineTo(new Vector2d(-34,-15), Math.toRadians(270),
+                .setReversed(true)
+                .lineToLinearHeading(new Pose2d(12,-32, Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-34, -14, Math.toRadians(90)),
+                .lineToLinearHeading(new Pose2d(12, -36, Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(2, -13), Math.toRadians(0),
+                .lineToLinearHeading(new Pose2d(12, -36.1, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(20, -12, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(50, -34), Math.toRadians(0),
+                .lineToLinearHeading(new Pose2d(50,-36, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         //RIGHT
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-32,-32), Math.toRadians(0),
+                .lineToLinearHeading(new Pose2d(23,-37, Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-37,-14, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(23,-43,Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(22, -14, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(23,-43.1, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .splineTo(new Vector2d(50, -40), Math.toRadians(0),
+                .lineToLinearHeading(new Pose2d(50, -43, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
@@ -114,7 +105,7 @@ public class redFar extends LinearOpMode {
         });
         while (!opModeIsActive()) {
 
-            VisionRedFar.Location location = VisionRedFar.getLocation();
+            VisionRedClose.Location location = VisionRedClose.getLocation();
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
@@ -125,7 +116,7 @@ public class redFar extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            VisionRedFar.Location location = VisionRedFar.getLocation();
+            VisionRedClose.Location location = VisionRedClose.getLocation();
 
 
             switch (location) {
@@ -154,4 +145,5 @@ public class redFar extends LinearOpMode {
     }
 
 }
+
 

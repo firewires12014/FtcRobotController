@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
-import org.firstinspires.ftc.teamcode.Vision.CenterstageDetectorRed;
+import org.firstinspires.ftc.teamcode.Vision.VisionRedClose;
 
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -16,7 +15,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Disabled
 public class VisionTest2 extends OpMode {
     public OpenCvCamera camera;
-    private CenterstageDetectorRed CenterstageDetectorRed = new CenterstageDetectorRed(telemetry);
+    private VisionRedClose VisionRedClose = new VisionRedClose(telemetry);
 
 
     @Override
@@ -24,7 +23,7 @@ public class VisionTest2 extends OpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        camera.setPipeline(CenterstageDetectorRed);
+        camera.setPipeline(VisionRedClose);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -54,7 +53,7 @@ public class VisionTest2 extends OpMode {
 
     @Override
     public void loop() {
-        CenterstageDetectorRed.Location location = CenterstageDetectorRed.getLocation();
+        VisionRedClose.Location location = VisionRedClose.getLocation();
         telemetry.addData("Location: ", location);
         telemetry.update();
 

@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 //red
 @Disabled
-public class CenterstageDetectorRed extends OpenCvPipeline {
+public class VisionRedClose extends OpenCvPipeline {
     Telemetry telemetry;
     Mat mat = new Mat();
     public enum Location {
@@ -37,7 +37,7 @@ public class CenterstageDetectorRed extends OpenCvPipeline {
             new Point(320, 200));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
-    public CenterstageDetectorRed(Telemetry t) { telemetry = t; }
+    public VisionRedClose(Telemetry t) { telemetry = t; }
 
     @Override
     public Mat processFrame(Mat input) {

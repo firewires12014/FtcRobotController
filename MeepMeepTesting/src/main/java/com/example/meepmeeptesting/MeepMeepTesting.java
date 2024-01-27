@@ -6,12 +6,16 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+import java.util.Vector;
+
+import kotlin.math.UMathKt;
+
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
+        Pose2d startingPose = new Pose2d(10,35, Math.toRadians(270));
 
-        Pose2d startingPose = new Pose2d(-39.5,63.6, Math.toRadians(90));
-
+//
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setStartPose(startingPose)
@@ -20,14 +24,11 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startingPose)
                                 .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(-40,30, Math.toRadians(90)))
-                                //put pixel drop here
-                                .lineToLinearHeading(new Pose2d(-35,13, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(-10,10, Math.toRadians(170)))
-                                .lineToLinearHeading(new Pose2d(5,10, Math.toRadians(170)))
-                                .splineTo(new Vector2d(47,43), Math.toRadians(0))
+                                .lineToLinearHeading(new Pose2d(30,35, Math.toRadians(180)))
+                                .turn(Math.toRadians(180))
+                                .lineToLinearHeading(new Pose2d(55,30,Math.toRadians(180)))
                                 .build()
-                );
+                                );
         // ,
         //                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
         //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))

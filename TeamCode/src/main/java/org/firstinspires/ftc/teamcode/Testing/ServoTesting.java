@@ -1,20 +1,18 @@
 package org.firstinspires.ftc.teamcode.Testing;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
+import org.firstinspires.ftc.teamcode.Subsystems.dropper;
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @TeleOp(name="ServoTesting", group="FireWires")
-@Disabled
 public class ServoTesting extends LinearOpMode {
 
-    private Outtake outtake;
+    private dropper dropper;
 
     @Override
 
@@ -22,16 +20,15 @@ public class ServoTesting extends LinearOpMode {
     public void runOpMode() {
         waitForStart();
         while (opModeIsActive()) {
-            outtake = new Outtake(hardwareMap);
+            dropper = new dropper(hardwareMap);
 
             waitForStart();
             if (gamepad1.a) {
-                outtake.releaseMain(); //I love You
-                outtake.releaseSecondary();
+                dropper.Hold(); //I love You
             }
-            if (gamepad1.b) {
-                outtake.lockPixels();
-            }
+           else {
+               dropper.Drop();
+                }
             }
             }
         }
