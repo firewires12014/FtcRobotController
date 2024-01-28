@@ -13,7 +13,7 @@ import kotlin.math.UMathKt;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startingPose = new Pose2d(10,35, Math.toRadians(270));
+        Pose2d startingPose = new Pose2d(-39.5,63.6, Math.toRadians(90));
 
 //
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -24,9 +24,7 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startingPose)
                                 .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(30,35, Math.toRadians(180)))
-                                .turn(Math.toRadians(180))
-                                .lineToLinearHeading(new Pose2d(55,30,Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(-34, 20, Math.toRadians(180)))
                                 .build()
                                 );
         // ,

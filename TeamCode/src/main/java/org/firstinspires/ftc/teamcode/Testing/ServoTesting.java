@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.dropper;
+import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -13,21 +14,23 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class ServoTesting extends LinearOpMode {
 
     private dropper dropper;
-
+    private Intake intake;
     @Override
 
 
     public void runOpMode() {
         waitForStart();
         while (opModeIsActive()) {
-            dropper = new dropper(hardwareMap);
-
-            waitForStart();
+            //dropper = new dropper(hardwareMap);
+            intake = new Intake(hardwareMap);
             if (gamepad1.a) {
-                dropper.Hold(); //I love You
+                intake.stack(); //I love You
+
             }
            else {
-               dropper.Drop();
+//               dropper.Hold();
+               intake.score();
+
                 }
             }
             }

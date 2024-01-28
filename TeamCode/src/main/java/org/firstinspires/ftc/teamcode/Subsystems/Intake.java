@@ -8,40 +8,42 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Intake {
 
     private DcMotor primaryRoller;
-    private CRServo secondaryRoller;
-    private Servo intakeheight;
+    private Servo intakeHeight;
 
     public Intake(HardwareMap hardwareMap){
         primaryRoller = hardwareMap.get(DcMotor.class, "primaryRoller");
-        secondaryRoller = hardwareMap.get(CRServo.class, "secondaryRoller");
-        intakeheight = hardwareMap.get(Servo.class, "intakeHeight");
+        intakeHeight = hardwareMap.get(Servo.class, "intakeHeight");
     }
     public void initIntake(){
-        intakeheight.setPosition(0.025);
+        intakeHeight.setPosition(0.025);
     }
-    public void stackIntake() {intakeheight.setPosition(.4);}
+    public void stackIntake() {
+        intakeHeight.setPosition(1);}
     public void resetIntake(){
-        intakeheight.setPosition(1);
+        intakeHeight.setPosition(0.4);
     }
     public void in(){
-        secondaryRoller.setPower(-1);
-        primaryRoller.setPower(1);
+        primaryRoller.setPower(-1);
 
     }
 
     public void out(){
-        secondaryRoller.setPower(1);
-        primaryRoller.setPower(-1);
+        primaryRoller.setPower(1);
     }
 
     // auto: deposits purple pixel
     public void dropOff(){
-        secondaryRoller.setPower(.5);
-        primaryRoller.setPower(-.5);
+        primaryRoller.setPower(.5);
+    }
+    public void stack() { // save for later
+        intakeHeight.setPosition(0.425);
+    }
+    public void specialStack () {intakeHeight.setPosition(0.567);}
+    public void score() { //this is for scoring on the ground during auto
+        intakeHeight.setPosition(0.65);
     }
 
     public void die(){
-        secondaryRoller.setPower(0);
         primaryRoller.setPower(0);
     }
 }

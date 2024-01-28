@@ -16,6 +16,8 @@ public class Transfer {   // gain access to methods in the calling OpMode.
         transfer = hardwareMap.get(CRServo.class, "transfer");
         telemetry.addData(">", "Transfer initialized");
         telemetry.update();
+
+
     }
 
 }

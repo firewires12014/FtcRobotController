@@ -7,7 +7,7 @@ public class dropper {
     Servo dropper = null;
 
     static final double Drop = 0.18;
-    static final double Hold = 1;
+    static final double Hold = .92;
     public dropper(HardwareMap hardwareMap) {
 
         dropper = hardwareMap.get(Servo.class, "dropper");

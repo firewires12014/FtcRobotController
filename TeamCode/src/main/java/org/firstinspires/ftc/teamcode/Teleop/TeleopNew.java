@@ -136,10 +136,10 @@ public class TeleopNew extends OpMode {
         }
         //Intake Stack Height
         if (gamepad2.y) {
-            intake.stackIntake();
+            intake.stack();
         }
         else {
-            intake.initIntake();
+            intake.score();
         }
 
         //Transfer Basic
