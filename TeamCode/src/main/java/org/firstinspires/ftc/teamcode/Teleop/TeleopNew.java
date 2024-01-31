@@ -144,6 +144,7 @@ public class TeleopNew extends OpMode {
 
         //Transfer Basic
         if (gamepad2.dpad_up) {
+            lift.moveLift(.1);
             outtake.transferPixels();
         }
         if (gamepad2.dpad_down) {

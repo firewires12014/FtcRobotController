@@ -65,7 +65,7 @@ public class blueFar extends LinearOpMode {
                 .addTemporalMarker(()->{ dropper.Drop(); intake.stack(); }).
                 waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(-40,34, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToLinearHeading(new Pose2d(-50,13, Math.toRadians(180)),
                          SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -89,10 +89,10 @@ public class blueFar extends LinearOpMode {
                 .waitSeconds(0.55)
                 .addTemporalMarker(()->intake.die()) //put transfer here
                 .lineToLinearHeading(new Pose2d(16, 12, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .splineTo(new Vector2d(60,20), Math.toRadians(0),
-                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToLinearHeading(new Pose2d(60,30, Math.toRadians(180)), //white pixel drop
                         SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -118,18 +118,18 @@ public class blueFar extends LinearOpMode {
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-38, 20, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-38, 20, Math.toRadians(90)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{dropper.Drop(); intake.stack();})
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(-41, 20, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-41, 20, Math.toRadians(90)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-50, 13, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-50, 13, Math.toRadians(90)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-55, 8 , Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-55, 8 , Math.toRadians(90)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(0.1)
@@ -188,7 +188,7 @@ public class blueFar extends LinearOpMode {
             }
 
 
-            sleep(30000);
+            stop();
         }
 
     }

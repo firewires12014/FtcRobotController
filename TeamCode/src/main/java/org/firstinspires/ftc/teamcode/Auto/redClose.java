@@ -181,7 +181,7 @@ public class redClose extends LinearOpMode {
             }
 
 
-            sleep(30000);
+            stop();
         }
 
     }

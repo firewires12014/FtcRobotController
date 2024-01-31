@@ -25,4 +25,6 @@ public class Lift {
         rightLift.setPower(left_stick_y);
         leftLift.setPower(-left_stick_y);
     }
+
+
 }

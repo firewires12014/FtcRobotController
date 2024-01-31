@@ -59,7 +59,7 @@ public class blueClose extends LinearOpMode {
                         addTemporalMarker(()->{ dropper.Drop(); }).
                         waitSeconds(1)
                   .lineToLinearHeading(new Pose2d(23,45, Math.toRadians(90)))
-                    .turn(Math.toRadians(90))
+                 .turn(Math.toRadians(90))
                     .lineToLinearHeading(new Pose2d(55,43, Math.toRadians(180)),
                     SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                     SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -83,8 +83,8 @@ public class blueClose extends LinearOpMode {
                      .lineToLinearHeading(new Pose2d(16,31, Math.toRadians(90)),
                              SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                              SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                            .addTemporalMarker(()->{ dropper.Drop(); }).
-                            waitSeconds(1)
+                            .addTemporalMarker(()->{ dropper.Drop(); })
+                            .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(16, 45, Math.toRadians(90)),
         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                 SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -174,19 +174,10 @@ switch (location) {
                     break;
                 case LEFT:
                     drive.followTrajectorySequence(leftMovementOne);
-                    dropper.Drop();
-                    sleep(500);
-
-                 //   lift.moveLift(-.75f);
-                 //   sleep(200);
-                  //  lift.moveLift(0f);
-                 //   sleep(1000);
-                  //  outtake.pivotEnding();
-                  //  sleep(1000);
-                  //  outtake.releaseSecondary();
+                    stop();
                     break;
             }
-            sleep(30000);
+            stop();
         }
 
     }
