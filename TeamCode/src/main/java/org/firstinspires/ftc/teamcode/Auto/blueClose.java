@@ -164,20 +164,21 @@ telemetry.addData("Location:", location);
 switch (location) {
                 case NOT_FOUND:
                     drive.followTrajectorySequence(rightMovementOne);
-                    dropper.Drop();
+                    stop();
 
                     break;
                 case MIDDLE:
                     telemetry.addData("Middle:", "Activated");
                     telemetry.update();
                      drive.followTrajectorySequence(middleMovementOne);
+                     stop();
                     break;
                 case LEFT:
                     drive.followTrajectorySequence(leftMovementOne);
                     stop();
                     break;
             }
-            stop();
+            sleep(30000);
         }
 
     }

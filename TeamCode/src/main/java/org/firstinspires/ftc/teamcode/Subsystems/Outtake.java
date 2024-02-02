@@ -43,6 +43,9 @@ public class Outtake {
         primaryLock.setPosition(LOCK_BOTTOM);
         secondaryLock.setPosition(LOCK_TOP);
     }
+    public void autoPixel(){
+        transfer.setPosition(1);
+    }
 
     public void lockSecondary() {
         secondaryLock.setPosition(LOCK_TOP);
@@ -52,7 +55,7 @@ public class Outtake {
     public void releaseSecondary() {
         secondaryLock.setPosition(UNLOCK_SECONDARY);
     }
-
+    public void releasePixels () {secondaryLock.setPosition(UNLOCK_SECONDARY); primaryLock.setPosition(UNLOCK_MAIN);}
     public void pivotStart(){
         pivot.setPosition(PIVOT_START);
     }

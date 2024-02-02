@@ -12,10 +12,10 @@ public class Plane {
     public Plane(HardwareMap hardwareMap) {
         plane = hardwareMap.get(Servo.class, "launcher");
     }
-public void reset() {
-        plane.setPosition(0.6);
-}
 public void launch() {
+        plane.setPosition(1);
+}
+public void reset() {
         plane.setPosition(0);
 }
 }

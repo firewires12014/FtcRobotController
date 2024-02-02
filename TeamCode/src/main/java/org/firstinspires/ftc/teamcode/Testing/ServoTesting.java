@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.dropper;
+import org.firstinspires.ftc.teamcode.Subsystems.Plane;
+import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
+import org.firstinspires.ftc.teamcode.Subsystems.dropper;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -13,8 +16,9 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @TeleOp(name="ServoTesting", group="FireWires")
 public class ServoTesting extends LinearOpMode {
 
-    private dropper dropper;
-    private Intake intake;
+  private Outtake outtake;
+  private dropper dropper;
+    private Plane plane;
     @Override
 
 
@@ -22,16 +26,23 @@ public class ServoTesting extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             //dropper = new dropper(hardwareMap);
-            intake = new Intake(hardwareMap);
+            outtake=new Outtake(hardwareMap);
+            dropper=new dropper(hardwareMap);
+            plane=new Plane(hardwareMap);
+            outtake.lockPixels();
             if (gamepad1.a) {
-                intake.stack(); //I love You
-
+              //I love You
+                plane.launch();
             }
            else {
-//               dropper.Hold();
-               intake.score();
-
+                plane.reset();
                 }
+           if (gamepad1.b) {
+               outtake.transferPixels();
+           }
+           else {
+               outtake.resetBucket();
+           }
             }
             }
         }
