@@ -75,7 +75,7 @@ public class blueFar extends LinearOpMode {
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(0.75)
-                .addTemporalMarker(()->{ outtake.pivotStart();intake.stack(); intake.in();})
+                .addTemporalMarker(()->{ outtake.pivotAuto();intake.stack(); intake.in();})
                 .waitSeconds(0.5)
                 .lineToLinearHeading(new Pose2d(-53,13, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -92,7 +92,7 @@ public class blueFar extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(57.5,33, Math.toRadians(180)), //white pixel drop
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{lift.moveLift(-.6f);})
+                .addTemporalMarker(()->{lift.moveLift(-.5f);})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{lift.moveLift(-0.01f);})
                 .waitSeconds(0.5)
@@ -103,13 +103,13 @@ public class blueFar extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(57.5,42, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{lift.moveLift(-.3f);})
+                .addTemporalMarker(()->{lift.moveLift(-.2f);})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{outtake.pivotEnding();})
                 .waitSeconds(0.5)
                 .addTemporalMarker(()->{outtake.releasePixels(); outtake.releaseSecondary();})
                 .waitSeconds(0.5)
-                .lineToLinearHeading(new Pose2d(58,20, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(57,20, Math.toRadians(180)))
                 .build();
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
@@ -132,7 +132,7 @@ public class blueFar extends LinearOpMode {
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(0.5)
-                .addTemporalMarker(()->{ outtake.pivotStart();intake.stack(); intake.in();})
+                .addTemporalMarker(()->{ outtake.pivotAuto();intake.stack(); intake.in();})
                 .waitSeconds(0.25)
                 .lineToLinearHeading(new Pose2d(-53,8.5, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -157,18 +157,18 @@ public class blueFar extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(60,25, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(61,31, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(61,32, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
-                .addTemporalMarker(()->{lift.moveLift(0.2);lift.moveLift(-0.01f);})
+                .addTemporalMarker(()->{lift.moveLift(0.);lift.moveLift(-0.01f);})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{outtake.pivotEnding(); outtake.releaseMain();})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{ outtake.releasePixels();})
                 .waitSeconds(0.55)
                 .addTemporalMarker(()-> {outtake.pivotStart(); lift.moveLift(0.3);})
-                .lineToLinearHeading(new Pose2d(59,15, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(57,15, Math.toRadians(180)))
                 .build();
 
         //Right
@@ -185,7 +185,7 @@ public class blueFar extends LinearOpMode {
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .waitSeconds(0.5)
-                .addTemporalMarker(()->{ outtake.pivotStart(); intake.in();})
+                .addTemporalMarker(()->{ outtake.pivotAuto(); intake.in();})
                 .waitSeconds(0.25)
                 .lineToLinearHeading(new Pose2d(-48,8.5, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -210,16 +210,16 @@ public class blueFar extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(58,23, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(64,24, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(63,23, Math.toRadians(180)))
                 .addTemporalMarker(()->{lift.moveLift(0.1f);})
                 .addTemporalMarker(()->{lift.moveLift(-0.01f);})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{outtake.pivotEnding(); outtake.releaseMain();})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{ outtake.releasePixels();})
-                .waitSeconds(0.55)
+                .waitSeconds(0.75)
                 .addTemporalMarker(()-> {outtake.pivotStart(); lift.moveLift(0.3);})
-                .lineToLinearHeading(new Pose2d(59,15, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(57,15, Math.toRadians(180)))
                 .build();
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()

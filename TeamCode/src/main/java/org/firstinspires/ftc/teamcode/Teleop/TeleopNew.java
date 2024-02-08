@@ -59,8 +59,8 @@ public class TeleopNew extends OpMode {
     int fix = 0;
     double upTime = 0.75; //seconds
     double inTime = 1; //seconds
-    double outTime = 0.5; //seconds
-    double lockTime = 0.5; //seconds
+    double outTime = 0.75; //seconds
+    double lockTime = 1; //seconds
     double climbTime = 110; //seconds
     ElapsedTime upTimer = new ElapsedTime();
     ElapsedTime secureTimer = new ElapsedTime();

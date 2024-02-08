@@ -13,7 +13,7 @@ public class Plane {
         plane = hardwareMap.get(Servo.class, "launcher");
     }
 public void launch() {
-        plane.setPosition(1);
+        plane.setPosition(0.5);
 }
 public void reset() {
         plane.setPosition(0);
