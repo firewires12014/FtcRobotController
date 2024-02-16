@@ -10,16 +10,16 @@ public class dropper {
     static final double Hold = .92;
     public dropper(HardwareMap hardwareMap) {
 
-        dropper = hardwareMap.get(Servo.class, "dropper");
-
+  dropper = hardwareMap.get(Servo.class, "dropper");
     }
 
     public void Drop() {
-        dropper.setPosition(Drop);
+      dropper.setPosition(Drop);
 
     }
     public void Hold() {
-        dropper.setPosition(Hold);
+     dropper.setPosition(Hold);
+
 
     }
 }

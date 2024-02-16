@@ -30,10 +30,10 @@ public class VisionRedClose extends OpenCvPipeline {
 
     private Location location = Location.MIDDLE;
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(80, 120),
+            new Point(80, 100),
             new Point(160, 200));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(230, 120),
+            new Point(250, 80),
             new Point(320, 200));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 

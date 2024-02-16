@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -19,6 +20,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "redClose", group = "Robot")
+@Disabled
 public class redClose extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionRedClose VisionRedClose = new VisionRedClose(telemetry); // camera stuff
@@ -49,17 +51,17 @@ public class redClose extends LinearOpMode {
         // Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(23,-30, Math.toRadians(270)),
+                .lineToLinearHeading(new Pose2d(24,-30, Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL)).
                 addTemporalMarker(()->{ dropper.Drop(); }).
                 waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(23,-37, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(24,-40, Math.toRadians(270)))
                 //.turn(Math.toRadians(90))
-                .lineToLinearHeading(new Pose2d(60,-37, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(59,-39, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{lift.moveLift(-.3f);})
+                .addTemporalMarker(()->{lift.moveLift(-.4f);})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{lift.moveLift(-0.01f);})
                 .waitSeconds(0.5)
@@ -84,10 +86,10 @@ public class redClose extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(16, -36.5, Math.toRadians(270)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(57.75,-32, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(58,-34, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{lift.moveLift(-.30f);})
+                .addTemporalMarker(()->{lift.moveLift(-.40f);})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{lift.moveLift(-0.01f);})
                 .waitSeconds(0.5)
@@ -95,7 +97,10 @@ public class redClose extends LinearOpMode {
                 .waitSeconds(1)
                 .addTemporalMarker(()->{outtake.releaseSecondary(); outtake.releaseMain();})
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(50,-32, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(59,-34, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(50,-34, Math.toRadians(180)))
                 .addTemporalMarker(()->{outtake.pivotStart(); lift.moveLift(0.30);})
                 .lineToLinearHeading(new Pose2d(54, -55, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -122,7 +127,7 @@ public class redClose extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(55, -26, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{lift.moveLift(-.3f);})
+                .addTemporalMarker(()->{lift.moveLift(-.4f);})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{lift.moveLift(-0.01f);})
                 .waitSeconds(0.5)

@@ -32,17 +32,13 @@ public class ServoTesting extends LinearOpMode {
             outtake.lockPixels();
             if (gamepad1.a) {
               //I love You
-                plane.launch();
+                dropper.Hold();
+                outtake.releaseSecondary();
             }
            else {
-                plane.reset();
+                dropper.Drop();
+                outtake.lockPixels();
                 }
-           if (gamepad1.b) {
-               outtake.transferPixels();
-           }
-           else {
-               outtake.resetBucket();
-           }
             }
             }
         }

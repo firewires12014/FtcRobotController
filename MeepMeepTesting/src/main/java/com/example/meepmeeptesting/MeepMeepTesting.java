@@ -9,11 +9,12 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 import java.util.Vector;
 
 import kotlin.math.UMathKt;
+import sun.text.ComposedCharIter;
 
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startingPose = new Pose2d(16,63.6, Math.toRadians(90));
+        Pose2d startingPose = new Pose2d(-31.5,-63.6, Math.toRadians(0));
 //
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -22,13 +23,25 @@ public class MeepMeepTesting {
                 .setConstraints(42.5, 80, 4, 4, 13.18)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startingPose)
-                                .setReversed(true)
-                                .lineToLinearHeading(new Pose2d(23,35, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(23,45, Math.toRadians(90)))
-                                .turn(Math.toRadians(90))
-                                .lineToLinearHeading(new Pose2d(55,43, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(50,43, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(47, 65, Math.toRadians(180)))
+                         //left
+                                .lineToLinearHeading(new Pose2d(-34, -34, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(-29, -34, Math.toRadians(0)))
+                                //put drop here
+                                .lineToLinearHeading(new Pose2d(-35, -34, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(-50, -34, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(-53, -11, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(30, -10, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(53, -30, Math.toRadians(180)))
+                                //drop 1 here
+                                .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(50, -43, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(53, -43, Math.toRadians(180)))
+                                //yellow drop here
+
+
+
                                 .build()
                                 );
         // ,

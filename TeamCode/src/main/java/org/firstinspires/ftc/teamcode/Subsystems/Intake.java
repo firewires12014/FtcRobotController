@@ -36,13 +36,13 @@ public class Intake {
         primaryRoller.setPower(.5);
     }
     public void stack() { // save for later
-        intakeHeight.setPosition(0.425);
+        intakeHeight.setPosition(0.477);
     }
     public void specialStack () {intakeHeight.setPosition(0.567);}
     public void score() { //this is for scoring on the ground during auto
         intakeHeight.setPosition(0.95);
     }
-
+    public void up () {intakeHeight.setPosition(0.3);}
     public void die(){
         primaryRoller.setPower(0);
     }

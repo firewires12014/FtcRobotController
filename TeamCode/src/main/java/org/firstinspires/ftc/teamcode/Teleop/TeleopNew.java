@@ -85,12 +85,12 @@ public class TeleopNew extends OpMode {
      */
     private final static int GAMEPAD_LOCKOUT = 500;
 
-    RevBlinkinLedDriver blinkinLedDriver;
-    RevBlinkinLedDriver.BlinkinPattern glow;
-    RevBlinkinLedDriver.BlinkinPattern blink;
+//    RevBlinkinLedDriver blinkinLedDriver;
+//    RevBlinkinLedDriver.BlinkinPattern glow;
+//    RevBlinkinLedDriver.BlinkinPattern blink;
     Telemetry.Item patternName;
     Telemetry.Item display;
-    SampleRevBlinkinLedDriver.DisplayKind displayKind;
+//    SampleRevBlinkinLedDriver.DisplayKind displayKind;
     Deadline ledCycleDeadline;
     Deadline gamepadRateLimit;
 
@@ -114,16 +114,16 @@ public class TeleopNew extends OpMode {
                 gamepad1.right_stick_x);
         //Slow Drive/Strafe
         if(gamepad1.dpad_up){
-            driveTrain.TeleOpDriveF(0.5);
-        }
-        if (gamepad1.dpad_down){
             driveTrain.TeleOpDriveB(0.5);
         }
+        if (gamepad1.dpad_down){
+            driveTrain.TeleOpDriveF(0.5);
+        }
         if (gamepad1.dpad_right){
-            driveTrain.TeleOpStrafeR(0.8);
+            driveTrain.TeleOpStrafeL(0.8);
         }
         if(gamepad1.dpad_left){
-            driveTrain.TeleOpStrafeL(0.8);
+            driveTrain.TeleOpStrafeR(0.8);
         }
 
         //Intake
@@ -236,30 +236,30 @@ public class TeleopNew extends OpMode {
 //                    driveTrain.joystick_conditioning(gamepad1.right_stick_x, 0, .1, .8));
 
             //Blinkin
+//
+//        displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
+//
+//            blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+//            glow = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
+//            blink = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
+//
+//            if (climbTimer.seconds() < climbTime) {
+//                blinkinLedDriver.setPattern(glow);
+//            }
+//            else blinkinLedDriver.setPattern(blink);
 
-        displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
-
-            blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-            glow = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
-            blink = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
-
-            if (climbTimer.seconds() < climbTime) {
-                blinkinLedDriver.setPattern(glow);
-            }
-            else blinkinLedDriver.setPattern(blink);
-
-            display = telemetry.addData("Display Kind: ", displayKind.toString());
-            patternName = telemetry.addData("Pattern: ", glow.toString());
+  //          display = telemetry.addData("Display Kind: ", displayKind.toString());
+     //       patternName = telemetry.addData("Pattern: ", glow.toString());
 
             ledCycleDeadline = new Deadline(LED_PERIOD, TimeUnit.SECONDS);
             gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
 
-            if (displayKind == SampleRevBlinkinLedDriver.DisplayKind.AUTO) {
-                doAutoDisplay();
-            } else {
-                telemetry.addData("Heading: ", driveTrain.getHeading());
-                telemetry.update();
-            }
+//            if (displayKind == SampleRevBlinkinLedDriver.DisplayKind.AUTO) {
+//                doAutoDisplay();
+//            } else {
+//                telemetry.addData("Heading: ", driveTrain.getHeading());
+//                telemetry.update();
+//            }
 
 
     }
