@@ -42,6 +42,7 @@ public class Intake {
     public void score() { //this is for scoring on the ground during auto
         intakeHeight.setPosition(0.95);
     }
+    public void auto() {intakeHeight.setPosition(1);}
     public void up () {intakeHeight.setPosition(0.3);}
     public void die(){
         primaryRoller.setPower(0);
