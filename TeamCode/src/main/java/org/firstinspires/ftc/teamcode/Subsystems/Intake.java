@@ -44,6 +44,7 @@ public class Intake {
     }
     public void auto() {intakeHeight.setPosition(1);}
     public void up () {intakeHeight.setPosition(0.3);}
+    public void closeAuto () {intakeHeight.setPosition(0.5);}
     public void die(){
         primaryRoller.setPower(0);
     }

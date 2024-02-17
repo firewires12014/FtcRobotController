@@ -39,7 +39,7 @@ public class redFar extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         outtake = new Outtake(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
-        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap, telemetry);
         //intake.resetIntake();
         outtake.lockPixels();
         Pose2d startingPose = new Pose2d(-39.5,-63.6, Math.toRadians(270));

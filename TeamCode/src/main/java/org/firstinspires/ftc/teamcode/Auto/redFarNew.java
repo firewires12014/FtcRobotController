@@ -38,7 +38,7 @@ public class redFarNew extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         outtake = new Outtake(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
-        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
         //intake.resetIntake();
         outtake.lockPixels();

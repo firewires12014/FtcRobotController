@@ -45,7 +45,7 @@ public class blueFar extends LinearOpMode {
         outtake = new Outtake(hardwareMap);
         dropper = new dropper(hardwareMap);
         drive = new SampleMecanumDrive(hardwareMap);
-        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
         //intake.resetIntake();
         outtake.lockSecondary();

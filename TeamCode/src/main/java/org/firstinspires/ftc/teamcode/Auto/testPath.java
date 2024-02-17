@@ -6,23 +6,26 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
+
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous(name = "testPath", group = "Testing")
-@Disabled
+
 public class testPath extends LinearOpMode {
+    Lift lift;
+
     @Override
     public void runOpMode() {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(10)
-                .build();
+        lift = new Lift(hardwareMap, telemetry);
 
         waitForStart();
+        lift.liftToHeight(500);
+        sleep(30000);
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(traj1);
     }
 }

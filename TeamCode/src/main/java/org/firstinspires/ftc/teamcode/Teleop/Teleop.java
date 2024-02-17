@@ -96,7 +96,7 @@ public class Teleop extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap, telemetry);
         driveTrain = new DriveTrain(hardwareMap);
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);

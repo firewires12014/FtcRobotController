@@ -97,7 +97,7 @@ public class TeleopNew extends OpMode {
     @Override
     public void init() {
         driveTrain = new DriveTrain(hardwareMap);
-        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
         plane = new Plane(hardwareMap);
