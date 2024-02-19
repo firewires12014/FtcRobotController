@@ -134,20 +134,20 @@ public class redFarNew extends LinearOpMode {
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.pivotStart(); })
-                .lineToLinearHeading(new Pose2d(-72, -11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.stack();})
-                .lineToLinearHeading(new Pose2d(-75, -11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-72, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.pivotStart(); intake.in();})
                 .waitSeconds(0.5)
-                .lineToLinearHeading(new Pose2d(-73, -11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.up();intake.die();})
-                .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-67, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.score();intake.in();})
