@@ -55,8 +55,7 @@ public class TeleopNew extends OpMode {
     private Outtake outtake;
     private Climb climb;
     private Plane plane;
-    int transfer = 0;
-    int fix = 0;
+
     double upTime = 0.75; //seconds
     double inTime = 1; //seconds
     double outTime = 0.75; //seconds
@@ -67,7 +66,8 @@ public class TeleopNew extends OpMode {
     ElapsedTime inTimer = new ElapsedTime();
     ElapsedTime outTimer = new ElapsedTime();
     ElapsedTime climbTimer = new ElapsedTime();
-
+    int lastPos = 3;
+    boolean changed = false;
     private void doAutoDisplay() {
     }
 
@@ -112,6 +112,7 @@ public class TeleopNew extends OpMode {
         driveTrain.teleopDrive( gamepad1.left_stick_y,
                 gamepad1.left_stick_x,
                 gamepad1.right_stick_x);
+
         //Slow Drive/Strafe
         if(gamepad1.dpad_up){
             driveTrain.TeleOpDriveB(0.5);
@@ -142,71 +143,14 @@ public class TeleopNew extends OpMode {
             intake.score();
         }
 
-        //Transfer Basic
-        if (gamepad2.dpad_up) {
-            lift.moveLift(.1);
-            outtake.transferPixels();
-        }
-        if (gamepad2.dpad_down) {
-            outtake.resetBucket();
-        }
-        //Fix FSMs
-        switch (fix) {
-            case 0:
-                if (gamepad2.dpad_left) {
-                    outTimer.reset();
-                    fix = 1;
-                }
-                break;
-            case 1:
-                outtake.fixOut();
-                if (outTimer.seconds() > outTime) {
-                    outtake.fixIn();
-                    fix = 0;
-                    break;
-                }
-        }
-        //Transfer FSMs
-        switch (transfer) {
-            case 0:
-                if (gamepad2.dpad_up) {
-                    upTimer.reset();
-                    transfer = 1;
-                }
-                break;
-            case 1:
-                outtake.transferPixels();
-                if (upTimer.seconds() > upTime) {
-                    secureTimer.reset();
-                    transfer = 2;
-                }
-                break;
-            case 2:
-                outtake.lockPixels();
-                if (secureTimer.seconds() > lockTime) {
-                    transfer = 3;
-                }
-                break;
-            case 3:
-                outtake.resetBucket();
-                transfer = 0;
-                break;
-        }
-
         //Lift
         lift.moveLift(gamepad2.left_stick_y - Kg);
 
         //Pivot
         if (gamepad2.right_bumper) { //Scoring Pos.
             outtake.pivotEnding();
-            outtake.resetBucket();
         }
-        //Pivot
-        if (gamepad2.left_bumper) { //Transfer Pos.
-            outtake.pivotStart();
-            outtake.releaseMain();
-            outtake.releaseSecondary();
-        }
+
 
         //Locks
         if (gamepad2.a) { //Lock
@@ -226,40 +170,40 @@ public class TeleopNew extends OpMode {
 
         //Climb
         climb.moveClimb(-gamepad2.right_stick_y);
+        gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
 
-//        if (gamepad2.right_stick_y > (0.1)) intake.stackIntake();
+        // state changes
+        if ((gamepad2.right_bumper || gamepad1.left_bumper) && !changed) {
+            changed = true;
+            if (gamepad1.right_bumper)  lastPos++;
+            if (gamepad1.left_bumper)   lastPos = lastPos - 1;
+        }
+
+        if (lastPos > 7) lastPos = 7;
+        if (lastPos < 0) lastPos = 0;
+
+        if (!gamepad1.left_bumper && !gamepad1.right_bumper){
+            changed = false;
+        }
 
 
-            //Joystick Conditioning
-        //            driveTrain.teleopDrive( driveTrain.joystick_conditioning(gamepad1.left_stick_y, 0, .1, .8),
-//                    driveTrain.joystick_conditioning(gamepad1.left_stick_x, 0, .1, .8),
-//                    driveTrain.joystick_conditioning(gamepad1.right_stick_x, 0, .1, .8));
+        if (gamepad2.x){
+            lastPos = 3;
+           outtake.diffyPosition(lastPos);
+        }
 
-            //Blinkin
-//
-//        displayKind = SampleRevBlinkinLedDriver.DisplayKind.AUTO;
-//
-//            blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-//            glow = RevBlinkinLedDriver.BlinkinPattern.DARK_RED;
-//            blink = RevBlinkinLedDriver.BlinkinPattern.STROBE_RED;
-//
-//            if (climbTimer.seconds() < climbTime) {
-//                blinkinLedDriver.setPattern(glow);
-//            }
-//            else blinkinLedDriver.setPattern(blink);
+        if (gamepad2.b) {
+         outtake.intakePosition();
+            lastPos = 0;
+        }
+        if (gamepad2.left_bumper || gamepad1.right_bumper) {
+            outtake.diffyPosition(lastPos);
+        }
 
-  //          display = telemetry.addData("Display Kind: ", displayKind.toString());
-     //       patternName = telemetry.addData("Pattern: ", glow.toString());
 
-            ledCycleDeadline = new Deadline(LED_PERIOD, TimeUnit.SECONDS);
-            gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
 
-//            if (displayKind == SampleRevBlinkinLedDriver.DisplayKind.AUTO) {
-//                doAutoDisplay();
-//            } else {
-//                telemetry.addData("Heading: ", driveTrain.getHeading());
-//                telemetry.update();
-//            }
+
+
 
 
     }

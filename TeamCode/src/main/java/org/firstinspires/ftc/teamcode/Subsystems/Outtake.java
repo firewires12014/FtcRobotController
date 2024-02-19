@@ -5,47 +5,29 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Outtake {
 
-    private Servo pivot, transfer,fix, primaryLock, secondaryLock;
+    private Servo pivot, primaryLock, secondaryLock, left, right;
 
-    static final double DEFAULT_POS = 0.15;
-    static final double TRANSFER_POS = 0.95;
     static final double LOCK_TOP = 1.0;
     static final double LOCK_BOTTOM = 1.00;
     static final double UNLOCK_MAIN = 0.0;
     static final double UNLOCK_SECONDARY = 0.0;
-    static final double PIVOT_START = 0.98;
-    static final double PIVOT_ENDING = 0;
     static final double PIVOT_INTERIM = 0.6;
-    static final double FIX_IN = 1;
-    static final double FIX_OUT = 0;
+
 
     public Outtake(HardwareMap hardwareMap){
         pivot = hardwareMap.get(Servo.class, "outtakePivot");
-        transfer = hardwareMap.get(Servo.class, "transfer");
-        fix = hardwareMap.get(Servo.class, "fix");
         primaryLock = hardwareMap.get(Servo.class, "primaryLock");
         secondaryLock = hardwareMap.get(Servo.class, "secondaryLock");
+        left = hardwareMap.get(Servo.class, "left");
+        right = hardwareMap.get(Servo.class, "right");
     }
 
-    public void transferPixels(){
-        transfer.setPosition(TRANSFER_POS);
-    }
-    public void fixIn(){
-        fix.setPosition(FIX_IN);
-    }
-    public void fixOut(){
-        fix.setPosition(FIX_OUT);
-    }
-    public void resetBucket(){
-        transfer.setPosition(DEFAULT_POS);
-    }
+
     public void lockPixels(){
         primaryLock.setPosition(LOCK_BOTTOM);
         secondaryLock.setPosition(LOCK_TOP);
     }
-    public void autoPixel(){
-        transfer.setPosition(1);
-    }
+
     public void pivotAuto(){
         pivot.setPosition(1);
     }
@@ -59,18 +41,39 @@ public class Outtake {
         secondaryLock.setPosition(UNLOCK_SECONDARY);
     }
     public void releasePixels () {secondaryLock.setPosition(UNLOCK_SECONDARY); primaryLock.setPosition(UNLOCK_MAIN);}
-    public void pivotStart(){
-        pivot.setPosition(PIVOT_START);
-    }
-
-    public void pivotEnding(){
-        pivot.setPosition(PIVOT_ENDING);
-    }
-
     public void pivotInterim(){
         pivot.setPosition(PIVOT_INTERIM);
     }
+    public void intakePosition(){
+        left.setPosition(0.31); //.296
+        right.setPosition(.704); //intake
+    }
 
+public void diffyPosition(int position) {
+    if (position == 0) {
+        right.setPosition(0.042); // Inverted Left
+        left.setPosition(0.042);
+    } else if (position == 1){
+        right.setPosition(.231);
+        left.setPosition(.231); // Horizontal Left
+    } else if (position == 2){
+        right.setPosition(0.405);
+        left.setPosition(0.405); // Angled Left
+    } else if (position == 3) {
+        left.setPosition(.507);// Prime Vertical
+        right.setPosition(.507);
+    } else if (position == 4){
+        right.setPosition(.59); // Angled Right
+        left.setPosition(0.59);
+    } else if (position ==5){
+        right.setPosition(.78);
+        left.setPosition(.78); // Horizontal Right
+    } else if (position == 6){
+        right.setPosition(.95); // Inverted Right
+        left.setPosition(.95);
+    }
+
+}
 
 
 }
