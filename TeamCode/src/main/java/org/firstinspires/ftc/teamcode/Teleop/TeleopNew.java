@@ -131,7 +131,7 @@ public class TeleopNew extends OpMode {
         //Intake
         if (gamepad1.right_trigger > 0) {
             intake.in();
-            lift.liftToHeight(12);
+            lift.liftToHeight(15);
           //  lift.holdLift();
         } else if (gamepad1.left_trigger > 0) {
             intake.out();
@@ -204,6 +204,9 @@ public class TeleopNew extends OpMode {
         }
         if ((gamepad2.x || gamepad2.b) && !inside ) {
             outtake.diffyPosition(lastPos);
+        }
+        if (gamepad2.dpad_up) {
+            intake.beltIn();
         }
 
         telemetry.addData("lastPos", lastPos);

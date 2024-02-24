@@ -51,26 +51,26 @@ public class Outtake {
 
 public void diffyPosition(int position) {
     if (position == 0) {
-        rightPivot.setPosition(0.042); // Inverted Left
-        leftPivot.setPosition(0.042);
+        rightPivot.setPosition(0.0138); // Inverted Left
+        leftPivot.setPosition(0.07);
     } else if (position == 1){
-        rightPivot.setPosition(.231);
-        leftPivot.setPosition(.231); // Horizontal Left
+        rightPivot.setPosition(.225);
+        leftPivot.setPosition(.282); // Horizontal Left
     } else if (position == 2){
-        rightPivot.setPosition(0.405);
-        leftPivot.setPosition(0.405); // Angled Left
+        rightPivot.setPosition(0.4);
+        leftPivot.setPosition(0.456); // Angled Left
     } else if (position == 3) {
-        leftPivot.setPosition(.507);// Prime Vertical
-        rightPivot.setPosition(.507);
+        leftPivot.setPosition(.535);// Prime Vertical
+        rightPivot.setPosition(.478);
     } else if (position == 4){
-        rightPivot.setPosition(.59); // Angled Right
-        leftPivot.setPosition(0.59);
+        rightPivot.setPosition(.591); // Angled Right
+        leftPivot.setPosition(0.647);
     } else if (position ==5){
-        rightPivot.setPosition(.78);
-        leftPivot.setPosition(.78); // Horizontal Right
+        rightPivot.setPosition(.74);
+        leftPivot.setPosition(.83); // Horizontal Right
     } else if (position == 6){
-        rightPivot.setPosition(.95); // Inverted Right
-        leftPivot.setPosition(.95);
+        rightPivot.setPosition(.943); // Inverted Right
+        leftPivot.setPosition(1);
     }
 
 }

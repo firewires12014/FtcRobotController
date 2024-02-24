@@ -36,7 +36,6 @@ public class Intake {
         secondaryRoller.setPower(-1);
     }
 
-
     // auto: deposits purple pixel
     public void dropOff(){
         primaryRoller.setPower(.5);
@@ -55,5 +54,7 @@ public class Intake {
         primaryRoller.setPower(0);
         secondaryRoller.setPower(0);
     }
-
+ public void beltIn() {
+        secondaryRoller.setPower(1);
+ }
 }
