@@ -9,9 +9,11 @@ public class Intake {
 
     private DcMotor primaryRoller;
     private Servo intakeHeight;
+    private CRServo secondaryRoller;
 
     public Intake(HardwareMap hardwareMap){
         primaryRoller = hardwareMap.get(DcMotor.class, "primaryRoller");
+        secondaryRoller = hardwareMap.get(CRServo.class, "secondaryRoller");
         intakeHeight = hardwareMap.get(Servo.class, "intakeHeight");
     }
     public void initIntake(){
@@ -24,12 +26,16 @@ public class Intake {
     }
     public void in(){
         primaryRoller.setPower(-1);
+        secondaryRoller.setPower(1);
 
     }
 
     public void out(){
+
         primaryRoller.setPower(1);
+        secondaryRoller.setPower(-1);
     }
+
 
     // auto: deposits purple pixel
     public void dropOff(){
@@ -47,5 +53,7 @@ public class Intake {
     public void closeAuto () {intakeHeight.setPosition(0.6);}
     public void die(){
         primaryRoller.setPower(0);
+        secondaryRoller.setPower(0);
     }
+
 }

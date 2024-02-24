@@ -23,23 +23,43 @@ public class Lift {
     public void moveLift(double left_stick_y) {
         rightLift.setPower(left_stick_y);
         leftLift.setPower(-left_stick_y);
+        telemetry.addData("encoder", leftLift.getCurrentPosition());
+        telemetry.update();
     }
 
     public void liftToHeight(int height) {
-        telemetry.addData("encoder", rightLift.getCurrentPosition());
+        double leftPower;
+        double rightPower;
+        if ( height < leftLift.getCurrentPosition()){
+          leftPower = -0.4;
+          rightPower = 0.4;
+        }
+        else {
+            leftPower = 0.4;
+            rightPower = -0.4;
+        }
+        telemetry.addData("encoder", leftLift.getCurrentPosition());
         telemetry.update();
-        rightLift.setTargetPosition(height);
-        rightLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        leftLift.setTargetPosition(height);
+//        leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (leftLift.getCurrentPosition() > height) {
+        while (leftLift.getCurrentPosition() < height) {
             telemetry.addData("Loop", "");
             telemetry.addData("encoder", leftLift.getCurrentPosition());
             telemetry.update();
-            rightLift.setPower(0.25);
-            leftLift.setPower(-0.25);
+            rightLift.setPower(rightPower);
+            leftLift.setPower(leftPower);
         }
         rightLift.setPower(0);
         leftLift.setPower(0);
+        }
+        public void holdLift() {
+        leftLift.setPower(0.05);
+        rightLift.setPower(-0.05);
+        }
+        public void lowerLift() {
+        leftLift.setPower(-0.2);
+        rightLift.setPower(0.2);
         }
     }
 

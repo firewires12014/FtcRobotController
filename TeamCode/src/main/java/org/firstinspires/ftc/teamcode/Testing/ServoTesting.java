@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Subsystems.dropper;
+import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Plane;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.Subsystems.dropper;
@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class ServoTesting extends LinearOpMode {
 
   private Outtake outtake;
-  private dropper dropper;
+  private Lift lift;
     private Plane plane;
     @Override
 
@@ -27,17 +27,18 @@ public class ServoTesting extends LinearOpMode {
         while (opModeIsActive()) {
             //dropper = new dropper(hardwareMap);
             outtake=new Outtake(hardwareMap);
-            dropper=new dropper(hardwareMap);
+            lift=new Lift(hardwareMap, telemetry);
             plane=new Plane(hardwareMap);
-            outtake.lockPixels();
+//            outtake.lockPixels();
             if (gamepad1.a) {
               //I love You
-                dropper.Hold();
-                outtake.releaseSecondary();
+                lift.liftToHeight(151);
+                lift.holdLift();
+
             }
            else {
-                dropper.Drop();
-                outtake.lockPixels();
+//                lift.liftToHeight(12);
+
                 }
             }
             }

@@ -68,7 +68,7 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.pivotStart(); intake.in();})
+                .addTemporalMarker(()->{outtake.diffyPosition(3); intake.in();})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(30, -10, Math.toRadians(0)),
@@ -107,7 +107,7 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-58,-12, Math.toRadians(0)),
         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                 SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.pivotStart(); intake.in();})
+                .addTemporalMarker(()->{outtake.diffyPosition(3); intake.in();})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)),
@@ -133,7 +133,7 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-65, -30, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.pivotStart(); })
+                .addTemporalMarker(()->{outtake.diffyPosition(3); })
                 .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -141,7 +141,7 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-72, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.pivotStart(); intake.in();})
+                .addTemporalMarker(()->{outtake.diffyPosition(3); intake.in();})
                 .waitSeconds(0.5)
                 .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),

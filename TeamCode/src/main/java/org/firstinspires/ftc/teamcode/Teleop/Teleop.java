@@ -123,11 +123,11 @@ public class Teleop extends LinearOpMode {
             if (gamepad2.left_stick_button) plane.reset();
 
             if (gamepad2.right_bumper) {
-                outtake.pivotEnding();
-                outtake.resetBucket();
+                //outtake.pivotEnding();
+                //outtake.resetBucket();
             }//score
             if (gamepad2.left_bumper) {
-                outtake.pivotStart();
+                //outtake.pivotStart();
                 outtake.releaseMain();
                 outtake.releaseSecondary();
             }//score
@@ -136,12 +136,12 @@ public class Teleop extends LinearOpMode {
                     driveTrain.joystick_conditioning(gamepad1.left_stick_x, 0, .1, .8),
                     driveTrain.joystick_conditioning(gamepad1.right_stick_x, 0, .1, .8));
             if (gamepad2.dpad_up) {
-                outtake.transferPixels();
+                //outtake.transferPixels();
                 sleep(1000);
                 outtake.lockPixels();
             }
             if (gamepad2.dpad_down) {
-                outtake.resetBucket();
+                //outtake.resetBucket();
             }
 //            int count = 0;
 //            if (gamepad2.a && lockTimer.seconds() > 4) {

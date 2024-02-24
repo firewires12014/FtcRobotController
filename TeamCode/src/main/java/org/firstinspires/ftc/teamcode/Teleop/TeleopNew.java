@@ -61,6 +61,7 @@ public class TeleopNew extends OpMode {
     double outTime = 0.75; //seconds
     double lockTime = 1; //seconds
     double climbTime = 110; //seconds
+    boolean inside =true;
     ElapsedTime upTimer = new ElapsedTime();
     ElapsedTime secureTimer = new ElapsedTime();
     ElapsedTime inTimer = new ElapsedTime();
@@ -103,7 +104,7 @@ public class TeleopNew extends OpMode {
         plane = new Plane(hardwareMap);
         climb = new Climb(hardwareMap);
         intake.initIntake();
-
+        outtake.intakePosition();
     }
 
     @Override
@@ -128,9 +129,11 @@ public class TeleopNew extends OpMode {
         }
 
         //Intake
-        if (gamepad1.right_bumper) {
+        if (gamepad1.right_trigger > 0) {
             intake.in();
-        } else if (gamepad1.left_bumper) {
+            lift.liftToHeight(12);
+          //  lift.holdLift();
+        } else if (gamepad1.left_trigger > 0) {
             intake.out();
         } else {
             intake.die();
@@ -146,21 +149,22 @@ public class TeleopNew extends OpMode {
         //Lift
         lift.moveLift(gamepad2.left_stick_y - Kg);
 
+
         //Pivot
         if (gamepad2.right_bumper) { //Scoring Pos.
-            outtake.pivotEnding();
+            //outtake.pivotEnding();
         }
 
 
         //Locks
         if (gamepad2.a) { //Lock
+            lift.lowerLift();
             outtake.lockPixels();
         }
-        if (gamepad2.left_trigger == (1)) { //Unlock Top
+        if (gamepad2.left_trigger == (1)) {
             outtake.releaseMain();
         }
-        if (gamepad2.right_trigger == (1)) { //Unlock All
-            outtake.releaseMain();
+        if (gamepad2.right_trigger == (1)) {
             outtake.releaseSecondary();
         }
 
@@ -173,34 +177,37 @@ public class TeleopNew extends OpMode {
         gamepadRateLimit = new Deadline(GAMEPAD_LOCKOUT, TimeUnit.MILLISECONDS);
 
         // state changes
-        if ((gamepad2.right_bumper || gamepad1.left_bumper) && !changed) {
+        if ((gamepad2.b || gamepad2.x) && !changed) {
             changed = true;
-            if (gamepad1.right_bumper)  lastPos++;
-            if (gamepad1.left_bumper)   lastPos = lastPos - 1;
+            if (gamepad2.b)  lastPos++;
+            if (gamepad2.x)   lastPos = lastPos - 1;
         }
 
         if (lastPos > 7) lastPos = 7;
         if (lastPos < 0) lastPos = 0;
 
-        if (!gamepad1.left_bumper && !gamepad1.right_bumper){
+        if (!gamepad2.x && !gamepad2.b && !inside){
             changed = false;
         }
 
 
-        if (gamepad2.x){
+        if (gamepad2.right_bumper){
             lastPos = 3;
+            inside = false;
            outtake.diffyPosition(lastPos);
         }
 
-        if (gamepad2.b) {
+        if (gamepad2.left_bumper) {
          outtake.intakePosition();
+         inside = true;
             lastPos = 0;
         }
-        if (gamepad2.left_bumper || gamepad1.right_bumper) {
+        if ((gamepad2.x || gamepad2.b) && !inside ) {
             outtake.diffyPosition(lastPos);
         }
 
-
+        telemetry.addData("lastPos", lastPos);
+        telemetry.update();
 
 
 

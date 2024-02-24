@@ -5,27 +5,26 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class Outtake {
 
-    private Servo pivot, primaryLock, secondaryLock, left, right;
+    private Servo pivot, frontGrabber, backGrabber, leftPivot, rightPivot;
 
-    static final double LOCK_TOP = 1.0;
-    static final double LOCK_BOTTOM = 1.00;
-    static final double UNLOCK_MAIN = 0.0;
-    static final double UNLOCK_SECONDARY = 0.0;
+    static final double LOCK_TOP = 0.0;
+    static final double LOCK_BOTTOM = 0.00;
+    static final double UNLOCK_MAIN = 1.0;
+    static final double UNLOCK_SECONDARY = 1.0;
     static final double PIVOT_INTERIM = 0.6;
 
 
     public Outtake(HardwareMap hardwareMap){
-        pivot = hardwareMap.get(Servo.class, "outtakePivot");
-        primaryLock = hardwareMap.get(Servo.class, "primaryLock");
-        secondaryLock = hardwareMap.get(Servo.class, "secondaryLock");
-        left = hardwareMap.get(Servo.class, "left");
-        right = hardwareMap.get(Servo.class, "right");
+        leftPivot = hardwareMap.get(Servo.class, "leftPivot");
+        rightPivot = hardwareMap.get(Servo.class, "rightPivot");
+        backGrabber = hardwareMap.get(Servo.class, "backGrabber");
+        frontGrabber = hardwareMap.get(Servo.class, "frontGrabber");
     }
 
 
     public void lockPixels(){
-        primaryLock.setPosition(LOCK_BOTTOM);
-        secondaryLock.setPosition(LOCK_TOP);
+        frontGrabber.setPosition(LOCK_BOTTOM);
+        backGrabber.setPosition(LOCK_TOP);
     }
 
     public void pivotAuto(){
@@ -33,44 +32,45 @@ public class Outtake {
     }
 
     public void lockSecondary() {
-        secondaryLock.setPosition(LOCK_TOP);
+        backGrabber.setPosition(LOCK_TOP);
     }
 
-    public void releaseMain(){ primaryLock.setPosition(UNLOCK_MAIN);}
+    public void releaseMain(){ frontGrabber.setPosition(UNLOCK_MAIN);}
     public void releaseSecondary() {
-        secondaryLock.setPosition(UNLOCK_SECONDARY);
+        backGrabber.setPosition(UNLOCK_SECONDARY);
     }
-    public void releasePixels () {secondaryLock.setPosition(UNLOCK_SECONDARY); primaryLock.setPosition(UNLOCK_MAIN);}
+    public void releasePixels () {
+        backGrabber.setPosition(UNLOCK_SECONDARY); frontGrabber.setPosition(UNLOCK_MAIN);}
     public void pivotInterim(){
         pivot.setPosition(PIVOT_INTERIM);
     }
     public void intakePosition(){
-        left.setPosition(0.31); //.296
-        right.setPosition(.704); //intake
+        leftPivot.setPosition(0.29); //.296
+        rightPivot.setPosition(.755); //intake
     }
 
 public void diffyPosition(int position) {
     if (position == 0) {
-        right.setPosition(0.042); // Inverted Left
-        left.setPosition(0.042);
+        rightPivot.setPosition(0.042); // Inverted Left
+        leftPivot.setPosition(0.042);
     } else if (position == 1){
-        right.setPosition(.231);
-        left.setPosition(.231); // Horizontal Left
+        rightPivot.setPosition(.231);
+        leftPivot.setPosition(.231); // Horizontal Left
     } else if (position == 2){
-        right.setPosition(0.405);
-        left.setPosition(0.405); // Angled Left
+        rightPivot.setPosition(0.405);
+        leftPivot.setPosition(0.405); // Angled Left
     } else if (position == 3) {
-        left.setPosition(.507);// Prime Vertical
-        right.setPosition(.507);
+        leftPivot.setPosition(.507);// Prime Vertical
+        rightPivot.setPosition(.507);
     } else if (position == 4){
-        right.setPosition(.59); // Angled Right
-        left.setPosition(0.59);
+        rightPivot.setPosition(.59); // Angled Right
+        leftPivot.setPosition(0.59);
     } else if (position ==5){
-        right.setPosition(.78);
-        left.setPosition(.78); // Horizontal Right
+        rightPivot.setPosition(.78);
+        leftPivot.setPosition(.78); // Horizontal Right
     } else if (position == 6){
-        right.setPosition(.95); // Inverted Right
-        left.setPosition(.95);
+        rightPivot.setPosition(.95); // Inverted Right
+        leftPivot.setPosition(.95);
     }
 
 }
