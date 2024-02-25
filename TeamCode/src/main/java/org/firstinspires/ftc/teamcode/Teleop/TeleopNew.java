@@ -131,8 +131,6 @@ public class TeleopNew extends OpMode {
         //Intake
         if (gamepad1.right_trigger > 0) {
             intake.in();
-            lift.liftToHeight(15);
-          //  lift.holdLift();
         } else if (gamepad1.left_trigger > 0) {
             intake.out();
         } else {

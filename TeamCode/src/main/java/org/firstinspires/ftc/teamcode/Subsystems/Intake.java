@@ -43,7 +43,7 @@ public class Intake {
     public void stack() { // save for later
         intakeHeight.setPosition(0.46);
     }
-    public void specialStack () {intakeHeight.setPosition(0.43);}
+    public void specialStack () {intakeHeight.setPosition(0.85);}
     public void score() { //this is for scoring on the ground during auto
         intakeHeight.setPosition(0.95);
     }
