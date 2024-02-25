@@ -63,6 +63,15 @@ public class blueClose extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(60, 42, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addTemporalMarker(()-> {lift.liftToHeight(160); lift.holdLift();})
+                .addTemporalMarker(()-> {outtake.diffyPosition(3); })
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{outtake.releasePixels();})
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
+                .lineToLinearHeading(new Pose2d(55, 60, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .build();
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
@@ -73,6 +82,9 @@ public class blueClose extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(60, 36, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(55, 60, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         //Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
@@ -81,6 +93,9 @@ public class blueClose extends LinearOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.stack();})
                 .lineToLinearHeading(new Pose2d(62, 30, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(55, 60, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();

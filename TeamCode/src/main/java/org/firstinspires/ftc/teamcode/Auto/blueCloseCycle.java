@@ -1,20 +1,14 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
-import org.firstinspires.ftc.teamcode.Vision.VisionBlueClose;
-import org.firstinspires.ftc.teamcode.Vision.VisionBlueFar;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -58,7 +52,7 @@ public class blueCloseCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(41, 32, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.specialStack();})
+                .addTemporalMarker(()->{intake.stackHeight();})
                 .lineToLinearHeading(new Pose2d(59, 44, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -69,29 +63,47 @@ public class blueCloseCycle extends LinearOpMode {
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
               //pixel on back board
-                .lineToLinearHeading(new Pose2d(42, 11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(42, 10, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.specialStack();})
-                .lineToLinearHeading((new Pose2d(-54, 11,Math.toRadians(180))),
+                .addTemporalMarker(()->{intake.stackHeight();})
+                .lineToLinearHeading((new Pose2d(-47, 10,Math.toRadians(180))),
                         SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(-50, 10, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addTemporalMarker(()-> {intake.in();})
+                .waitSeconds(.8)
+                .addTemporalMarker(()->{intake.stackHeightTwo();})
+                .waitSeconds(.5)
+                .lineToLinearHeading(new Pose2d(-46, 10, Math.toRadians(180)))
+                .addTemporalMarker(()-> {intake.score();})
                 .addTemporalMarker(()->{lift.liftToHeight(5);lift.holdLift();})
                 .waitSeconds(0.3)
-                .lineToLinearHeading(new Pose2d(-43, 11, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .addTemporalMarker(()-> {intake.die();})
+                .addTemporalMarker(()-> {intake.inSlow();})
+                .lineToLinearHeading(new Pose2d(42, 10, Math.toRadians(180)), // drive across field
+                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{;intake.in();})
-                .addTemporalMarker(()->{intake.specialStack();})
-                .waitSeconds(0.25)
-                .addTemporalMarker(()->{intake.score(); intake.in();})
-                .lineToLinearHeading(new Pose2d(-45, 11, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .addTemporalMarker(()-> {intake.die();})
+                .addTemporalMarker(()-> {lift.lowerLift();})
+                .waitSeconds(.3)
+                .addTemporalMarker(()-> {outtake.lockPixels();})
+                .lineToLinearHeading(new Pose2d(61, 36, Math.toRadians(180)), // to backboard
+                        SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(0.25)
-                .lineToLinearHeading(new Pose2d(-50, 11, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(.25)
+                .addTemporalMarker(()-> {lift.liftToHeight(160); lift.holdLift();})
+                .waitSeconds(0.1)
+                .addTemporalMarker(()-> {outtake.diffyPosition(3); })
+                .waitSeconds(0.1)
+                .addTemporalMarker(()-> {outtake.diffyPosition(1);})
+                .waitSeconds(0.2)
+                .addTemporalMarker(()->{outtake.releasePixels();})
+                .waitSeconds(0.5)
+                .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
+
 
 
                 .build();
@@ -123,7 +135,9 @@ public class blueCloseCycle extends LinearOpMode {
                 .addTemporalMarker(()->{lift.liftToHeight(160); lift.holdLift();})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{outtake.diffyPosition(3);})
-                .waitSeconds(0.25)
+                .waitSeconds(0.1)
+                .addTemporalMarker(()-> {outtake.diffyPosition(0);})
+                .waitSeconds(0.1)
                 .addTemporalMarker(()-> {outtake.releasePixels();})
                 .waitSeconds(0.5)
                 .build();
@@ -170,6 +184,7 @@ public class blueCloseCycle extends LinearOpMode {
                 case LEFT:
                     drive.followTrajectorySequence(leftMovementOne);
                     stop();
+                    sleep(30000);
                     break;
             }
             sleep(30000);
