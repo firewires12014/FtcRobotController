@@ -163,8 +163,6 @@ public class blueCloseCycle extends LinearOpMode {
 
         while (opModeIsActive()) {
             intake.auto();
-            sleep(1000);
-
 
             VisionBlueClose.Location location = VisionBlueClose.getLocation();
             telemetry.addData("Location:", location);

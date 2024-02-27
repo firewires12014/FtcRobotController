@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.dropper;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.Vision.VisionRedFar;
@@ -27,12 +26,11 @@ public class redFarNew extends LinearOpMode {
     Outtake outtake;
     Lift lift;
     Intake intake;
-    dropper dropper;
     @Override
     public void runOpMode() throws InterruptedException {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "WebcamRed"), cameraMonitorViewId);
         camera.setPipeline(VisionRedFar); // this is what gets the camera going.
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
@@ -40,11 +38,11 @@ public class redFarNew extends LinearOpMode {
         drive = new SampleMecanumDrive(hardwareMap);
         lift = new Lift(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
-        //intake.resetIntake();
-        outtake.lockPixels();
         Pose2d startingPose = new Pose2d(-39.5,-63.6, Math.toRadians(180));
         drive.setPoseEstimate(startingPose);
-
+        intake.up();
+        lift.lowerLift();
+        outtake.lockPrimary();
         // Trajectory Declaration
 
         // right
@@ -55,7 +53,9 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-29, -34, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{ dropper.Drop(); intake.stack(); })
+                .addTemporalMarker(()->{outtake.autoDrop();;})
+                .waitSeconds(0.5)
+                .addTemporalMarker(()->{outtake.releasePixels();})
                 .lineToLinearHeading(new Pose2d(-35, -34, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -68,36 +68,14 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-58, -11, Math.toRadians(0)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.diffyPosition(3); intake.in();})
-                .waitSeconds(1)
-                .addTemporalMarker(()->{intake.die();})
-                .lineToLinearHeading(new Pose2d(30, -10, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(53, -30, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //drop 1 here
-                .lineToLinearHeading(new Pose2d(50, -30, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(50, -43, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(53, -43, Math.toRadians(0)),
-                        SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //yellow drop here
+                .addTemporalMarker(()->{ lift.liftToHeight(17);outtake.intakePosition();intake.in();})
                 .build();
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(new Pose2d(-38, -32, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{ dropper.Drop(); intake.stack(); })
+                .addTemporalMarker(()->{ intake.stack(); })
                 .lineToLinearHeading(new Pose2d(-45, -32, Math.toRadians(180)),
         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                 SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -107,7 +85,7 @@ public class redFarNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-58,-12, Math.toRadians(0)),
         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                 SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.diffyPosition(3); intake.in();})
+                .addTemporalMarker(()->{ intake.in();})
                 .waitSeconds(1)
                 .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(35, -12, Math.toRadians(0)),
@@ -130,23 +108,32 @@ public class redFarNew extends LinearOpMode {
                 .build();
         //left
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
+                .addTemporalMarker(()->{intake.score();})
                 .lineToLinearHeading(new Pose2d(-65, -30, Math.toRadians(180)),
-                        SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.diffyPosition(3); })
+                .addTemporalMarker(()->{lift.liftToHeight(7);lift.holdLift();})
+                .waitSeconds(0.2)
+                .addTemporalMarker(()->{outtake.autoDrop();})
+                .waitSeconds(0.5)
+                .addTemporalMarker(()->{outtake.releasePixels();intake.up();})
+                .waitSeconds(0.25)
+                .lineToLinearHeading(new Pose2d(-65, -15, Math.toRadians(180)),
+                        SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.stack();})
-                .lineToLinearHeading(new Pose2d(-72, -11, Math.toRadians(180)),
+                .addTemporalMarker(()->{outtake.intakePosition();lift.lowerLift();intake.in();})
+                .lineToLinearHeading(new Pose2d(-74, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.diffyPosition(3); intake.in();})
+                .addTemporalMarker(()->{outtake.intakePosition(); intake.specialStack();})
                 .waitSeconds(0.5)
                 .lineToLinearHeading(new Pose2d(-70, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.up();intake.die();})
+                .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(-67, -11, Math.toRadians(180)),
                         SampleMecanumDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -188,28 +175,26 @@ public class redFarNew extends LinearOpMode {
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
-        outtake.lockSecondary(); //get rid depending on things
-        outtake.releaseMain();
         waitForStart();
 
         while (opModeIsActive()) {
             drive.followTrajectorySequence(leftMovementOne);
             VisionRedFar.Location location = VisionRedFar.getLocation();
-            sleep(300000000);
+            telemetry.addData("Location: ", location);
 
-//            switch (location) {
-//                case LEFT:
-//                    drive.followTrajectorySequence(leftMovementOne);
-//                    sleep(3000000);
-//                    break;
-//                case MIDDLE:
-//                    drive.followTrajectorySequence(middleMovementOne);
-//                    sleep(300000);
-//                    break;
-//                case RIGHT:
-//                    drive.followTrajectorySequence(rightMovementOne);
-//                    sleep(3000000);
-//                    break;
+            switch (location) {
+                case LEFT:
+                    drive.followTrajectorySequence(leftMovementOne);
+                    sleep(3000000);
+                    break;
+                case MIDDLE:
+                    drive.followTrajectorySequence(middleMovementOne);
+                    sleep(300000);
+                    break;
+                case RIGHT:
+                    drive.followTrajectorySequence(rightMovementOne);
+                    sleep(3000000);
+                    break;
             }
 
 
@@ -218,5 +203,5 @@ public class redFarNew extends LinearOpMode {
 
     }
 
-//}
+}
 

@@ -26,13 +26,15 @@ public class Outtake {
         frontGrabber.setPosition(LOCK_BOTTOM);
         backGrabber.setPosition(LOCK_TOP);
     }
-
+    public void lockPrimary() {
+        frontGrabber.setPosition(LOCK_TOP);
+    }
     public void pivotAuto(){
         pivot.setPosition(1);
     }
 
     public void lockSecondary() {
-        backGrabber.setPosition(LOCK_TOP);
+        backGrabber.setPosition(LOCK_BOTTOM);
     }
 
     public void releaseMain(){ frontGrabber.setPosition(UNLOCK_MAIN);}
@@ -47,6 +49,10 @@ public class Outtake {
     public void intakePosition(){
         leftPivot.setPosition(0.29); //.296
         rightPivot.setPosition(.755); //intake
+    }
+    public void autoDrop(){
+        leftPivot.setPosition(0.367);
+        rightPivot.setPosition(0.648);
     }
 
 public void diffyPosition(int position) {

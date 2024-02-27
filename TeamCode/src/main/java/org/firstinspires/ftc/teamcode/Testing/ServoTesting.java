@@ -32,12 +32,12 @@ public class ServoTesting extends LinearOpMode {
 //            outtake.lockPixels();
             if (gamepad1.a) {
               //I love You
-                lift.liftToHeight(151);
-                lift.holdLift();
+               outtake.autoDrop();
 
             }
            else {
-//                lift.liftToHeight(12);
+//
+                outtake.intakePosition();
 
                 }
             }

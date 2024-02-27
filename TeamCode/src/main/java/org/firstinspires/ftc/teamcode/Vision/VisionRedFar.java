@@ -33,8 +33,8 @@ public class VisionRedFar extends OpenCvPipeline {
             new Point(0, 120),
             new Point(90, 200));
     static final Rect LEFT_ROI = new Rect(
-            new Point(190, 120),
-            new Point(280, 200));
+            new Point(150, 120),
+            new Point(240, 200));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public VisionRedFar(Telemetry t) { telemetry = t; }
