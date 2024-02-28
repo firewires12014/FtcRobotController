@@ -8,7 +8,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
-import org.firstinspires.ftc.teamcode.Subsystems.dropper;
 import org.firstinspires.ftc.teamcode.Vision.VisionRedClose;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.Mecanum;
@@ -24,25 +23,22 @@ public class redClose extends LinearOpMode {
     private VisionRedClose VisionRedClose = new VisionRedClose(telemetry); // camera stuff
     Mecanum drive;
     Outtake outtake;
-    dropper dropper;
     Lift lift;
     Intake intake;
     @Override
     public void runOpMode() throws InterruptedException {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "WebcamRed"), cameraMonitorViewId);
         camera.setPipeline(VisionRedClose); // this is what gets the camera going.
         // Send telemetry message to signify robot waiting;
         // Wait for the game to start (driver presses PLAY)
         outtake = new Outtake(hardwareMap);
-        dropper = new dropper(hardwareMap);
         drive = new Mecanum(hardwareMap);
         lift = new Lift(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
         //intake.resetIntake();
         outtake.lockPixels();
-        dropper.Hold();
         Pose2d startingPose = new Pose2d(16,-63.6, Math.toRadians(180));
         drive.setPoseEstimate(startingPose);
 
@@ -50,23 +46,22 @@ public class redClose extends LinearOpMode {
 
         // Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(26, -26, Math.toRadians(180)),
-                       Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(26, -32, Math.toRadians(180)),
+                       Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.stack();})
-                .lineToLinearHeading(new Pose2d(52, -44, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(53, -44, Math.toRadians(180)),
                 Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                 Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //                .addTemporalMarker(()->{lift.moveLift(-.4f);})
-//                .waitSeconds(1)
-//                .addTemporalMarker(()->{lift.moveLift(-0.01f);})
-//                .waitSeconds(0.5)
-//                .addTemporalMarker(()->{outtake.pivotEnding();})
-//                .waitSeconds(1)
-//                .addTemporalMarker(()->{outtake.releaseSecondary(); outtake.releaseMain();})
-//                .waitSeconds(1)
-//                .lineToLinearHeading(new Pose2d(50,-37, Math.toRadians(180)))
-//                .addTemporalMarker(()->{outtake.pivotStart(); lift.moveLift(0.3);})
+                .UNSTABLE_addTemporalMarkerOffset(-2, ()-> {lift.liftToHeight(180); lift.holdLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(3); })
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(1);})
+                .addTemporalMarker(()->{outtake.releasePixels();})
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
+                .lineToLinearHeading(new Pose2d(55, -57, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
 
 
@@ -136,8 +131,6 @@ public class redClose extends LinearOpMode {
             telemetry.addData("Location: ", location);
             telemetry.update();
         }
-        outtake.lockSecondary();
-        outtake.releaseMain();
         waitForStart();
 
         while (opModeIsActive()) {
@@ -150,20 +143,20 @@ public class redClose extends LinearOpMode {
             VisionRedClose.Location location = VisionRedClose.getLocation();
 
             switch (location) {
-                case MIDDLE: //left
+                case LEFT:
                     drive.followTrajectorySequence(leftMovementOne);
                     sleep(300000);
                     break;
-//
-//                case MIDDLE:
-//                    drive.followTrajectorySequence(middleMovementOne);
-//                    sleep(30000);
-//                    break;
 
-//                case MIDDLE: // right
-//                    drive.followTrajectorySequence(rightMovementOne);
-//                    sleep(300000);
-//                    break;
+                case MIDDLE:
+                    drive.followTrajectorySequence(middleMovementOne);
+                    sleep(30000);
+                    break;
+
+                case RIGHT:
+                    drive.followTrajectorySequence(rightMovementOne);
+                    sleep(300000);
+                    break;
             }
 
 

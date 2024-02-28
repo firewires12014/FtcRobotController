@@ -18,6 +18,8 @@ public class Lift {
         rightLift = hardwareMap.get(DcMotor.class, "rightLift");
         rightLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void moveLift(double left_stick_y) {
@@ -31,12 +33,12 @@ public class Lift {
         double leftPower;
         double rightPower;
         if ( height < leftLift.getCurrentPosition()){
-          leftPower = -0.4;
-          rightPower = 0.4;
+          leftPower = -0.7;
+          rightPower = 0.7;
         }
         else {
-            leftPower = 0.4;
-            rightPower = -0.4;
+            leftPower = 0.7;
+            rightPower = -0.7;
         }
         telemetry.addData("encoder", leftLift.getCurrentPosition());
         telemetry.update();
