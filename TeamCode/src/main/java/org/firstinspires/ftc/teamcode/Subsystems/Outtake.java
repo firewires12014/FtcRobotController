@@ -51,8 +51,8 @@ public class Outtake {
         rightPivot.setPosition(.755); //intake
     }
     public void autoDrop(){
-        leftPivot.setPosition(0.367);
-        rightPivot.setPosition(0.648);
+        leftPivot.setPosition(0.394);
+        rightPivot.setPosition(0.620);
     }
 
 public void diffyPosition(int position) {

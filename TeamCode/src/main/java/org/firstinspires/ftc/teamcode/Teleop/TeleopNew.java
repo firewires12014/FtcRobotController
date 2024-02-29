@@ -134,8 +134,15 @@ public class TeleopNew extends OpMode {
         } else if (gamepad1.left_trigger > 0) {
             intake.out();
         } else {
-            intake.die();
+//            intake.die();
         }
+
+        if (gamepad1.right_bumper) {
+            intake.inSlow();
+        } else if (gamepad1.left_bumper) {
+            intake.outSlow();
+        }
+
         //Intake Stack Height
         if (gamepad2.y) {
             intake.stack();

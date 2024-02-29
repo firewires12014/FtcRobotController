@@ -16,8 +16,8 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "redFarNew", group = "Robot")
-public class redFarNew extends LinearOpMode {
+@Autonomous(name = "redFarCycle", group = "Robot")
+public class redFarCycle extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionRedFar VisionRedFar = new VisionRedFar(telemetry); // camera stuff
     Mecanum drive;

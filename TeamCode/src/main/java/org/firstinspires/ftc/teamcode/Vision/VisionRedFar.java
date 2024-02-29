@@ -30,11 +30,11 @@ public class VisionRedFar extends OpenCvPipeline {
 
     private Location location = Location.MIDDLE;
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(0, 120),
-            new Point(90, 200));
-    static final Rect LEFT_ROI = new Rect(
             new Point(150, 120),
             new Point(240, 200));
+    static final Rect LEFT_ROI = new Rect(
+            new Point(0, 120),
+            new Point(90, 200));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public VisionRedFar(Telemetry t) { telemetry = t; }
@@ -66,12 +66,12 @@ public class VisionRedFar extends OpenCvPipeline {
         boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
 
         if (stoneRight) {
-            location = Location.MIDDLE;
-            telemetry.addData("Cube Location", "middle");
-        }
-        else if (stoneLeft) {
             location = Location.LEFT;
             telemetry.addData("Cube Location", "left");
+        }
+        else if (stoneLeft) {
+            location = Location.MIDDLE;
+            telemetry.addData("Cube Location", "middle");
         }
         else {
             location = Location.RIGHT;
