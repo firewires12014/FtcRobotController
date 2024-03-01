@@ -30,7 +30,7 @@ public class Intake {
 
     }
     public void inSlow() {
-        primaryRoller.setPower(-0.75);
+        primaryRoller.setPower(-0.5);
         secondaryRoller.setPower(1);
     }
 
@@ -40,7 +40,7 @@ public class Intake {
     }
 
     public void outSlow() {
-        primaryRoller.setPower(0.75);
+        primaryRoller.setPower(0.5);
         secondaryRoller.setPower(-1);
     }
 

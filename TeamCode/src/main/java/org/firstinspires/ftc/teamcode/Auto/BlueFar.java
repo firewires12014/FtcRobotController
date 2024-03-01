@@ -17,8 +17,8 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "redFarCycle", group = "Robot")
-public class redFarCycle extends LinearOpMode {
+@Autonomous(name = "BlueFar", group = "Robot")
+public class BlueFar extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionRedFar VisionRedFar = new VisionRedFar(telemetry); // camera stuff
     Mecanum drive;
@@ -37,7 +37,7 @@ public class redFarCycle extends LinearOpMode {
         drive = new Mecanum(hardwareMap);
         lift = new Lift(hardwareMap, telemetry);
         intake = new Intake(hardwareMap);
-        Pose2d startingPose = new Pose2d(-39.5,-63.6, Math.toRadians(180));
+        Pose2d startingPose = new Pose2d(-39.5,63.6, Math.toRadians(180));
         drive.setPoseEstimate(startingPose);
 
         lift.lowerLift();
@@ -61,21 +61,20 @@ public class redFarCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-50, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //pixel grab
                 .lineToLinearHeading(new Pose2d(30, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(190); lift.holdLift(); outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
+           //     .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(190); lift.holdLift(); outtake.diffyPosition(3);})
+           //     .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
                 .lineToLinearHeading(new Pose2d(52, -39, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.releasePixels();})
+            //    .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.25)
                 .lineToLinearHeading(new Pose2d(48, -40, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.diffyPosition(3);})
+             //   .addTemporalMarker(()->{outtake.diffyPosition(3);})
                 .waitSeconds(0.2)
                 .addTemporalMarker(()->{outtake.intakePosition();})
                 .build();
@@ -93,23 +92,22 @@ public class redFarCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(49, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //pixel grab
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(190); lift.holdLift(); outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
+              //  .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(190); lift.holdLift(); outtake.diffyPosition(3);})
+               // .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
                 .lineToLinearHeading(new Pose2d(40,-20, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToLinearHeading(new Pose2d(51, -33, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.releasePixels();})
+              //  .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.5)
                 .lineToLinearHeading(new Pose2d(49, -33, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{outtake.diffyPosition(3);})
+             //   .addTemporalMarker(()->{outtake.diffyPosition(3);})
                 .waitSeconds(0.25)
-                .addTemporalMarker(()->{outtake.intakePosition();})
+             //   .addTemporalMarker(()->{outtake.intakePosition();})
                 //put pixel drop yellow here
                 .build();
         //left
@@ -123,11 +121,9 @@ public class redFarCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-65, -10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(10)
                 .lineToLinearHeading(new Pose2d(30, -10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //going to back board
                 .lineToLinearHeading(new Pose2d(45, -27, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -170,7 +166,7 @@ public class redFarCycle extends LinearOpMode {
 
             switch (location) {
                 case LEFT:
-                    intake.specialStack();
+                    intake.score();
                     drive.followTrajectorySequence(leftMovementOne);
                     sleep(3000000);
                     break;
