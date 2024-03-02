@@ -29,11 +29,11 @@ public class VisionBlueFar extends OpenCvPipeline {
 
     private Location location = Location.MIDDLE;
     static final Rect RIGHT_ROI = new Rect(
-            new Point(220, 80),
-            new Point(320, 225));
+            new Point(250, 80),
+            new Point(320, 200));
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(50, 80),
-            new Point(180, 180));
+            new Point(70, 80),
+            new Point(200, 180));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public VisionBlueFar(Telemetry t) { telemetry = t; }

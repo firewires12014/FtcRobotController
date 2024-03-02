@@ -27,7 +27,7 @@ public class Outtake {
         backGrabber.setPosition(LOCK_TOP);
     }
     public void lockPrimary() {
-        frontGrabber.setPosition(LOCK_TOP);
+        frontGrabber.setPosition(LOCK_BOTTOM);
     }
     public void pivotAuto(){
         pivot.setPosition(1);

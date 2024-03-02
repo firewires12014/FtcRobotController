@@ -33,8 +33,8 @@ public class Lift {
         double leftPower;
         double rightPower;
         if ( height < leftLift.getCurrentPosition()){
-          leftPower = -0.7;
-          rightPower = 0.7;
+          leftPower = -0.8;
+          rightPower = 0.8;
         }
         else {
             leftPower = 0.7;
@@ -56,8 +56,8 @@ public class Lift {
         leftLift.setPower(0);
         }
         public void holdLift() {
-        leftLift.setPower(0.05);
-        rightLift.setPower(-0.05);
+        leftLift.setPower(0.07);
+        rightLift.setPower(-0.07);
         }
         public void lowerLift() {
         leftLift.setPower(-0.2);
