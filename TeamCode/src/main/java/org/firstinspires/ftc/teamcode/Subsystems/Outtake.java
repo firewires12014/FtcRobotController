@@ -7,8 +7,8 @@ public class Outtake {
 
     private Servo pivot, frontGrabber, backGrabber, leftPivot, rightPivot;
 
-    static final double LOCK_TOP = 0.0;
-    static final double LOCK_BOTTOM = 0.00;
+    static final double LOCK_TOP = 0.4;
+    static final double LOCK_BOTTOM = 0.40;
     static final double UNLOCK_MAIN = 1.0;
     static final double UNLOCK_SECONDARY = 1.0;
     static final double PIVOT_INTERIM = 0.6;
@@ -47,8 +47,8 @@ public class Outtake {
         pivot.setPosition(PIVOT_INTERIM);
     }
     public void intakePosition(){
-        leftPivot.setPosition(0.29); //.296
-        rightPivot.setPosition(.755); //intake
+        leftPivot.setPosition(0.287); //.296
+        rightPivot.setPosition(.732); //intake
     }
     public void autoDrop(){
         leftPivot.setPosition(0.394);

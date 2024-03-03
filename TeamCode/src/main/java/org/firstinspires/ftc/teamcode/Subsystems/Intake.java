@@ -30,7 +30,7 @@ public class Intake {
 
     }
     public void inSlow() {
-        primaryRoller.setPower(-0.6);
+        primaryRoller.setPower(-0.4);
         secondaryRoller.setPower(1);
     }
 
@@ -56,7 +56,7 @@ public class Intake {
     public void score() { //this is for scoring on the ground during auto
         intakeHeight.setPosition(0.95);
     }
-    public void specialStack() {intakeHeight.setPosition(0.73);} //lucy's do not change
+    public void specialStack() {intakeHeight.setPosition(0.74);} //lucy's do not change
     public void superStack() {intakeHeight.setPosition(0.80);} //lucy's do not change
 
     public void auto() {intakeHeight.setPosition(1);}
