@@ -56,7 +56,9 @@ public class Intake {
     public void score() { //this is for scoring on the ground during auto
         intakeHeight.setPosition(0.95);
     }
-    public void specialStack() {intakeHeight.setPosition(0.83);} //lucy's do not change
+    public void specialStack() {intakeHeight.setPosition(0.73);} //lucy's do not change
+    public void superStack() {intakeHeight.setPosition(0.80);} //lucy's do not change
+
     public void auto() {intakeHeight.setPosition(1);}
     public void up () {intakeHeight.setPosition(0.3);}
     public void closeAuto () {intakeHeight.setPosition(0.6);}

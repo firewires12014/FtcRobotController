@@ -85,7 +85,7 @@ public class BlueFar extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(60); outtake.autoDrop();})
                 .addTemporalMarker(()->{outtake.releaseMain();})
-                .waitSeconds(0.5)
+                .waitSeconds(10)
                 .lineToLinearHeading(new Pose2d(-47,10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -114,7 +114,7 @@ public class BlueFar extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(55); lift.holdLift();outtake.autoDrop();})
                 .addTemporalMarker(()-> { outtake.releaseMain();})
-                .waitSeconds(0.5)
+                .waitSeconds(10)
                 .lineToLinearHeading(new Pose2d(-35, 10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))

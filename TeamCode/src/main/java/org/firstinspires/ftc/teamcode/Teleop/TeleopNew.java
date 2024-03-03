@@ -143,6 +143,9 @@ public class TeleopNew extends OpMode {
         else {
             intake.score();
         }
+        if (gamepad2.dpad_right) {
+            intake.stackHeight();
+        }
 //
 //        if (gamepad1.y) {
 //            intake.stackHeight();
