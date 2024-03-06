@@ -48,72 +48,166 @@ public class redFarCycle extends LinearOpMode {
 
         // right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(-45, -35, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-43, -35, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToLinearHeading(new Pose2d(-39, -35, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(60); outtake.autoDrop();})
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{ intake.up(); lift.liftToHeight(60); outtake.autoDrop();})
+                //drop purple pixel
                 .addTemporalMarker(()->outtake.releaseMain())
+                .waitSeconds(0.55)
+                // go to stack
+                .lineToLinearHeading(new Pose2d(-74,-12, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(40);lift.holdLift();outtake.intakePosition();intake.inSlow();})
+                .waitSeconds(.25)
+                //getting first white pixel
+                .addTemporalMarker(()-> {intake.specialStack();intake.inSlow();lift.liftToHeight(40);lift.holdLift();})
+                .waitSeconds(0.5)
+                //back up from stack a little
+                .lineToLinearHeading(new Pose2d(-64, -11, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(32, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addTemporalMarker(()->{intake.up();})
+                .waitSeconds(0.2)
+                .addTemporalMarker(()->{intake.score();})
+                //drive a little forward to stack
+                .lineToLinearHeading(new Pose2d(-69, -12, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(28, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
+                .waitSeconds(0.2)
+                // stops intake and lowers lift
+                .addTemporalMarker(()->{intake.die();lift.lowerLift();})
+                .waitSeconds(.35)
+                // lock pixels
+                .addTemporalMarker(()-> {outtake.lockPixels(); })
                 .waitSeconds(0.25)
-                .lineToLinearHeading(new Pose2d(-50, -25, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                //drive across field
+                .lineToLinearHeading(new Pose2d(41, -12, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(52, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-50, -11, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //pixel grab
-                .lineToLinearHeading(new Pose2d(30, -11, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(190); lift.holdLift(); outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
-                .lineToLinearHeading(new Pose2d(52, -39, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                // getting lift ready
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(230); lift.holdLift(); outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(3);})
+                //driving to backboard
+                .lineToLinearHeading(new Pose2d(52, -40, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.releasePixels();})
-                .waitSeconds(0.25)
-                .lineToLinearHeading(new Pose2d(48, -40, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .waitSeconds(0.5)
+                // getting ready to drive across field
+                .lineToLinearHeading(new Pose2d(40, -12, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.diffyPosition(3);})
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{outtake.intakePosition(); lift.lowerLift();intake.up();})
+                .lineToLinearHeading(new Pose2d(30, -12, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //puts lift down
+                .UNSTABLE_addTemporalMarkerOffset(-0.75 ,()->{outtake.diffyPosition(3); intake.specialStack();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.intakePosition(); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.15,()->{ lift.lowerLift();})
+                //drives back to to stack
+                .lineToLinearHeading(new Pose2d(-60, -11, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(-72, -11, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //put lift in correct position and begins intaking
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
+                .waitSeconds(0.40)
+                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()->{;intake.in();})
+                .waitSeconds(.5)
+                .addTemporalMarker(()-> {intake.stackHeightThree();})
                 .waitSeconds(0.2)
+                //backs up
+                .lineToLinearHeading(new Pose2d(-62, -11, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addTemporalMarker(()->{intake.up();})
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{intake.score();})
+//                .addTemporalMarker(()->{intake.up();})
+//                .waitSeconds(0.25)
+//                .addTemporalMarker(()->{intake.score();})
+                //moves forward
+                .lineToLinearHeading(new Pose2d(-68, -11, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //intake fast
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
+                .waitSeconds(0.4)
+                //drive across field
+                .lineToLinearHeading(new Pose2d(30, -13, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //stop intake and lower lift
+                .UNSTABLE_addTemporalMarkerOffset(-2.5,()->{intake.die(); lift.lowerLift();})
+                //lock pixels
+                .UNSTABLE_addTemporalMarkerOffset(-2, ()-> {outtake.lockPixels(); })
+                //lift to correct spot
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(250); lift.holdLift(); outtake.diffyPosition(1);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(5);})
+                //moves to spot to release pixels
+                .lineToLinearHeading(new Pose2d(51,-29, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //release pixels
+                .addTemporalMarker(()->{outtake.releasePixels();})
+                .waitSeconds(0.25)
+                .lineToLinearHeading(new Pose2d(49,-28, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.intakePosition();})
+
                 .build();
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(new Pose2d(-59, -23, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(60); outtake.autoDrop();})
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{ intake.up();lift.liftToHeight(60); outtake.autoDrop();})
                 .addTemporalMarker(()->{outtake.releaseMain();})
                 .waitSeconds(0.55)
-                .lineToLinearHeading(new Pose2d(-73,-12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-72,-12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.intakePosition();intake.inSlow();})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(40);lift.holdLift();outtake.intakePosition();intake.inSlow();})
                 .waitSeconds(.25)
-                .addTemporalMarker(()-> {intake.in();})
+                .addTemporalMarker(()-> {intake.specialStack();intake.inSlow();lift.liftToHeight(40);lift.holdLift();})
                 .waitSeconds(0.5)
-                .lineToLinearHeading(new Pose2d(-64, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-64, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.up();})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{intake.score();})
-                .lineToLinearHeading(new Pose2d(-70, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-69, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->{intake.up();intake.die();lift.lowerLift();outtake.lockPixels();})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
+                .waitSeconds(0.3)
+                // stops intake and lowers lift
+                .addTemporalMarker(()->{intake.die();lift.lowerLift();})
+                .waitSeconds(.35)
+                // grab 1st white pixel
+                .addTemporalMarker(()-> {outtake.lockPixels(); })
+                .waitSeconds(0.25)
                 .lineToLinearHeading(new Pose2d(40, -12, Math.toRadians(180)), //drive over
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(190); lift.holdLift(); outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
-                .lineToLinearHeading(new Pose2d(52, -34, Math.toRadians(180)),
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(215); lift.holdLift(); outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(5);})
+                .lineToLinearHeading(new Pose2d(50, -34, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.releasePixels();})
@@ -123,34 +217,74 @@ public class redFarCycle extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.diffyPosition(3);})
                 .waitSeconds(0.25)
-                .addTemporalMarker(()->{outtake.intakePosition(); lift.lowerLift();intake.superStack();})
-                .lineToLinearHeading(new Pose2d(-71, -12, Math.toRadians(180)),
+                .addTemporalMarker(()->{outtake.intakePosition(); lift.lowerLift();intake.up();})
+                .lineToLinearHeading(new Pose2d(30, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{outtake.intakePosition(); lift.lowerLift();intake.superStack(); intake.inSlow();})
-                .waitSeconds(0.25)
-                .addTemporalMarker(()->{intake.score();})
-                .lineToLinearHeading(new Pose2d(-67, -12, Math.toRadians(180)),
+                //puts lift down
+                .UNSTABLE_addTemporalMarkerOffset(-0.75 ,()->{outtake.diffyPosition(3); intake.specialStack();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.intakePosition(); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.15,()->{ lift.lowerLift();})
+                //drives back to to stack
+                .lineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->{intake.die(); lift.lowerLift(); outtake.lockPixels();})
-                .lineToLinearHeading(new Pose2d(40, -13, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-72, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.lockPixels();lift.liftToHeight(300); lift.holdLift(); outtake.diffyPosition(1);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(3);})
-                .lineToLinearHeading(new Pose2d(50,-30, Math.toRadians(180)),
+                //put lift in correct position and begins intaking
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
+                .waitSeconds(0.40)
+                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()->{;intake.in();})
+                .waitSeconds(.6)
+                .addTemporalMarker(()-> {intake.stackHeightThree();})
+                .waitSeconds(0.2)
+                //backs up
+                .lineToLinearHeading(new Pose2d(-62, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .addTemporalMarker(()->{intake.up();})
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{intake.score();})
+                .addTemporalMarker(()->{intake.up();})
+                .waitSeconds(0.25)
+                .addTemporalMarker(()->{intake.score();})
+                //moves forward
+                .lineToLinearHeading(new Pose2d(-68, -12, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //intake fast
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
+                .waitSeconds(0.4)
+                //drive across field
+                .lineToLinearHeading(new Pose2d(30, -13, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //stop intake and lower lift
+                .UNSTABLE_addTemporalMarkerOffset(-2.5,()->{intake.die(); lift.lowerLift();})
+                //lock pixels
+                .UNSTABLE_addTemporalMarkerOffset(-2, ()-> {outtake.lockPixels(); })
+                //lift to correct spot
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(300); lift.holdLift(); outtake.diffyPosition(1);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6);})
+                //moves to spot to release pixels
+                .lineToLinearHeading(new Pose2d(51,-28, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //release pixels
                 .addTemporalMarker(()->{outtake.releasePixels();})
+                .waitSeconds(0.25)
+                .lineToLinearHeading(new Pose2d(49,-28, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         //left
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 .lineToLinearHeading(new Pose2d(-65, -30, Math.toRadians(180)), //drive to purple drop
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(55); lift.holdLift();outtake.autoDrop();})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(55); lift.holdLift();outtake.autoDrop(); intake.up();})
                 .addTemporalMarker(()-> { outtake.releaseMain();}) // drop purple
                 .waitSeconds(0.5)
                 .lineToLinearHeading(new Pose2d(-65, -12, Math.toRadians(180)), //driving to stack
@@ -163,8 +297,8 @@ public class redFarCycle extends LinearOpMode {
                         Mecanum.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 // start intaking
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.inSlow();})
-                .waitSeconds(0.3) //put back to 0.4 if no work
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.specialStack();intake.inSlow();})
+                .waitSeconds(0.2) //put back to 0.4 if no work
                 // backup
                 .lineToLinearHeading(new Pose2d(-64, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -180,10 +314,10 @@ public class redFarCycle extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 // intakes fast
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
-                .waitSeconds(0.4)
+                .waitSeconds(0.3)
                 // stops intake and lowers lift
                 .addTemporalMarker(()->{intake.die();lift.lowerLift();})
-                .waitSeconds(.25)
+                .waitSeconds(.35)
                 // grab 1st white pixel
                 .addTemporalMarker(()-> {outtake.lockPixels(); })
                 .waitSeconds(0.25)
@@ -195,10 +329,10 @@ public class redFarCycle extends LinearOpMode {
                 //lock pixels
                 .addTemporalMarker(()->{outtake.lockPixels();})
                 //putting lift to release height
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.lockPixels();lift.liftToHeight(250); lift.holdLift(); outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6);})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.lockPixels();lift.liftToHeight(240); lift.holdLift(); outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
                 //driving to spot to release pixels
-                .lineToLinearHeading(new Pose2d(50,-28, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(50,-30, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //release pixels
@@ -209,36 +343,38 @@ public class redFarCycle extends LinearOpMode {
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //puts lift down
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(3); intake.superStack();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(3); intake.specialStack();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.25,()->{outtake.intakePosition(); lift.lowerLift();})
                 //drives to stack
-                .lineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-60, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-71, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-71, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-72, -12, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-72, -11, Math.toRadians(180)))
                 //put lift in correct position and begins intaking
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50);})
-                .waitSeconds(0.40)
-                .addTemporalMarker(()->{intake.in();})
+                .UNSTABLE_addTemporalMarkerOffset(-.5, ()->{intake.in();})
+                .UNSTABLE_addTemporalMarkerOffset(-.4, ()-> {intake.superStack();})
+                .UNSTABLE_addTemporalMarkerOffset(-.3, ()-> {intake.stackHeightThree();})
+                .waitSeconds(-.35)
                 //backs up
-                .lineToLinearHeading(new Pose2d(-62, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-62, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{intake.up();})
                 .waitSeconds(0.25)
                 .addTemporalMarker(()->{intake.score();})
                 //moves forward
-                .lineToLinearHeading(new Pose2d(-67, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-68, -11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //intake fast
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
                 .waitSeconds(0.4)
                 //drive across field
-                .lineToLinearHeading(new Pose2d(40, -13, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(30, -13, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //stop intake and lower lift
@@ -247,7 +383,7 @@ public class redFarCycle extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-2, ()-> {outtake.lockPixels(); })
                 //lift to correct spot
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(300); lift.holdLift(); outtake.diffyPosition(1);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(1);})
                 //moves to spot to release pixels
                 .lineToLinearHeading(new Pose2d(50,-34, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -291,12 +427,12 @@ public class redFarCycle extends LinearOpMode {
                     sleep(3000000);
                     break;
                 case MIDDLE:
-                    intake.specialStack();
+                    intake.score();
                     drive.followTrajectorySequence(middleMovementOne);
                     sleep(300000);
                     break;
                 case RIGHT:
-                    intake.specialStack();
+                    intake.score();
                     drive.followTrajectorySequence(rightMovementOne);
                     sleep(3000000);
                     break;
