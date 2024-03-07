@@ -92,7 +92,7 @@ public class redFarCycle extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 // getting lift ready
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(230); lift.holdLift(); outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(5);})
                 //driving to backboard
                 .lineToLinearHeading(new Pose2d(52, -40, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
