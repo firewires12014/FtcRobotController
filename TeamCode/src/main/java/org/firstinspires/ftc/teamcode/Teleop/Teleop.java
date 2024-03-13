@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.Teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -55,6 +56,7 @@ import org.firstinspires.ftc.teamcode.Testing.SampleRevBlinkinLedDriver;
 import org.firstinspires.ftc.teamcode.Testing.TransferTesting;
 
 @TeleOp(name = "Teleop", group = "Robot")
+@Disabled
 public class Teleop extends LinearOpMode {
     private DriveTrain driveTrain;
     private Lift lift;

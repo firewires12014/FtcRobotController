@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name="Demo Bot - Fast", group="Iterative OpMode")
-//@Disabled
+@Disabled
 public class DemoBot extends OpMode
 {
     // Declare OpMode members.

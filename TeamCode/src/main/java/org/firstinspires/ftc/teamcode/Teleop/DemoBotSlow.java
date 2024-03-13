@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @TeleOp(name="Demo Bot - Slow", group="Iterative OpMode")
-//@Disabled
+@Disabled
 public class DemoBotSlow extends OpMode
 {
     // Declare OpMode members.
