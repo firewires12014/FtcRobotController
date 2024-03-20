@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @TeleOp(name="ServoTesting", group="FireWires")
+@Disabled
 public class ServoTesting extends LinearOpMode {
 
   private Intake intake;

@@ -66,6 +66,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Test: Omni Linear OpMode", group="Linear OpMode")
+@Disabled
 public class TestMecanum extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
