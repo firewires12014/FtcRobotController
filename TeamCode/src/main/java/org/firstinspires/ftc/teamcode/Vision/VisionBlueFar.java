@@ -29,8 +29,8 @@ public class VisionBlueFar extends OpenCvPipeline {
 
     private Location location = Location.MIDDLE;
     static final Rect RIGHT_ROI = new Rect(
-            new Point(250, 80),
-            new Point(320, 200));
+            new Point(250, 70),
+            new Point(300, 100));
     static final Rect MIDDLE_ROI = new Rect(
             new Point(80, 90),
             new Point(200, 170));
