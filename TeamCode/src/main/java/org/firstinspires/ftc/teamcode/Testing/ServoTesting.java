@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @TeleOp(name="ServoTesting", group="FireWires")
-@Disabled
+//@Disabled
 public class ServoTesting extends LinearOpMode {
 
   private Intake intake;
@@ -33,16 +33,21 @@ public class ServoTesting extends LinearOpMode {
             plane=new Plane(hardwareMap);
 //            outtake.lockPixels();
             if (gamepad1.a) {
-              intake.specialStack();
+              intake.grabOne();
             }
             if (gamepad1.b) {
-                intake.superStack();
+                intake.superStack(); //grab three
             }
             if (gamepad1.x) {
-                intake.stackHeightThree();
-            }
+            intake.grabTwo();            }
             if (gamepad1.y){
                 intake.up();
+            }
+            if (gamepad1.dpad_down) {
+                intake.score();
+            }
+            if (gamepad1.dpad_up) {
+                intake.grabFour();
             }
 
             if (gamepad1.right_trigger > 0) {

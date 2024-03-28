@@ -130,18 +130,16 @@ public class TeleopNew extends OpMode {
 
         //Intake
         if (gamepad1.right_trigger > 0) {
-            intake.in();
+            intake.in(); intake.score();
         } else if (gamepad1.left_trigger > 0) {
-            intake.out();
+            intake.out(); intake.score();
         } else {
-           intake.die();
+           intake.die(); intake.up();
         }
         //Intake Stack Height
-        if (gamepad2.y) {
-            intake.up();
-        }
-        else if (gamepad2.dpad_left) {
-            intake.specialStack();
+
+        if (gamepad2.dpad_left) {
+            intake.grabTwo();
         }
         else if (gamepad2.dpad_down) {
             intake.superStack();
@@ -150,7 +148,7 @@ public class TeleopNew extends OpMode {
             intake.stackHeightThree();
         }
         else {
-            intake.score();
+            intake.up();
         }
         if (gamepad2.dpad_right) {
             intake.stackHeight();
