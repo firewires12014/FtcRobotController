@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -95,29 +96,29 @@ public class redClose extends LinearOpMode {
                 .build();
         //Left
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(9, -30, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(26, -32, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(5, -32, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .UNSTABLE_addTemporalMarkerOffset(0.1, ()-> {lift.liftToHeight(-250); lift.holdLift();outtake.diffyPosition(3);})
                 .addTemporalMarker(()->{intake.stack();})
-                .lineToLinearHeading(new Pose2d(4, -30, Math.toRadians(180)),
+                .waitSeconds(0.2)
+                .lineToLinearHeading(new Pose2d(45, -29, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(50, -29, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-4, ()-> {lift.liftToHeight(200); lift.holdLift();})
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(3); })
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(5);})
+                        Mecanum.getAccelerationConstraint(80))
+                .UNSTABLE_addTemporalMarkerOffset(-.25, ()-> {outtake.diffyPosition(5);})
                 .waitSeconds(.2)
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.5)
-                .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
-                .lineToLinearHeading(new Pose2d(48, -29, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(55, -57, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//                .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
+//                .lineToLinearHeading(new Pose2d(48, -29, Math.toRadians(180)),
+//                        Mecanum.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+//                .lineToLinearHeading(new Pose2d(55, -57, Math.toRadians(180)),
+//                        Mecanum.getVelocityConstraint(10, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+//                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
 
                 .build();
@@ -143,32 +144,33 @@ public class redClose extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            intake.auto();
-            sleep(1000);
+            intake.purpleGrab();
+            sleep(200);
+            drive.followTrajectorySequence(leftMovementOne);
 
 
 
 
-            VisionRedClose.Location location = VisionRedClose.getLocation();
-
-            switch (location) {
-                case LEFT:
-                    drive.followTrajectorySequence(leftMovementOne);
-                    sleep(300000);
-                    break;
-
-                case MIDDLE:
-                    drive.followTrajectorySequence(middleMovementOne);
-                    sleep(30000);
-                    break;
-
-                case RIGHT:
-                    drive.followTrajectorySequence(rightMovementOne);
-                    sleep(300000);
-                    break;
-            }
-
-
+//            VisionRedClose.Location location = VisionRedClose.getLocation();
+//
+//            switch (location) {
+//                case LEFT:
+//                    drive.followTrajectorySequence(leftMovementOne);
+//                    sleep(300000);
+//                    break;
+//
+//                case MIDDLE:
+//                    drive.followTrajectorySequence(middleMovementOne);
+//                    sleep(30000);
+//                    break;
+//
+//                case RIGHT:
+//                    drive.followTrajectorySequence(rightMovementOne);
+//                    sleep(300000);
+//                    break;
+//            }
+//
+//
             sleep(30000);
         }
 

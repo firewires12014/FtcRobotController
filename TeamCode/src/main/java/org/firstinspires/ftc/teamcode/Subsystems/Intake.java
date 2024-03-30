@@ -61,6 +61,9 @@ public class Intake {
     public void grabOne() {intakeHeight.setPosition(0.81);}
     public void grabTwo(){intakeHeight.setPosition(0.85);}
  public void grabFour(){intakeHeight.setPosition(0.9175);}
+    public void purpleGrab(){
+        intakeHeight.setPosition(1);
+    }
 
     public void auto() {intakeHeight.setPosition(0.5);}
     public void up () {intakeHeight.setPosition(0.65);}

@@ -189,6 +189,18 @@ public class DriveTrain {
         leftBack.setPower(0);
         rightBack.setPower(0);
     }
+    public void leftFront() {
+        leftFront.setPower(1);
+    }
+    public void leftBack() {
+        leftBack.setPower(1);
+    }
+    public void rightFront() {
+        rightFront.setPower(1);
+    }
+    public void rightBack() {
+        rightBack.setPower(1);
+    }
 
     public void strafeRight(float speed, float time) {
         ElapsedTime runTime = new ElapsedTime();

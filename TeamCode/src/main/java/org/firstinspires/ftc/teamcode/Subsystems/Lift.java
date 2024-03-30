@@ -20,19 +20,22 @@ public class Lift {
         leftLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        rightLift.setDirection(DcMotor.Direction.REVERSE);
+        leftLift.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public void moveLift(double left_stick_y) {
         rightLift.setPower(left_stick_y);
         leftLift.setPower(-left_stick_y);
-        telemetry.addData("encoder", leftLift.getCurrentPosition());
+        telemetry.addData("encoder", rightLift.getCurrentPosition());
         telemetry.update();
     }
 
     public void liftToHeight(int height) {
         double leftPower;
         double rightPower;
-        if ( height < leftLift.getCurrentPosition()){
+        if ( height < rightLift.getCurrentPosition()){
           leftPower = -0.8;
           rightPower = 0.8;
         }
@@ -40,14 +43,14 @@ public class Lift {
             leftPower = 0.7;
             rightPower = -0.7;
         }
-        telemetry.addData("encoder", leftLift.getCurrentPosition());
+        telemetry.addData("encoder", rightLift.getCurrentPosition());
         telemetry.update();
 //        leftLift.setTargetPosition(height);
 //        leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (leftLift.getCurrentPosition() < height) {
             telemetry.addData("Loop", "");
-            telemetry.addData("encoder", leftLift.getCurrentPosition());
+            telemetry.addData("encoder", rightLift.getCurrentPosition());
             telemetry.update();
             rightLift.setPower(rightPower);
             leftLift.setPower(leftPower);
