@@ -123,29 +123,29 @@ public class blueClose extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            intake.auto();
-            sleep(1000);
+//            intake.auto();
+//            sleep(1000);
 
-            VisionBlueClose.Location location = VisionBlueClose.getLocation();
-telemetry.addData("Location:", location);
-            telemetry.update();
-            switch (location) {
-                case NOT_FOUND:
-                    drive.followTrajectorySequence(rightMovementOne);
-                    stop();
-
-                    break;
-                case MIDDLE:
-                    telemetry.addData("Middle:", "Activated");
-                    telemetry.update();
-                     drive.followTrajectorySequence(middleMovementOne);
-                     stop();
-                    break;
-                case LEFT: //left
-                    drive.followTrajectorySequence(leftMovementOne);
-                    stop();
-                    break;
-            }
+//            VisionBlueClose.Location location = VisionBlueClose.getLocation();
+//telemetry.addData("Location:", location);
+//            telemetry.update();
+//            switch (location) {
+//                case NOT_FOUND:
+//                    drive.followTrajectorySequence(rightMovementOne);
+//                    stop();
+//
+//                    break;
+//                case MIDDLE:
+//                    telemetry.addData("Middle:", "Activated");
+//                    telemetry.update();
+//                     drive.followTrajectorySequence(middleMovementOne);
+//                     stop();
+//                    break;
+//                case LEFT: //left
+//                    drive.followTrajectorySequence(leftMovementOne);
+//                    stop();
+//                    break;
+//            }
             sleep(30000);
         }
 

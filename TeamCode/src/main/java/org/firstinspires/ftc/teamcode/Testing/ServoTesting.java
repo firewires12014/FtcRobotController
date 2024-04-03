@@ -1,19 +1,11 @@
 package org.firstinspires.ftc.teamcode.Testing;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Plane;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.dropper;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
-import org.firstinspires.ftc.vision.VisionPortal;
 
 @TeleOp(name="ServoTesting", group="FireWires")
 //@Disabled
@@ -40,7 +32,7 @@ intake.grabOne();            }
             if (gamepad1.b) {
 intake.grabTwo();            }
             if (gamepad1.x) {
-                       intake.superStack(); }
+                       intake.grabThree(); }
             if (gamepad1.y){
 intake.grabFour();            }
             if (gamepad1.dpad_down) {

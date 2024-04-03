@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import android.os.FileUriExposedException;
-
-import com.acmerobotics.roadrunner.drive.Drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -120,7 +117,7 @@ public class redFarCycle extends LinearOpMode {
                 //put lift in correct position and begins intaking
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.40)
-                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()-> {intake.grabThree();})
                 .addTemporalMarker(()->{;intake.in();})
                 .waitSeconds(.5)
                 .addTemporalMarker(()-> {intake.stackHeightThree();})
@@ -228,7 +225,7 @@ public class redFarCycle extends LinearOpMode {
                 //put lift in correct position and begins intaking
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.40)
-                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()-> {intake.grabThree();})
                 .addTemporalMarker(()->{;intake.in();})
                 .waitSeconds(.6)
                 .addTemporalMarker(()-> {intake.stackHeightThree();})
@@ -343,7 +340,7 @@ public class redFarCycle extends LinearOpMode {
                 //put lift in correct position and begins intaking
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.40)
-                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()-> {intake.grabThree();})
                 .addTemporalMarker(()->{;intake.in();})
                 .waitSeconds(.6)
                 .addTemporalMarker(()-> {intake.stackHeightThree();})
@@ -402,29 +399,30 @@ public class redFarCycle extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            drive.followTrajectorySequence(leftMovementOne);
 
-            VisionRedFar.Location location = VisionRedFar.getLocation();
-            telemetry.addData("Location: ", location);
-
-            switch (location) {
-                case LEFT:
-                    intake.score();
-                    sleep(300);
-                    intake.grabOne();
-                    drive.followTrajectorySequence(leftMovementOne);
-                    sleep(3000000);
-                    break;
-                case MIDDLE:
-                    intake.score();
-                    drive.followTrajectorySequence(middleMovementOne);
-                    sleep(300000);
-                    break;
-                case RIGHT:
-                    intake.score();
-                    drive.followTrajectorySequence(rightMovementOne);
-                    sleep(3000000);
-                    break;
-            }
+//            VisionRedFar.Location location = VisionRedFar.getLocation();
+//            telemetry.addData("Location: ", location);
+//
+//            switch (location) {
+//                case LEFT:
+//                    intake.score();
+//                    sleep(300);
+//                    intake.grabOne();
+//                    drive.followTrajectorySequence(leftMovementOne);
+//                    sleep(3000000);
+//                    break;
+//                case MIDDLE:
+//                    intake.score();
+//                    drive.followTrajectorySequence(middleMovementOne);
+//                    sleep(300000);
+//                    break;
+//                case RIGHT:
+//                    intake.score();
+//                    drive.followTrajectorySequence(rightMovementOne);
+//                    sleep(3000000);
+//                    break;
+//            }
 
 
             sleep(30000);

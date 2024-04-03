@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import android.os.FileUriExposedException;
-
-import com.acmerobotics.roadrunner.drive.Drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -21,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "RedSolo", group = "Robot")
-@Disabled
+
 public class RedSolo extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionRedFar VisionRedFar = new VisionRedFar(telemetry); // camera stuff
@@ -60,27 +56,13 @@ public class RedSolo extends LinearOpMode {
                 //drop purple pixel
                 .addTemporalMarker(()->outtake.releaseMain())
                 .waitSeconds(0.55)
+                //getting into position for first white pixel
+                .addTemporalMarker(()-> {intake.grabOne();intake.in();lift.liftToHeight(40);lift.holdLift();})
                 // go to stack
-                .lineToLinearHeading(new Pose2d(-71.75,-12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-69.75,-11, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(40);lift.holdLift();outtake.intakePosition();intake.inSlow();})
-                .waitSeconds(.25)
-                //getting first white pixel
-                .addTemporalMarker(()-> {intake.grabTwo();intake.inSlow();lift.liftToHeight(40);lift.holdLift();})
-                .waitSeconds(0.5)
-                //back up from stack a little
-                .lineToLinearHeading(new Pose2d(-64, -11, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(32, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.up();})
-                .waitSeconds(0.2)
-                .addTemporalMarker(()->{intake.score();})
-                //drive a little forward to stack
-                .lineToLinearHeading(new Pose2d(-69, -11, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(28, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
+                .UNSTABLE_addTemporalMarkerOffset(-1.5, ()-> {lift.liftToHeight(40);lift.holdLift();outtake.intakePosition();})
                 .waitSeconds(0.2)
                 // stops intake and lowers lift
                 .addTemporalMarker(()->{intake.die();lift.lowerLift();})
@@ -89,58 +71,40 @@ public class RedSolo extends LinearOpMode {
                 .addTemporalMarker(()-> {outtake.lockPixels(); })
                 .waitSeconds(0.25)
                 //drive across field
-                .lineToLinearHeading(new Pose2d(41, -11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(41, -12, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 // getting lift ready
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(215); lift.holdLift(); outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(5);})
                 //driving to backboard
-                .lineToLinearHeading(new Pose2d(52, -44, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(51, -41, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.25)
                 .UNSTABLE_addTemporalMarkerOffset(1,()->{outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(1.2,()->{outtake.intakePosition(); lift.lowerLift();})
-                .lineToLinearHeading(new Pose2d(40, -11, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(40, -13, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //puts lift down
                 .UNSTABLE_addTemporalMarkerOffset(-0.75 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.intakePosition(); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.15,()->{ lift.lowerLift();})
+                .waitSeconds(.25)
+                .addTemporalMarker(()-> {intake.grabThree(); intake.in();})
                 //drives back to to stack
-                .lineToLinearHeading(new Pose2d(-65, -12, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-69, -10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .lineToLinearHeading(new Pose2d(-70.75, -12, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(.25)
+                .addTemporalMarker(()-> {intake.grabThree(); intake.in();})
                 //put lift in correct position and begins intaking
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-1.5,()->{ lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.40)
-                .addTemporalMarker(()-> {intake.superStack();})
-                .addTemporalMarker(()->{;intake.in();})
-                .waitSeconds(.5)
-                .addTemporalMarker(()-> {intake.stackHeightThree();})
-                .waitSeconds(0.2)
-                //backs up
-                .lineToLinearHeading(new Pose2d(-62, -12, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.up();})
-                .waitSeconds(0.25)
-                .addTemporalMarker(()->{intake.score();})
-                //moves forward
-                .lineToLinearHeading(new Pose2d(-68, -12, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //intake fast
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.in();})
-                .waitSeconds(0.4)
                 //drive across field
-                .lineToLinearHeading(new Pose2d(30, -14, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(30, -13, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //stop intake and lower lift
@@ -228,7 +192,7 @@ public class RedSolo extends LinearOpMode {
                 //put lift in correct position and begins intaking
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.40)
-                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()-> {intake.grabThree();})
                 .addTemporalMarker(()->{;intake.in();})
                 .waitSeconds(.6)
                 .addTemporalMarker(()-> {intake.stackHeightThree();})
@@ -344,7 +308,7 @@ public class RedSolo extends LinearOpMode {
                 //put lift in correct position and begins intaking
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{ lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.40)
-                .addTemporalMarker(()-> {intake.superStack();})
+                .addTemporalMarker(()-> {intake.grabThree();})
                 .addTemporalMarker(()->{;intake.in();})
                 .waitSeconds(.6)
                 .addTemporalMarker(()-> {intake.stackHeightThree();})
@@ -403,29 +367,30 @@ public class RedSolo extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            drive.followTrajectorySequence(rightMovementOne);
 
-            VisionRedFar.Location location = VisionRedFar.getLocation();
-            telemetry.addData("Location: ", location);
-
-            switch (location) {
-                case LEFT:
-                    intake.score();
-                    sleep(300);
-                    intake.grabTwo();
-                    drive.followTrajectorySequence(leftMovementOne);
-                    sleep(3000000);
-                    break;
-                case MIDDLE:
-                    intake.score();
-                    drive.followTrajectorySequence(middleMovementOne);
-                    sleep(300000);
-                    break;
-                case RIGHT:
-                    intake.score();
-                    drive.followTrajectorySequence(rightMovementOne);
-                    sleep(3000000);
-                    break;
-            }
+//            VisionRedFar.Location location = VisionRedFar.getLocation();
+//            telemetry.addData("Location: ", location);
+//
+//            switch (location) {
+//                case LEFT:
+//                    intake.score();
+//                    sleep(300);
+//                    intake.grabTwo();
+//                    drive.followTrajectorySequence(leftMovementOne);
+//                    sleep(3000000);
+//                    break;
+//                case MIDDLE:
+//                    intake.score();
+//                    drive.followTrajectorySequence(middleMovementOne);
+//                    sleep(300000);
+//                    break;
+//                case RIGHT:
+//                    intake.score();
+//                    drive.followTrajectorySequence(rightMovementOne);
+//                    sleep(3000000);
+//                    break;
+//            }
 
 
             sleep(30000);

@@ -48,7 +48,7 @@ public class Lift {
 //        leftLift.setTargetPosition(height);
 //        leftLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (leftLift.getCurrentPosition() < height) {
+        while (rightLift.getCurrentPosition() < height) {
             telemetry.addData("Loop", "");
             telemetry.addData("encoder", rightLift.getCurrentPosition());
             telemetry.update();

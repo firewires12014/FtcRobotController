@@ -29,6 +29,15 @@ public class Intake {
         secondaryRoller.setPower(1);
 
     }
+    public void outBelt() {
+        secondaryRoller.setPower(-1);
+    }
+    public void beltDie() {
+        secondaryRoller.setPower(0);
+    }
+    public void outRoller(){
+primaryRoller.setPower(1);
+    }
     public void inSlow() {
         primaryRoller.setPower(-0.5);
         secondaryRoller.setPower(1);
@@ -55,15 +64,16 @@ public class Intake {
     public void stackHeightTwo() {intakeHeight.setPosition(0.87);}
     public void stackHeightThree() {intakeHeight.setPosition(0);} //grabbing four pixels
     public void score() { //this is for scoring on the ground during auto
-        intakeHeight.setPosition(0.95);
+        intakeHeight.setPosition(0.97);
     }
-    public void superStack() {intakeHeight.setPosition(0.9);} // for far cycle second grab or grabbing three  pixels
-    public void grabOne() {intakeHeight.setPosition(0.81);}
-    public void grabTwo(){intakeHeight.setPosition(0.85);}
- public void grabFour(){intakeHeight.setPosition(0.9175);}
-    public void purpleGrab(){
-        intakeHeight.setPosition(1);
+    public void grabThree () {intakeHeight.setPosition(0.91);} // for far cycle second grab or grabbing three  pixels
+    public void grabOne() {intakeHeight.setPosition(0.85);}
+    public void grabTwo(){intakeHeight.setPosition(0.8859);}
+ public void grabFour(){intakeHeight.setPosition(0.9285);}
+    public void allUp(){
+        intakeHeight.setPosition(0);
     }
+    public void allDown(){ intakeHeight.setPosition(1);}
 
     public void auto() {intakeHeight.setPosition(0.5);}
     public void up () {intakeHeight.setPosition(0.65);}

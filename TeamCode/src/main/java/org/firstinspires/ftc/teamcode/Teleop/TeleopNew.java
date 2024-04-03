@@ -29,10 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.Teleop;
 
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -43,7 +41,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Lift;
 import org.firstinspires.ftc.teamcode.Subsystems.Outtake;
 import org.firstinspires.ftc.teamcode.Subsystems.Plane;
-import org.firstinspires.ftc.teamcode.Testing.SampleRevBlinkinLedDriver;
 
 import java.util.concurrent.TimeUnit;
 
@@ -132,15 +129,19 @@ public class TeleopNew extends OpMode {
         if (gamepad1.right_trigger > 0) {
             intake.in(); intake.score();
         } else if (gamepad1.left_trigger > 0) {
-            intake.out(); intake.score();
+            intake.outRoller(); intake.beltDie();intake.score();
         } else if (gamepad2.dpad_left) {
             intake.grabTwo();
         }
+
         else if (gamepad2.dpad_down) {
-            intake.superStack();
+            intake.grabThree();
         }
         else if (gamepad2.dpad_right) {
             intake.stackHeightThree();
+        }
+        else if (gamepad1.left_bumper) {
+            intake.out();
         }
         else {
             intake.up();
