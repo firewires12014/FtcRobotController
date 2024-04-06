@@ -59,8 +59,8 @@ public class Lift {
         leftLift.setPower(0);
         }
         public void holdLift() {
-        leftLift.setPower(0.07);
-        rightLift.setPower(-0.07);
+        leftLift.setPower(0.15);
+        rightLift.setPower(-0.15);
         }
         public void lowerLift() {
         leftLift.setPower(-0.2);
