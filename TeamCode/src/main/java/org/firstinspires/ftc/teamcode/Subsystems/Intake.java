@@ -52,7 +52,9 @@ primaryRoller.setPower(1);
         primaryRoller.setPower(0.5);
         secondaryRoller.setPower(-1);
     }
-
+        public void killRoller() {
+        primaryRoller.setPower(0);
+        }
     // auto: deposits purple pixel
     public void dropOff(){
         primaryRoller.setPower(.5);
@@ -74,6 +76,7 @@ primaryRoller.setPower(1);
         intakeHeight.setPosition(0);
     }
     public void allDown(){ intakeHeight.setPosition(1);}
+    public void grabOneSpecial(){intakeHeight.setPosition(0.85986);}
 
     public void auto() {intakeHeight.setPosition(0.5);}
     public void up () {intakeHeight.setPosition(0.65);}

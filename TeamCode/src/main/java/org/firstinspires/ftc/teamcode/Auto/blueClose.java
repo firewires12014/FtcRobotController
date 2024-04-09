@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
+import com.acmerobotics.roadrunner.drive.Drive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -47,10 +48,12 @@ public class blueClose extends LinearOpMode {
 
         // LEFT
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(40, 32, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(39, 32, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.stack();})
+                .addTemporalMarker(()->{intake.out();})
+                .waitSeconds(0.5)
+                .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(60, 42, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -69,7 +72,9 @@ public class blueClose extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(34, 24, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.stack();})
+                .addTemporalMarker(()->{intake.in();})
+                .waitSeconds(0.5)
+                .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(62, 35, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -78,6 +83,9 @@ public class blueClose extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(1);})
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.25)
+                .lineToLinearHeading(new Pose2d(55, 35, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
                 .lineToLinearHeading(new Pose2d(55, 60, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -85,10 +93,12 @@ public class blueClose extends LinearOpMode {
                 .build();
         //Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(18, 33, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(17, 33, Math.toRadians(180)),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .addTemporalMarker(()->{intake.stack();})
+                .addTemporalMarker(()->{intake.in();})
+                .waitSeconds(0.5)
+                .addTemporalMarker(()->{intake.die();})
                 .lineToLinearHeading(new Pose2d(64, 28, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -97,9 +107,10 @@ public class blueClose extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(1);})
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.25)
+                .lineToLinearHeading(new Pose2d(55,28, Math.toRadians(180)))
                 .addTemporalMarker(()->{outtake.intakePosition();lift.liftToHeight(0); intake.score();})
                 .lineToLinearHeading(new Pose2d(55, 60, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                         .build();
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -123,29 +134,27 @@ public class blueClose extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-//            intake.auto();
-//            sleep(1000);
+            intake.auto();
+            VisionBlueClose.Location location = VisionBlueClose.getLocation();
+telemetry.addData("Location:", location);
+            telemetry.update();
+            switch (location) {
+                case NOT_FOUND:
+                    drive.followTrajectorySequence(rightMovementOne);
+                    stop();
 
-//            VisionBlueClose.Location location = VisionBlueClose.getLocation();
-//telemetry.addData("Location:", location);
-//            telemetry.update();
-//            switch (location) {
-//                case NOT_FOUND:
-//                    drive.followTrajectorySequence(rightMovementOne);
-//                    stop();
-//
-//                    break;
-//                case MIDDLE:
-//                    telemetry.addData("Middle:", "Activated");
-//                    telemetry.update();
-//                     drive.followTrajectorySequence(middleMovementOne);
-//                     stop();
-//                    break;
-//                case LEFT: //left
-//                    drive.followTrajectorySequence(leftMovementOne);
-//                    stop();
-//                    break;
-//            }
+                    break;
+                case MIDDLE:
+                    telemetry.addData("Middle:", "Activated");
+                    telemetry.update();
+                     drive.followTrajectorySequence(middleMovementOne);
+                     stop();
+                    break;
+                case LEFT: //left
+                    drive.followTrajectorySequence(leftMovementOne);
+                    stop();
+                    break;
+            }
             sleep(30000);
         }
 

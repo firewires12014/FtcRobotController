@@ -132,12 +132,9 @@ public class TeleopNew extends OpMode {
             intake.outRoller(); intake.beltDie();intake.score();
         } else if (gamepad2.dpad_left) {
             intake.grabTwo();
-        }
-
-        else if (gamepad2.dpad_down) {
+        } else if (gamepad2.dpad_down) {
             intake.grabThree();
-        }
-        else if (gamepad2.dpad_right) {
+        } else if (gamepad2.dpad_right) {
             intake.stackHeightThree();
         }
         else if (gamepad1.left_bumper) {

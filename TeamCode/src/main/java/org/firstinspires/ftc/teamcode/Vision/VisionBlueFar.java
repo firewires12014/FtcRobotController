@@ -63,7 +63,7 @@ public class VisionBlueFar extends OpenCvPipeline {
         telemetry.addData("Right raw value", (int) Core.sumElems(left).val[0]);
         telemetry.addData("Middle raw value", (int) Core.sumElems(right).val[0]);
         telemetry.addData("Right percentage", Math.round(leftValue * 85) + "%");
-        telemetry.addData("Middle percentage", Math.round(rightValue * 70) + "%");
+        telemetry.addData("Middle percentage", Math.round(rightValue * 60) + "%");
 
         boolean stoneRight = leftValue > PERCENT_COLOR_THRESHOLD;
         boolean stoneMiddle = rightValue > PERCENT_COLOR_THRESHOLD;
