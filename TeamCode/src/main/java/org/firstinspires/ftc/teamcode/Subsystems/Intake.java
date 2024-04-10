@@ -49,7 +49,7 @@ primaryRoller.setPower(1);
     }
 
     public void outSlow() {
-        primaryRoller.setPower(0.5);
+        primaryRoller.setPower(0.6);
         secondaryRoller.setPower(-1);
     }
         public void killRoller() {

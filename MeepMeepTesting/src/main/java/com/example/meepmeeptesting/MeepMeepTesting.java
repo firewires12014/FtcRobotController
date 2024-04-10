@@ -14,7 +14,7 @@ import sun.text.ComposedCharIter;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startingPose = new Pose2d(-40,-23, Math.toRadians(180));
+        Pose2d startingPose = new Pose2d(-45,-58, Math.toRadians(180));
 //
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -23,13 +23,8 @@ public class MeepMeepTesting {
                 .setConstraints(42.5, 80, 4, 4, 13.18)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startingPose)
-                                .lineToLinearHeading(new Pose2d(-30, 34, Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(-45.5,10,Math.toRadians(180)))
-                                .lineToLinearHeading(new Pose2d(28, 9, Math.toRadians(180)))
-                                // getting lift read
-                                .splineToConstantHeading(new Vector2d(56, 40.75), Math.toRadians(50))
-                                .lineToLinearHeading(new Pose2d(61,40, Math.toRadians(180)))
-                                .splineToConstantHeading(new Vector2d(28, 8), Math.toRadians(0))
+
+                                .splineToConstantHeading(new Vector2d(40, -58), Math.toRadians(180))
 
 
 
