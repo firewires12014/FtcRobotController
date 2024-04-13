@@ -28,11 +28,11 @@ public class ServoTesting extends LinearOpMode {
             drive=new DriveTrain(hardwareMap);
 //            outtake.lockPixels();
             if (gamepad1.a) {
-intake.grabOne();            }
+intake.grabOne();           }
             if (gamepad1.b) {
-intake.grabTwo();            }
+intake.grabThree();          }
             if (gamepad1.x) {
-                       intake.grabThree(); }
+            intake.grabTwo();}
             if (gamepad1.y){
 intake.grabFour();            }
             if (gamepad1.dpad_down) {

@@ -173,7 +173,6 @@ public class TeleopNew extends OpMode {
 
         //Locks
         if (gamepad2.a) { //Lock
-            lift.lowerLift();
             outtake.lockPixels();
         }
         if (gamepad2.left_trigger == (1)) {

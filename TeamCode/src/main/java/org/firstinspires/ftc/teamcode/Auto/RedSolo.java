@@ -436,34 +436,32 @@ public class RedSolo extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            intake.allUp();
-            drive.followTrajectorySequence(leftMovementOne);
 
-//            VisionRedFar.Location location = VisionRedFar.getLocation();
-//            telemetry.addData("Location: ", location);
-//
-//            switch (location) {
-//                case LEFT:
-//                      intake.allUp();
-//                    intake.score();
-//                    sleep(300);
-//                    intake.grabTwo();
-//                    drive.followTrajectorySequence(leftMovementOne);
-//                    sleep(3000000);
-//                    break;
-//                case MIDDLE:
-            //                      intake.allUp();
-//                    intake.score();
-//                    drive.followTrajectorySequence(middleMovementOne);
-//                    sleep(300000);
-//                    break;
-//                case RIGHT:
-            //                      intake.allUp();
-//                    intake.score();
-//                    drive.followTrajectorySequence(rightMovementOne);
-//                    sleep(3000000);
-//                    break;
-//            }
+            VisionRedFar.Location location = VisionRedFar.getLocation();
+            telemetry.addData("Location: ", location);
+
+            switch (location) {
+                case LEFT:
+                      intake.allUp();
+                    intake.score();
+                    sleep(300);
+                    intake.grabTwo();
+                    drive.followTrajectorySequence(leftMovementOne);
+                    sleep(3000000);
+                    break;
+                case MIDDLE:
+                                  intake.allUp();
+                    intake.score();
+                    drive.followTrajectorySequence(middleMovementOne);
+                    sleep(300000);
+                    break;
+                case RIGHT:
+                                  intake.allUp();
+                    intake.score();
+                    drive.followTrajectorySequence(rightMovementOne);
+                    sleep(3000000);
+                    break;
+            }
 
 
             sleep(30000);

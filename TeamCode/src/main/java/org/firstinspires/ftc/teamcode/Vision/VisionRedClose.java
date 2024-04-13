@@ -30,11 +30,11 @@ public class VisionRedClose extends OpenCvPipeline {
 
     private Location location = Location.MIDDLE;
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(80, 100),
-            new Point(160, 200));
+            new Point(100, 115),
+            new Point(175, 175));
     static final Rect RIGHT_ROI = new Rect(
-            new Point(250, 80),
-            new Point(320, 200));
+            new Point(250, 100),
+            new Point(320, 190));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public VisionRedClose(Telemetry t) { telemetry = t; }
@@ -47,7 +47,7 @@ public class VisionRedClose extends OpenCvPipeline {
         Scalar highHSV = new Scalar(30, 255, 255); //these are the values for green
         
         Core.inRange(mat, lowHSV, highHSV, mat);
-
+// Rich :(
         Mat left = mat.submat(MIDDLE_ROI);
         Mat right = mat.submat(RIGHT_ROI);
 
@@ -59,8 +59,8 @@ public class VisionRedClose extends OpenCvPipeline {
 
         telemetry.addData("Right raw value", (int) Core.sumElems(left).val[0]);
         telemetry.addData("Middle raw value", (int) Core.sumElems(right).val[0]);
-        telemetry.addData("Right percentage", Math.round(leftValue * 100) + "%");
-        telemetry.addData("Middle percentage", Math.round(rightValue * 100) + "%");
+        telemetry.addData("Right percentage", Math.round(leftValue * 90) + "%");
+        telemetry.addData("Middle percentage", Math.round(rightValue * 50) + "%");
 
         boolean stoneLeft = leftValue > PERCENT_COLOR_THRESHOLD;
         boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
@@ -81,7 +81,7 @@ public class VisionRedClose extends OpenCvPipeline {
 
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
-        Scalar red = new Scalar(255, 0, 0);
+        Scalar red = new Scalar(255,0, 0);
         Scalar green = new Scalar(0, 255, 0);
 
         Imgproc.rectangle(mat, MIDDLE_ROI, location == Location.LEFT? green:red);//middle

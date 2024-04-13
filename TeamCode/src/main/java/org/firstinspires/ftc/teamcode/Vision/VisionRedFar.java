@@ -31,10 +31,10 @@ public class VisionRedFar extends OpenCvPipeline {
     private Location location = Location.MIDDLE;
     static final Rect MIDDLE_ROI = new Rect(
             new Point(150, 120),
-            new Point(240, 200));
+            new Point(240, 175));
     static final Rect LEFT_ROI = new Rect(
-            new Point(0, 120),
-            new Point(90, 200));
+            new Point(0, 130),
+            new Point(85, 200));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public VisionRedFar(Telemetry t) { telemetry = t; }
@@ -60,7 +60,7 @@ public class VisionRedFar extends OpenCvPipeline {
         telemetry.addData("Right raw value", (int) Core.sumElems(left).val[0]);
         telemetry.addData("Middle raw value", (int) Core.sumElems(right).val[0]);
         telemetry.addData("Right percentage", Math.round(leftValue * 100) + "%");
-        telemetry.addData("Middle percentage", Math.round(rightValue * 100) + "%");
+        telemetry.addData("Middle percentage", Math.round(rightValue * 90) + "%");
 
         boolean stoneLeft = leftValue > PERCENT_COLOR_THRESHOLD;
         boolean stoneRight = rightValue > PERCENT_COLOR_THRESHOLD;
@@ -81,7 +81,7 @@ public class VisionRedFar extends OpenCvPipeline {
 
         Imgproc.cvtColor(mat, mat, Imgproc.COLOR_GRAY2RGB);
 
-        Scalar red = new Scalar(255, 0, 0);
+        Scalar red = new Scalar(255, 0,0);
         Scalar green = new Scalar(0, 255, 0);
 
         Imgproc.rectangle(mat, MIDDLE_ROI, location == Location.LEFT? green:red);//middle

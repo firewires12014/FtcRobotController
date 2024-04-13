@@ -29,11 +29,11 @@ public class VisionBlueClose extends OpenCvPipeline {
 
     private Location location = Location.MIDDLE;
     static final Rect LEFT_ROI = new Rect(
-            new Point(170, 95),
-            new Point(200, 125));
+            new Point(10, 115),
+            new Point(70, 230));
     static final Rect MIDDLE_ROI = new Rect(
-            new Point(135, 100),
-            new Point(160, 125));
+            new Point(170, 110),
+            new Point(245, 180));
     static double PERCENT_COLOR_THRESHOLD = 0.2;
 
     public VisionBlueClose(Telemetry t) { telemetry = t; }
