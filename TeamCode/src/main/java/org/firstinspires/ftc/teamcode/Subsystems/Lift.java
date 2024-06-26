@@ -63,8 +63,8 @@ public class Lift {
         rightLift.setPower(-0.15);
         }
         public void lowerLift() {
-        leftLift.setPower(-0.2);
-        rightLift.setPower(0.2);
+        leftLift.setPower(-0.3);
+        rightLift.setPower(0.3);
         }
     }
 

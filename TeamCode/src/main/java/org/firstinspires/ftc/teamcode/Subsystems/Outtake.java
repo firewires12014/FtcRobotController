@@ -47,12 +47,12 @@ public class Outtake {
         pivot.setPosition(PIVOT_INTERIM);
     }
     public void intakePosition(){
-        leftPivot.setPosition(0.287); //.296
-        rightPivot.setPosition(.732); //intake
+        leftPivot.setPosition(0.282 ); //.296 .28
+        rightPivot.setPosition(.732); //intake 732
     }
     public void autoDrop(){
-        leftPivot.setPosition(0.394);
-        rightPivot.setPosition(0.620);
+        leftPivot.setPosition(0.394); //og .394
+        rightPivot.setPosition(0.620); //og .620
     }
 
 public void diffyPosition(int position) {
