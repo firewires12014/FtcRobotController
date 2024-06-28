@@ -63,7 +63,7 @@ public class BlueSolo extends LinearOpMode {
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.1, ()-> { intake.grabOneSpecial();intake.in();outtake.intakePosition();})
-                .waitSeconds(0.75)
+                .waitSeconds(0.95)
                 // stops intake and lowers lift
                 .addTemporalMarker(()->{intake.die();lift.lowerLift();})
                 .waitSeconds(.2)
@@ -80,7 +80,6 @@ public class BlueSolo extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.75,()->{lift.liftToHeight(270); lift.holdLift(); outtake.diffyPosition(3); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6); intake.die();})
                 //driving to backboard
-                //first drop
                 .splineToConstantHeading(new Vector2d(48, 29), Math.toRadians(0),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -89,6 +88,7 @@ public class BlueSolo extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.releaseMain();})
                 .waitSeconds(0.05)
+                //first drop
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.15)
                 .UNSTABLE_addTemporalMarkerOffset(.8,()->{outtake.diffyPosition(3);})
@@ -116,20 +116,21 @@ public class BlueSolo extends LinearOpMode {
                 //stop intake and lower lift
                 .UNSTABLE_addTemporalMarkerOffset(-0.9,()->{intake.killRoller(); lift.liftToHeight(5); lift.lowerLift();}) //kill roller
                 //lock pixels
-                .UNSTABLE_addTemporalMarkerOffset(-0.6, ()-> {outtake.lockPixels(); })
+                .UNSTABLE_addTemporalMarkerOffset(-0.6, ()-> {outtake.lockPixels();})
                 .addTemporalMarker(()-> {intake.outRoller();})
                 .UNSTABLE_addTemporalMarkerOffset(.75, ()-> {intake.die();})
-//                //lift to correct spot
+//               //lift to correct spot
                 .UNSTABLE_addTemporalMarkerOffset(-.4, ()-> {lift.liftToHeight(250); lift.holdLift(); outtake.diffyPosition(1);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.3,()->{outtake.diffyPosition(5);})
                 //moves to spot to release pixels
-                //second drop
-                .splineToConstantHeading(new Vector2d(50, 29), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(54, 29), Math.toRadians(0),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToLinearHeading(new Pose2d(61,29,Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .waitSeconds(.1)
+                //second drop
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.125)
                 .splineToConstantHeading(new Vector2d(25, 10), Math.toRadians(180),
@@ -155,8 +156,8 @@ public class BlueSolo extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(25, 10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                //stop intake and lower lift
-                .UNSTABLE_addTemporalMarkerOffset(-0.85,()->{intake.killRoller(); lift.liftToHeight(5); lift.lowerLift();}) //kill roller
+                //stop intake and lower lift and kill roller
+                .UNSTABLE_addTemporalMarkerOffset(-0.85,()->{intake.killRoller(); lift.liftToHeight(5); lift.lowerLift();})
                 //lock pixels
                 .UNSTABLE_addTemporalMarkerOffset(-0.6, ()-> {outtake.lockPixels(); })
                 .addTemporalMarker(()-> {intake.outRoller();})
@@ -174,7 +175,7 @@ public class BlueSolo extends LinearOpMode {
                 //Final Drop
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.125)
-                .splineToConstantHeading(new Vector2d(55, 35), Math.toRadians(180),
+                .splineToConstantHeading(new Vector2d(55, 32), Math.toRadians(180),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.intakePosition();})
@@ -309,7 +310,7 @@ public class BlueSolo extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(-46.25,10,Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-0.25, ()-> { intake.grabOneSpecial();lift.liftToHeight(40);lift.holdLift();outtake.intakePosition();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.15, ()-> { intake.grabOneSpecial();lift.liftToHeight(40);lift.holdLift();outtake.intakePosition();})
                 .waitSeconds(0.6)
                 // stops intake and lowers lift
                 .addTemporalMarker(()->{intake.die();lift.lowerLift();})
@@ -321,7 +322,7 @@ public class BlueSolo extends LinearOpMode {
                 //drive across field
                 .lineToLinearHeading(new Pose2d(28, 9, Math.toRadians(180)))
                 // getting lift ready
-                .UNSTABLE_addTemporalMarkerOffset(-0.75,()->{ intake.die();lift.liftToHeight(250); lift.holdLift(); outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-0.75,()->{ intake.die();lift.liftToHeight(200); lift.holdLift(); outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(0);})
                 //driving to backboard
                 //first drop

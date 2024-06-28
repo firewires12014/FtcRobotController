@@ -78,7 +78,7 @@ public class RedSolo extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(230); lift.holdLift(); outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6);})
                 //driving to backboard
-                .splineToConstantHeading(new Vector2d(50.75, -40), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(50.75, -42), Math.toRadians(0),
                 Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                 Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //first drop
@@ -181,7 +181,7 @@ public class RedSolo extends LinearOpMode {
                 //getting into position for first white pixel
                 .addTemporalMarker(()-> {intake.in();lift.liftToHeight(55);lift.holdLift();})
                 // go to stack
-                .splineToConstantHeading(new Vector2d(-69.75, -10), Math.toRadians(180),
+                .splineToConstantHeading(new Vector2d(-69, -10), Math.toRadians(180),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-.25, ()-> {intake.grabOne();})
@@ -203,7 +203,7 @@ public class RedSolo extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(230); lift.holdLift(); outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6);})
                 //driving to backboard
-                .splineToConstantHeading(new Vector2d(50, -32), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(50, -34), Math.toRadians(0),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //first drop
@@ -221,7 +221,7 @@ public class RedSolo extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.25,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabTwo(); intake.in();})
                 //drives back to to stack
-                .lineToLinearHeading(new Pose2d(-67, -10, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-69, -10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.1,()->{intake.grabThree();})
@@ -259,7 +259,7 @@ public class RedSolo extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.3,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabFour(); intake.in();})
                 //drives back to to stack
-                .lineToLinearHeading(new Pose2d(-67, -10, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-69, -10, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()-> {intake.score();})
