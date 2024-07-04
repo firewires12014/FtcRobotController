@@ -59,14 +59,16 @@ public class redCloseCycle extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-2, ()-> {lift.liftToHeight(130); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-1.5, ()-> {lift.holdLift(); outtake.diffyPosition(5);})
-                .addTemporalMarker(()->{outtake.releasePixels();}) //first drop
+                //first drop
+                .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.15)
                 .splineToConstantHeading(new Vector2d(16,-58.5), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(-0.8, ()-> {outtake.diffyPosition(3); intake.up();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75, ()-> {outtake.intakePosition();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.7, ()-> {lift.lowerLift(); })
                 .splineToConstantHeading(new Vector2d(-55,-58), Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-64.75,-33.5, Math.toRadians(180)),  //drive to stack/ at stack
+                //drive to stack/ at stack
+                .lineToLinearHeading(new Pose2d(-64.75,-33.5, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-.55, ()-> {intake.in(); intake.grabOne();lift.liftToHeight(50); lift.holdLift();}) //grab one

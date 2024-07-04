@@ -58,8 +58,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, Mecanum drive) {
         super(Arrays.asList(
-            new Pose2d(PARALLEL_X, PARALLEL_Y, .2),
-            new Pose2d(PERPENDICULAR_X, PERPENDICULAR_Y, Math.toRadians(-90.05))
+            new Pose2d(PARALLEL_X, PARALLEL_Y, 0), // 0.2
+            new Pose2d(PERPENDICULAR_X, PERPENDICULAR_Y, Math.toRadians(-90)) //-90.05
         ));
 
         this.drive = drive;
