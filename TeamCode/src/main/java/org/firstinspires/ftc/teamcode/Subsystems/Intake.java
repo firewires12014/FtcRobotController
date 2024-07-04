@@ -70,7 +70,7 @@ primaryRoller.setPower(1);
     }
     public void grabThree () {intakeHeight.setPosition(0.91);} // for far cycle second grab or grabbing three  pixels
     public void grabOne() {intakeHeight.setPosition(0.85);}
-    public void grabTwo(){intakeHeight.setPosition(0.8756);}
+    public void grabTwo(){intakeHeight.setPosition(0.8823);}
     public void grabTwoSpecial(){intakeHeight.setPosition(0.8867);}
  public void grabFour(){intakeHeight.setPosition(0.93587);}
     public void allUp(){

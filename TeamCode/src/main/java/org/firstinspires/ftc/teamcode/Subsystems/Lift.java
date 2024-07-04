@@ -36,12 +36,12 @@ public class Lift {
         double leftPower;
         double rightPower;
         if ( height < rightLift.getCurrentPosition()){
-          leftPower = -0.8;
-          rightPower = 0.8;
+          leftPower = -0.85;
+          rightPower = 0.85;
         }
         else {
-            leftPower = 0.7;
-            rightPower = -0.7;
+            leftPower = 0.75;
+            rightPower = -0.75;
         }
         telemetry.addData("encoder", rightLift.getCurrentPosition());
         telemetry.update();

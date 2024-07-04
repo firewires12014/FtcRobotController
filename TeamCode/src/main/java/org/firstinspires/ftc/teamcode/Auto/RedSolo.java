@@ -85,12 +85,12 @@ public class RedSolo extends LinearOpMode {
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.1)
                 .UNSTABLE_addTemporalMarkerOffset(.8,()->{outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(1.1,()->{outtake.intakePosition(); lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(1,()->{outtake.intakePosition(); lift.lowerLift();})
                 .splineToConstantHeading(new Vector2d(25, -11), Math.toRadians(180),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //puts lift down
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{ lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.6,()->{ lift.lowerLift();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.intakePosition(); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.15,()->{ lift.lowerLift();})
@@ -158,7 +158,7 @@ public class RedSolo extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-.75, ()-> {lift.liftToHeight(280); lift.holdLift(); outtake.diffyPosition(1);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(5);})
                 //moves to spot to release pixels
-                .splineToConstantHeading(new Vector2d(50, -30), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(50, -29), Math.toRadians(0),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //release pixels
@@ -200,10 +200,10 @@ public class RedSolo extends LinearOpMode {
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 // getting lift ready
-                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(230); lift.holdLift(); outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-1,()->{lift.liftToHeight(250); lift.holdLift(); outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.diffyPosition(6);})
                 //driving to backboard
-                .splineToConstantHeading(new Vector2d(50, -34), Math.toRadians(0),
+                .splineToConstantHeading(new Vector2d(51, -34), Math.toRadians(0),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //first drop
@@ -215,7 +215,7 @@ public class RedSolo extends LinearOpMode {
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //puts lift down
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{ lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.7,()->{ lift.lowerLift();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.intakePosition(); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.25,()->{ lift.lowerLift();})
@@ -254,7 +254,7 @@ public class RedSolo extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.intakePosition();})
                 //puts lift down
-                .UNSTABLE_addTemporalMarkerOffset(-0.6 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.7 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.4,()->{outtake.intakePosition(); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.3,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabFour(); intake.in();})
@@ -335,12 +335,12 @@ public class RedSolo extends LinearOpMode {
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.1)
                 .UNSTABLE_addTemporalMarkerOffset(.8,()->{outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(1.1,()->{outtake.intakePosition(); lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(1,()->{outtake.intakePosition(); lift.lowerLift();})
                 .splineToConstantHeading(new Vector2d(25, -11), Math.toRadians(180),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //puts lift down
-                .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{ lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.7,()->{ lift.lowerLift();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5,()->{outtake.intakePosition(); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.15,()->{ lift.lowerLift();})
@@ -379,7 +379,7 @@ public class RedSolo extends LinearOpMode {
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(()->{outtake.intakePosition();})
                 //puts lift down
-                .UNSTABLE_addTemporalMarkerOffset(-0.6 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.7 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.4,()->{outtake.intakePosition(); })
                 .UNSTABLE_addTemporalMarkerOffset(-0.3,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabFour(); intake.in();})

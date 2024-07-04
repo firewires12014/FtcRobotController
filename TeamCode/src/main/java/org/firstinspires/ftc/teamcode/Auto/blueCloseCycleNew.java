@@ -56,7 +56,7 @@ public class blueCloseCycleNew extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(45, 30, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-.1, ()-> {lift.liftToHeight(175); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
+                .UNSTABLE_addTemporalMarkerOffset(-.1, ()-> {lift.liftToHeight(180); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
                 .UNSTABLE_addTemporalMarkerOffset(0.25, ()-> {intake.die();})
                 //at back board
                 .lineToLinearHeading(new Pose2d(60, 41, Math.toRadians(180)),
@@ -106,7 +106,7 @@ public class blueCloseCycleNew extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, ()-> {lift.lowerLift(); intake.up();})
                 .splineToConstantHeading(new Vector2d(-43, 57), Math.toRadians(180))
                 //drive to stack/ at stack
-                .lineToLinearHeading(new Pose2d(-51,34, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-51,33, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(33, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-.5, ()-> {intake.in(); intake.grabFour();lift.liftToHeight(50); lift.holdLift();}) //grab one
@@ -141,10 +141,10 @@ public class blueCloseCycleNew extends LinearOpMode {
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //drop purple pixel
-                .UNSTABLE_addTemporalMarkerOffset(-.1, ()-> {lift.liftToHeight(130); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
+                .UNSTABLE_addTemporalMarkerOffset(-.1, ()-> {lift.liftToHeight(160); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
                 .UNSTABLE_addTemporalMarkerOffset(0.3, ()-> {intake.die();})
                 //at back board
-                .lineToConstantHeading(new Vector2d(61.75, 34),
+                .lineToConstantHeading(new Vector2d(61.75, 36),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(1); intake.allUp();})
@@ -193,12 +193,12 @@ public class blueCloseCycleNew extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, ()-> {lift.lowerLift(); intake.up();})
                 .splineToConstantHeading(new Vector2d(-40, 58), Math.toRadians(180))
                 //at stack
-                .lineToLinearHeading(new Pose2d(-51,34, Math.toRadians(180)),
-                        Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-.4, ()-> {intake.in(); intake.grabFour();lift.liftToHeight(50); lift.holdLift();}) //grab one
-                .waitSeconds(0.2)
-                .lineToLinearHeading(new Pose2d(-50,50, Math.toRadians(180)),
+                        .lineToLinearHeading(new Pose2d(-51,34, Math.toRadians(180)),
+                                Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                                Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                        .UNSTABLE_addTemporalMarkerOffset(-.55, ()-> {intake.in(); intake.grabFour();lift.liftToHeight(50); lift.holdLift();}) //grab one
+                        .waitSeconds(0.2)
+                        .lineToLinearHeading(new Pose2d(-50,50, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .splineToConstantHeading(new Vector2d(-45,58), Math.toRadians(180))
@@ -223,14 +223,14 @@ public class blueCloseCycleNew extends LinearOpMode {
         //Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 //spot to drop purple pixel
-                .lineToLinearHeading(new Pose2d(18.5, 30, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(19.5, 30, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //drop purple pixel
-                .UNSTABLE_addTemporalMarkerOffset(-.1, ()-> {lift.liftToHeight(130); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
+                .UNSTABLE_addTemporalMarkerOffset(-.1, ()-> {lift.liftToHeight(160); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
                 .UNSTABLE_addTemporalMarkerOffset(0.2, ()-> {intake.die();})
                 //at back board
-                .lineToLinearHeading(new Pose2d(63.5, 28, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(64, 28, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(5); intake.allUp();})
@@ -238,12 +238,12 @@ public class blueCloseCycleNew extends LinearOpMode {
                 .addTemporalMarker(()->{outtake.releasePixels();intake.up();})
                 .waitSeconds(.15)
                 //drive away from backboard
-                .splineToConstantHeading(new Vector2d(16,56), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(16,57), Math.toRadians(180))
                 .UNSTABLE_addTemporalMarkerOffset(-0.8, ()-> {outtake.diffyPosition(3); intake.up();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75, ()-> {outtake.intakePosition();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.7, ()-> {lift.lowerLift(); })
                 //drive through truss to stack
-                .splineToConstantHeading(new Vector2d(-42,56), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-42,57), Math.toRadians(180))
                 //at stack
                 .lineToLinearHeading(new Pose2d(-52.5,34, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(33, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -294,7 +294,7 @@ public class blueCloseCycleNew extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.6, ()-> {intake.die();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, ()-> {lift.lowerLift();})
                 //drive back through truss to backboard
-                .lineToLinearHeading(new Pose2d(43,50, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(43,52, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(42.5, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.25, ()-> {outtake.lockPixels();})

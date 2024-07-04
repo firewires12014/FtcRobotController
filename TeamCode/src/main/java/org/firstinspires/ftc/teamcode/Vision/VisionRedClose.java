@@ -42,9 +42,9 @@ public class VisionRedClose extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
 
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        Scalar lowHSV = new Scalar(0, 0, 0); //HSV Hue Saturation Value colors looking for colors 0-250
-        Scalar highHSV = new Scalar(30, 255, 255); //these are the values for green
+        Imgproc.cvtColor(input, mat, Imgproc.COLOR_BGR2HSV);
+        Scalar lowHSV = new Scalar(110, 100, 0); //HSV Hue Saturation Value colors looking for colors 0-250
+        Scalar highHSV = new Scalar(125, 255, 255); //these are the values for green
         
         Core.inRange(mat, lowHSV, highHSV, mat);
 // Rich :(

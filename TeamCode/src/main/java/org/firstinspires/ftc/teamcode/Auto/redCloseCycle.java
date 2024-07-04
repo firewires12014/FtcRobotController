@@ -50,7 +50,7 @@ public class redCloseCycle extends LinearOpMode {
 
         // Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(30, -35, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(31, -32, Math.toRadians(180)),
                        Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                        Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.1, ()-> {lift.liftToHeight(160); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
@@ -82,7 +82,7 @@ public class redCloseCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(52.75,-39, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1.2, ()-> {lift.liftToHeight(275); lift.holdLift();outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-1.2, ()-> {lift.liftToHeight(310); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.grabOne();outtake.diffyPosition(1);})
                 .addTemporalMarker(()->{ outtake.releasePixels();}) //second drop
                 .waitSeconds(0.15)
@@ -106,7 +106,7 @@ public class redCloseCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(52,-37.5, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(275); lift.holdLift();outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(310); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75, ()-> {outtake.diffyPosition(5);})
                 .addTemporalMarker(()->{ outtake.releasePixels();}) //second drop
                 .waitSeconds(0.15)
@@ -117,7 +117,7 @@ public class redCloseCycle extends LinearOpMode {
 
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
-                .lineToLinearHeading(new Pose2d(15, -21, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(15, -22, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(35, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(-0.1, ()-> {lift.liftToHeight(160); lift.holdLift();outtake.diffyPosition(3);intake.outSlow();})
@@ -134,11 +134,11 @@ public class redCloseCycle extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.75, ()-> {outtake.intakePosition();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.7, ()-> {lift.lowerLift(); })
                 .splineToConstantHeading(new Vector2d(-55,-58), Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-64.5,-34.5, Math.toRadians(180)),  //drive to stack/ at stack
+                .lineToLinearHeading(new Pose2d(-64.5,-34, Math.toRadians(180)),  //drive to stack/ at stack
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-.4, ()-> {intake.in(); intake.grabOne();lift.liftToHeight(50); lift.holdLift();}) //grab one
-                .waitSeconds(0.15)
+                .UNSTABLE_addTemporalMarkerOffset(-.3, ()-> {intake.in(); intake.grabOne();lift.liftToHeight(50); lift.holdLift();}) //grab one
+                .waitSeconds(0.2)
                 .addTemporalMarker(()->{intake.grabTwo();})
                 .waitSeconds(0.2)
                 .lineToLinearHeading(new Pose2d(-60,-50, Math.toRadians(180)))
@@ -150,7 +150,7 @@ public class redCloseCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(52.75,-38.75, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1.25, ()-> {lift.liftToHeight(210); lift.holdLift();outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-1.25, ()-> {lift.liftToHeight(310); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {intake.grabOne();outtake.diffyPosition(1);})
                 //second drop
                 .addTemporalMarker(()->{ outtake.releasePixels();})
@@ -161,11 +161,11 @@ public class redCloseCycle extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.5, ()-> {lift.lowerLift();  intake.die();intake.up();})
                 .splineToConstantHeading(new Vector2d(-55, -58), Math.toRadians(180))
                 //drive to stack/ at stack
-                .lineToLinearHeading(new Pose2d(-64.5,-32.5, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-64.5,-33, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //grab one
-                .UNSTABLE_addTemporalMarkerOffset(-.5, ()-> {intake.in(); intake.grabFour();lift.liftToHeight(50); lift.holdLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-.3, ()-> {intake.in(); intake.grabFour();lift.liftToHeight(50); lift.holdLift();})
                 .waitSeconds(0.15)
                 .lineToLinearHeading(new Pose2d(-60,-50, Math.toRadians(180)))
                 .splineToConstantHeading(new Vector2d(-45,-58), Math.toRadians(180))
@@ -177,7 +177,7 @@ public class redCloseCycle extends LinearOpMode {
                 .addTemporalMarker(()-> {intake.outRoller();})
                 //at backboard
                 .lineToLinearHeading(new Pose2d(51,-36.5, Math.toRadians(180)))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(275); lift.holdLift();outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(310); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75, ()-> {outtake.diffyPosition(5);})
                 //third drop
                 .addTemporalMarker(()->{ outtake.releasePixels();})
@@ -204,12 +204,12 @@ public class redCloseCycle extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(-0.7, ()-> {lift.lowerLift(); })
                 .splineToConstantHeading(new Vector2d(-55,-58), Math.toRadians(180))
                 //drive to stack/ at stack
-                .lineToLinearHeading(new Pose2d(-63.6,-34.75, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(-63.6,-33.5, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //grab one
-                .UNSTABLE_addTemporalMarkerOffset(-.4, ()-> {intake.in(); intake.grabOne();lift.liftToHeight(50); lift.holdLift();})
-                .waitSeconds(0.15)
+                .UNSTABLE_addTemporalMarkerOffset(-.5, ()-> {intake.in(); intake.grabOne();lift.liftToHeight(50); lift.holdLift();})
+                .waitSeconds(0.2)
                 .addTemporalMarker(()->{intake.grabTwoSpecial();})
                 .waitSeconds(0.15)
                 .lineToLinearHeading(new Pose2d(-60,-50, Math.toRadians(180)))
@@ -219,10 +219,10 @@ public class redCloseCycle extends LinearOpMode {
                 //drive back
                 .lineToLinearHeading(new Pose2d(45,-58, Math.toRadians(180)))
                 .UNSTABLE_addTemporalMarkerOffset(-0.25, ()-> {outtake.lockPixels();})
-                .lineToLinearHeading(new Pose2d(52,-39, Math.toRadians(180)),
+                .lineToLinearHeading(new Pose2d(52,-41, Math.toRadians(180)),
                         Mecanum.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(200); lift.holdLift();outtake.diffyPosition(3);})
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(310); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-.9, ()-> {intake.grabOne();outtake.diffyPosition(1);})
                 //second drop
                 .addTemporalMarker(()->{ outtake.releasePixels();})
@@ -249,8 +249,8 @@ public class redCloseCycle extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(40,-58, Math.toRadians(180)))
                 .UNSTABLE_addTemporalMarkerOffset(-0.25, ()-> {outtake.lockPixels();})
                 .addTemporalMarker(()-> {intake.outRoller();})
-                .lineToLinearHeading(new Pose2d(52,-39, Math.toRadians(180)))
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(250); lift.holdLift();outtake.diffyPosition(3);})
+                .lineToLinearHeading(new Pose2d(52,-41, Math.toRadians(180)))
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.liftToHeight(310); lift.holdLift();outtake.diffyPosition(3);})
                 .UNSTABLE_addTemporalMarkerOffset(-0.75, ()-> {outtake.diffyPosition(5);})
                 //second drop
                 .addTemporalMarker(()->{ outtake.releasePixels();})

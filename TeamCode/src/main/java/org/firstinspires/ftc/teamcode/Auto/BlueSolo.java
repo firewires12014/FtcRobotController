@@ -92,7 +92,7 @@ public class BlueSolo extends LinearOpMode {
                 .addTemporalMarker(()->{outtake.releasePixels();})
                 .waitSeconds(0.15)
                 .UNSTABLE_addTemporalMarkerOffset(.8,()->{outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(1.1,()->{outtake.intakePosition(); lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(1,()->{outtake.intakePosition(); lift.lowerLift();})
                 .splineToConstantHeading(new Vector2d(25, 11), Math.toRadians(180),
                         Mecanum.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         Mecanum.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
@@ -140,7 +140,7 @@ public class BlueSolo extends LinearOpMode {
                 //puts lift down
                 .UNSTABLE_addTemporalMarkerOffset(-0.6 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.4,()->{outtake.intakePosition(); })
-                .UNSTABLE_addTemporalMarkerOffset(-0.1,()->{ lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabFour(); intake.in();})
                 .waitSeconds(.1)
                 //drives back to to stack
@@ -261,7 +261,7 @@ public class BlueSolo extends LinearOpMode {
                 //puts lift down
                 .UNSTABLE_addTemporalMarkerOffset(-0.6 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.4,()->{outtake.intakePosition(); })
-                .UNSTABLE_addTemporalMarkerOffset(-0.1,()->{ lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabFour(); intake.in();})
                 .waitSeconds(.2)
                 //drives back to to stack
@@ -380,7 +380,7 @@ public class BlueSolo extends LinearOpMode {
                 //puts lift down
                 .UNSTABLE_addTemporalMarkerOffset(-0.6 ,()->{outtake.diffyPosition(3); intake.grabTwo();})
                 .UNSTABLE_addTemporalMarkerOffset(-0.4,()->{outtake.intakePosition(); })
-                .UNSTABLE_addTemporalMarkerOffset(-0.1,()->{ lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-0.2,()->{ lift.lowerLift();})
                 .addTemporalMarker(()-> {intake.grabFour(); intake.in();})
                 .waitSeconds(.15)
                 //drives back to to stack
