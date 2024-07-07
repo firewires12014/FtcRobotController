@@ -13,7 +13,8 @@ import sun.text.ComposedCharIter;
 
 public class MeepMeepTesting {
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(682, 512);
+
         Pose2d startingPose = new Pose2d(-12,-63.6, Math.toRadians(180));
 //
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -49,7 +50,7 @@ public class MeepMeepTesting {
         //                        SampleMecanumDrive.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
         //                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK_CRI)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
