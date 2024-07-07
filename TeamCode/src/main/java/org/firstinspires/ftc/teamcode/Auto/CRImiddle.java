@@ -17,9 +17,9 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "CRIredClose", group = "Robot")
+@Autonomous(name = "CRImiddle", group = "Robot")
 
-public class redClose extends LinearOpMode {
+public class CRImiddle extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionRedClose VisionRedClose = new VisionRedClose(telemetry); // camera stuff
     Mecanum drive;
@@ -40,7 +40,7 @@ public class redClose extends LinearOpMode {
         intake = new Intake(hardwareMap);
         //intake.resetIntake();
         outtake.lockPixels();
-        Pose2d startingPose = new Pose2d(16,-63.6, Math.toRadians(180));
+        Pose2d startingPose = new Pose2d(-12,-63.6, Math.toRadians(180));
         intake.allUp();
         drive.setPoseEstimate(startingPose);
 
@@ -49,64 +49,65 @@ public class redClose extends LinearOpMode {
         // Right
         TrajectorySequence rightMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 //purple drop
-                .lineToLinearHeading(new Pose2d(38, -37, Math.toRadians(140)))
-                .addTemporalMarker(()->{intake.allUp(); intake.outSlow();})
-                .waitSeconds(0.3)
-                .addTemporalMarker(()->{ intake.die();})
-                //at backboard
-                .lineToLinearHeading(new Pose2d(59, -42, Math.toRadians(180)))
-                .UNSTABLE_addTemporalMarkerOffset(-1.25, ()-> {lift.liftToHeight(200); lift.holdLift();outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.holdLift();outtake.diffyPosition(5);})
-                //drop yellow
-                .addTemporalMarker(()->{outtake.releasePixels();})
-                .waitSeconds(.5)
-                //reset claw/arm
-                .addTemporalMarker(()->{outtake.diffyPosition(3); outtake.intakePosition(); lift.lowerLift();})
-                .setTangent(Math.toRadians(230))
-                //park
-                .splineToConstantHeading(new Vector2d(63, -60), Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(3, -29, Math.toRadians(180)))
+
                 .build();
 
         //MIDDLE
         TrajectorySequence middleMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 //purple drop
-                .lineToLinearHeading(new Pose2d(34, -22, Math.toRadians(180)))
-                .addTemporalMarker(()->{intake.allUp(); intake.out();})
-                .waitSeconds(0.3)
-                .addTemporalMarker(()->{ intake.die();})
-                //at back board
-                .lineToLinearHeading(new Pose2d(59, -35, Math.toRadians(180)))
-                .UNSTABLE_addTemporalMarkerOffset(-1.25, ()-> {lift.liftToHeight(200); lift.holdLift();outtake.diffyPosition(3);})
-                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.holdLift();outtake.diffyPosition(5);})
-                .waitSeconds(.05)
-                //first drop
-                .addTemporalMarker(()->{outtake.releasePixels();})
-                .waitSeconds(.5)
-                .addTemporalMarker(()->{outtake.diffyPosition(3); outtake.intakePosition(); lift.lowerLift();})
-                .setTangent(Math.toRadians(230))
-                .splineToConstantHeading(new Vector2d(63, -60), Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(3, -29, Math.toRadians(180)))
+
                 .build();
         //Left
         TrajectorySequence leftMovementOne = drive.trajectorySequenceBuilder(startingPose)
                 //purple drop
-                .lineToLinearHeading(new Pose2d(15, -36, Math.toRadians(140)))
-                .addTemporalMarker(()->{intake.allUp(); intake.outSlow();})
-                .waitSeconds(0.3)
+                .lineToLinearHeading(new Pose2d(-17, -38, Math.toRadians(150)))
+                .addTemporalMarker(()->{intake.allUp(); intake.outRollerSlow();})
+                .waitSeconds(0.5)
                 .addTemporalMarker(()->{ intake.die();})
-                //at back board
-                .lineToLinearHeading(new Pose2d(59, -29, Math.toRadians(180)))
+                //add wait for partner if needed
+                .setReversed(true)
+                //spline away from purple
+                .splineTo(new Vector2d(30, -50), Math.toRadians(0))
+                //at backboard
+                .splineToConstantHeading(new Vector2d(76, -29), Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(-1.25, ()-> {
-                    lift.liftToHeight(80); lift.holdLift();outtake.diffyPosition(3);
-                telemetry.addData("liftPosition", lift.leftLift.getCurrentPosition());
-                telemetry.update();})
+                    lift.liftToHeight(180); lift.holdLift();outtake.diffyPosition(3);
+                    telemetry.addData("liftPosition", lift.leftLift.getCurrentPosition());
+                    telemetry.update();})
                 .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {lift.holdLift();outtake.diffyPosition(1);})
-                .waitSeconds(.05)
+                .waitSeconds(.1)
                 //first drop
                 .addTemporalMarker(()->{outtake.releasePixels();})
-                .waitSeconds(.1)
-                .addTemporalMarker(()->{outtake.diffyPosition(3); outtake.intakePosition(); lift.lowerLift();})
-                .setTangent(Math.toRadians(245))
-                .splineToConstantHeading(new Vector2d(63, -60), Math.toRadians(180))
+                .waitSeconds(.5)
+                .addTemporalMarker(()-> {intake.outRoller();})
+                .UNSTABLE_addTemporalMarkerOffset(.25, ()-> {intake.die();})
+                .setReversed(false)
+                //away from backboard
+                .splineToConstantHeading(new Vector2d(32, -60), Math.toRadians(180))
+                .UNSTABLE_addTemporalMarkerOffset(-1, ()-> {outtake.diffyPosition(3); outtake.intakePosition(); })
+                .UNSTABLE_addTemporalMarkerOffset(-.8, ()-> {lift.lowerLift();})
+                //through trusses to stack
+                .lineToLinearHeading(new Pose2d(-49, -60, Math.toRadians(180)))
+                //at stack
+                .splineToConstantHeading(new Vector2d(-85.5, -34), Math.toRadians(90))
+                .addTemporalMarker(()-> {lift.liftToHeight(50); lift.holdLift(); intake.in();})
+                .waitSeconds(.3)
+                .addTemporalMarker(()-> {intake.grabOne();})
+                .waitSeconds(.75)
+                .addTemporalMarker(()-> {intake.grabTwo();})
+                .waitSeconds(.5)
+                .setTangent(Math.toRadians(-90))
+                //away from stack
+                .splineToConstantHeading(new Vector2d(-49, -60), Math.toRadians(0))
+                .UNSTABLE_addTemporalMarkerOffset(-.6, ()-> {intake.die(); })
+                .UNSTABLE_addTemporalMarkerOffset(-.5, ()-> {lift.lowerLift();})
+                .UNSTABLE_addTemporalMarkerOffset(-.4, ()-> {outtake.lockPixels();})
+                //through truss to backboard
+                .lineToLinearHeading(new Pose2d(22, -60, Math.toRadians(180)))
+                //at stack
+                .splineToConstantHeading(new Vector2d(69, -40), Math.toRadians(0))
                 .build();
 
 
@@ -129,7 +130,7 @@ public class redClose extends LinearOpMode {
         }
         waitForStart();
         outtake.intakePosition();
-        drive.followTrajectorySequenceAsync(rightMovementOne);
+        drive.followTrajectorySequenceAsync(leftMovementOne);
 
         while (opModeIsActive()) {
             drive.update();
@@ -156,7 +157,7 @@ public class redClose extends LinearOpMode {
 //                    stop();
 ////                    sleep(300000);
 //                    break;
-       //     }
+            //     }
 
 
             //sleep(30000);
@@ -165,4 +166,3 @@ public class redClose extends LinearOpMode {
     }
 
 }
-
