@@ -21,7 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "BlueClose2Plus2", group = "Robot")
-
+@Disabled
 public class BlueClose2Plus2 extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionBlueClose VisionBlueClose = new VisionBlueClose(telemetry); // camera stuff

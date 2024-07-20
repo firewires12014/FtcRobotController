@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Auto.oldAutos;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -18,7 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(name = "redFarDump", group = "Robot")
-
+@Disabled
 public class redFarDump extends LinearOpMode {
     public OpenCvCamera camera;
     private VisionRedFar VisionRedFar = new VisionRedFar(telemetry); // camera stuff

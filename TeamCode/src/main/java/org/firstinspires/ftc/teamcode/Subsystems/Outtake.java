@@ -1,17 +1,19 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
+@Config
 public class Outtake {
 
-    private Servo pivot, frontGrabber, backGrabber, leftPivot, rightPivot;
+    public Servo pivot, frontGrabber, backGrabber, leftPivot, rightPivot;
 
-    static final double LOCK_TOP = 0.4;
-    static final double LOCK_BOTTOM = 0.40;
-    static final double UNLOCK_MAIN = 1.0;
-    static final double UNLOCK_SECONDARY = 1.0;
-    static final double PIVOT_INTERIM = 0.6;
+    public static  double LOCK_TOP = 1.0; //1.0
+    public static  double LOCK_BOTTOM = .65; //.4
+    public static  double UNLOCK_MAIN = .9; //.4
+    public static  double UNLOCK_SECONDARY = .4 ; //1.0
+    public static  double PIVOT_INTERIM = 0.6;
+
 
 
     public Outtake(HardwareMap hardwareMap){
